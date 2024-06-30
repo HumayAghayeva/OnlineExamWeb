@@ -11,6 +11,8 @@ namespace Domain.Models.Write
     {
         [Key]
         public int ID { get; set; }
+        public string Email { get; set; }
+        public string Password { get; set; }
         public DateTime CreatedTime { get; set; } = DateTime.Now;
         public DateTime UpdatedTime { get; set; }
         public bool IsDeleted  { get;set; }
