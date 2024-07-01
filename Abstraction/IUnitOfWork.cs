@@ -9,7 +9,7 @@ namespace Abstraction
     public interface IUnitOfWork:IDisposable
     {
         //Start the database Transaction
-        void CreateTransaction();
+         Task BeginTransactionAsync();
         //Commit the database Transaction
         void Commit();
         //Rollback the database Transaction

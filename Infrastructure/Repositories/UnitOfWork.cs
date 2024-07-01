@@ -1,32 +1,42 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Abstraction;
+using Infrastructure.DataContext.Write;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories
 {
-    public class UnitOfWork : IUnitOfWork, IDisposable
+    public class UnitOfWork : IUnitOfWork
     {
-        public void CreateTransaction()
+        private readonly DBConn _dbContext;
+
+        public UnitOfWork(DBConn dbContext)
         {
-            throw new NotImplementedException();
+            _dbContext = dbContext;
         }
 
-        public void Commit()
+        public async Task BeginTransactionAsync(IsolationLevel isolationLevel, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            await _dbContext.Database.BeginTransactionAsync(isolationLevel, cancellationToken);
         }
 
-        public void Rollback()
+        public async Task CommitTransactionAsync(CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            await _dbContext.Database.CommitTransactionAsync(cancellationToken);
         }
 
-        public void Save()
+        public async Task RollbackTransactionAsycn(CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            await _dbContext.Database.RollbackTransactionAsync(cancellationToken);
+        }
+
+        public Task SaveAsync(CancellationToken cancellationToken)
+        {
+            return _dbContext.SaveChangesAsync(cancellationToken);
         }
 
         #region Dispose
@@ -47,6 +57,26 @@ namespace Infrastructure.Repositories
         {
             Dispose(true);
             GC.SuppressFinalize(this);
+        }
+
+        public Task BeginTransactionAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Commit()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Rollback()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Save()
+        {
+            throw new NotImplementedException();
         }
         #endregion
     }

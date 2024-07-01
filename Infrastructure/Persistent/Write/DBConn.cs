@@ -14,5 +14,5 @@ namespace Infrastructure.DataContext.Write
         {
 
         }
-    }
+    }  
 }
