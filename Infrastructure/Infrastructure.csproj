@@ -14,12 +14,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Domain\Domain.csproj" />
+    <Folder Include="Repositories\Write\" />
+    <Folder Include="Repositories\Read\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Repositories\Write\" />
-    <Folder Include="Repositories\Read\" />
+    <ProjectReference Include="..\Abstraction\Abstraction.csproj" />
   </ItemGroup>
 
 </Project>
