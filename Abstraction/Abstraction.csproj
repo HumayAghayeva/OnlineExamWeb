@@ -8,9 +8,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="DTOs\Write\**" />
-    <EmbeddedResource Remove="DTOs\Write\**" />
-    <None Remove="DTOs\Write\**" />
+    <Folder Include="Read\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Domain\Domain.csproj" />
   </ItemGroup>
 
 </Project>

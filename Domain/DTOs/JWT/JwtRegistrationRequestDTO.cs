@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Domain.DTOs.JWT
 {
-    public class JwtRegistrationRequestDTO
+    public record JwtRegistrationRequestDTO
     {
         [Required(ErrorMessage = "The Name field is required")]
         public string Username { get; set; }

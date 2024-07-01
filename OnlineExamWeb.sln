@@ -3,11 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34018.315
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineExamWeb", "OnlineExamWeb\OnlineExamWeb.csproj", "{D10DB582-6630-46B1-AECD-C4AEB59FF239}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlineExamWeb", "OnlineExamWeb\OnlineExamWeb.csproj", "{D10DB582-6630-46B1-AECD-C4AEB59FF239}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{22565AB7-29BF-4B9E-93BE-461624ABBDB8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Domain\Domain.csproj", "{22565AB7-29BF-4B9E-93BE-461624ABBDB8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{9437BDEE-0E2E-490D-81AF-33174A88D982}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{9437BDEE-0E2E-490D-81AF-33174A88D982}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Abstraction", "Abstraction\Abstraction.csproj", "{D2F3ED2A-0A83-4EA2-991B-A566B558BBFA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{9437BDEE-0E2E-490D-81AF-33174A88D982}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9437BDEE-0E2E-490D-81AF-33174A88D982}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9437BDEE-0E2E-490D-81AF-33174A88D982}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D2F3ED2A-0A83-4EA2-991B-A566B558BBFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D2F3ED2A-0A83-4EA2-991B-A566B558BBFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D2F3ED2A-0A83-4EA2-991B-A566B558BBFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D2F3ED2A-0A83-4EA2-991B-A566B558BBFA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
