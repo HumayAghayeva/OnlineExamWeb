@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Domain.DTOs.JWT
 {
-    public class JwtRegistrationResponseDTO
+    public record JwtRegistrationResponseDTO
     {
     }
 }
