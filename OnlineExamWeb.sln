@@ -3,11 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34018.315
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineExamWeb", "OnlineExamWeb\OnlineExamWeb.csproj", "{D10DB582-6630-46B1-AECD-C4AEB59FF239}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlineExamWeb", "OnlineExamWeb\OnlineExamWeb.csproj", "{D10DB582-6630-46B1-AECD-C4AEB59FF239}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{22565AB7-29BF-4B9E-93BE-461624ABBDB8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Domain\Domain.csproj", "{22565AB7-29BF-4B9E-93BE-461624ABBDB8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{9437BDEE-0E2E-490D-81AF-33174A88D982}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{9437BDEE-0E2E-490D-81AF-33174A88D982}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{0F5FEFB6-B287-4F46-84EA-10A06732F14B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -30,6 +32,11 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D10DB582-6630-46B1-AECD-C4AEB59FF239} = {0F5FEFB6-B287-4F46-84EA-10A06732F14B}
+		{22565AB7-29BF-4B9E-93BE-461624ABBDB8} = {0F5FEFB6-B287-4F46-84EA-10A06732F14B}
+		{9437BDEE-0E2E-490D-81AF-33174A88D982} = {0F5FEFB6-B287-4F46-84EA-10A06732F14B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EDA14CF1-3366-4A1E-9173-C5A0441392B1}
