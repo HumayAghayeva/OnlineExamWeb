@@ -11,9 +11,16 @@ namespace Domain.Models
     {
         [Key]
         public int ID { get; set; }
-        public int AppUserId { get; set; }
+        [EmailAddress]
+        [Required(ErrorMessage = "The Email field is required")]
         public string Email { get; set; }
+
+        [Required(ErrorMessage = "The Password field  is required")]
         public string Password { get; set; }
+
+        [Required(ErrorMessage = "The ConfirmPassword field  is required")]
+        [Compare("Password")]
+        public string ConfirmPassword { get; set; }
         public DateTime CreatedTime { get; set; } = DateTime.Now;
         public DateTime UpdatedTime { get; set; }
         public bool IsDeleted { get; set; }

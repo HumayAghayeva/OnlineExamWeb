@@ -16,5 +16,6 @@ namespace Abstraction
         void Rollback();
         //DbContext Class SaveChanges method
         void Save();
+        IRepository<T> Repository<T>() where T : class;
     }
 }
