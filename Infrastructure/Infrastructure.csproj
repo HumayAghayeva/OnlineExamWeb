@@ -33,6 +33,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Abstraction\Abstraction.csproj" />
+    <ProjectReference Include="..\Domain\Domain.csproj" />
   </ItemGroup>
 
 </Project>
