@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Models.Write
+namespace Domain.Models
 {
     public abstract class BaseEntity
     {
@@ -16,6 +16,6 @@ namespace Domain.Models.Write
         public string Password { get; set; }
         public DateTime CreatedTime { get; set; } = DateTime.Now;
         public DateTime UpdatedTime { get; set; }
-        public bool IsDeleted  { get;set; }
+        public bool IsDeleted { get; set; }
     }
 }

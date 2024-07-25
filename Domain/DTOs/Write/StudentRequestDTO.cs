@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Domain.DTOs.Write
 {
-    public  class StudentRequestDTO
+    public class StudentRequestDTO
     {
         public string Name { get; set; }
         public string LastName { get; set; }

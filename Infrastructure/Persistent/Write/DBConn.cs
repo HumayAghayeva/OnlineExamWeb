@@ -1,4 +1,4 @@
-﻿using Domain.Models.Write;
+﻿using Domain.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
