@@ -19,6 +19,10 @@ namespace Infrastructure.Repositories
             _dbContext = dbContext;
         }
 
+        public IRepository<T> Repository<T>() where T : class
+        {
+            throw new NotImplementedException();
+        }
         public async Task BeginTransactionAsync(IsolationLevel isolationLevel, CancellationToken cancellationToken)
         {
             await _dbContext.Database.BeginTransactionAsync(isolationLevel, cancellationToken);

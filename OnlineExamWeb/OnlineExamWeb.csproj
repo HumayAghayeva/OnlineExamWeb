@@ -7,12 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Domain\Domain.csproj" />
-    <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
+    <Compile Remove="DataContext\**" />
+    <Content Remove="DataContext\**" />
+    <EmbeddedResource Remove="DataContext\**" />
+    <None Remove="DataContext\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="DataContext\Write\" />
+    <ProjectReference Include="..\Domain\Domain.csproj" />
+    <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>

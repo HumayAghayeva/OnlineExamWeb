@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Domain.DTOs.Read;
+using Domain.DTOs.Write;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +10,7 @@ namespace Abstraction.Write
 {
     public interface IStudentPostRepository
     {
-        //Task PostStudentAsync(CustomerWriteModel model,
-        //                    CancellationToken cancellationToken);
+        Task PostStudentAsync(StudentRequestDTO model,
+                            CancellationToken cancellationToken);
     }
 }

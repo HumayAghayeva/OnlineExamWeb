@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.DTOs.JWT
+namespace Domain.DTOs.Write
 {
-    public record JwtLoginDTO
+    public class StudentLogin
     {
         [Required(ErrorMessage = "The Username field is required")]
         public string? Email { get; set; }

@@ -1,12 +1,12 @@
-﻿using System;
+﻿using Abstraction;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.DTOs.JWT
+namespace Infrastructure.Repositories
 {
-    public record JwtRegistrationResponseDTO
-    {
+    public class Repository { 
     }
 }
