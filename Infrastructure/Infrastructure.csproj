@@ -7,15 +7,6 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Compile Remove="Repositories\Read\**" />
-    <Compile Remove="Repositories\Write\**" />
-    <EmbeddedResource Remove="Repositories\Read\**" />
-    <EmbeddedResource Remove="Repositories\Write\**" />
-    <None Remove="Repositories\Read\**" />
-    <None Remove="Repositories\Write\**" />
-  </ItemGroup>
-
  
 
   <ItemGroup>
