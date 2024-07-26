@@ -7,40 +7,58 @@ using System.Threading.Tasks;
 using Abstraction;
 using Infrastructure.DataContext.Write;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Infrastructure.Repositories
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private readonly DBConn _dbContext;
+        private readonly DbContext _context;
+        private IDbContextTransaction _transaction;
 
-        public UnitOfWork(DBConn dbContext)
+        public UnitOfWork(DbContext context)
         {
-            _dbContext = dbContext;
+            _context = context;
+        }
+
+        public async Task BeginTransactionAsync(IsolationLevel isolationLevel = IsolationLevel.ReadCommitted,
+            CancellationToken cancellationToken = default)
+        {
+            _transaction = await _context.Database.BeginTransactionAsync(isolationLevel, cancellationToken);
+        }
+
+        public async Task CommitAsync(CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                await _transaction.CommitAsync(cancellationToken);
+            }
+            finally
+            {
+                await _transaction.DisposeAsync();
+            }
+        }
+
+        public async Task RollbackAsync(CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                await _transaction.RollbackAsync(cancellationToken);
+            }
+            finally
+            {
+                await _transaction.DisposeAsync();
+            }
+        }
+        public async Task SaveAsync(CancellationToken cancellationToken = default)
+        {
+            await _context.SaveChangesAsync(cancellationToken);
         }
 
         public IRepository<T> Repository<T>() where T : class
         {
-            throw new NotImplementedException();
-        }
-        public async Task BeginTransactionAsync(IsolationLevel isolationLevel, CancellationToken cancellationToken)
-        {
-            await _dbContext.Database.BeginTransactionAsync(isolationLevel, cancellationToken);
-        }
-
-        public async Task CommitTransactionAsync(CancellationToken cancellationToken)
-        {
-            await _dbContext.Database.CommitTransactionAsync(cancellationToken);
-        }
-
-        public async Task RollbackTransactionAsycn(CancellationToken cancellationToken)
-        {
-            await _dbContext.Database.RollbackTransactionAsync(cancellationToken);
-        }
-
-        public Task SaveAsync(CancellationToken cancellationToken)
-        {
-            return _dbContext.SaveChangesAsync(cancellationToken);
+           
+            return new Repository<T>(_context);
         }
 
         #region Dispose
@@ -61,26 +79,6 @@ namespace Infrastructure.Repositories
         {
             Dispose(true);
             GC.SuppressFinalize(this);
-        }
-
-        public Task BeginTransactionAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Commit()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Rollback()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Save()
-        {
-            throw new NotImplementedException();
         }
         #endregion
     }

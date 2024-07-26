@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Domain.Models;
 using Domain.Enums;
+using System.Data;
 
 namespace Business.Services.Write
 {
@@ -22,7 +23,7 @@ namespace Business.Services.Write
         {
             try
             {
-                await uow.BeginTransactionAsync();
+                await uow.BeginTransactionAsync(IsolationLevel.ReadCommitted, token);
 
                 var student = new Student
                 {
@@ -35,14 +36,20 @@ namespace Business.Services.Write
                 var studentRepository = uow.Repository<Student>();
                 studentRepository.Add(student);
 
-                uow.Save();
-                uow.Commit();
+                await uow.SaveAsync(token);
+                await uow.CommitAsync(token);
             }
             catch (Exception ex)
             {
-                uow.Rollback();
+                await uow.RollbackAsync(token);
                 // Handle the exception (logging, rethrowing, etc.)
             }
         }
+
+        public async void GetStudentById(int id, CancellationToken token)
+        {
+
+        }
     }
-}   
+}
+   

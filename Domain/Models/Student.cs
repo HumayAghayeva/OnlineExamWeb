@@ -9,10 +9,10 @@ namespace Domain.Models
 {
     public class Student : BaseEntity
     {
-        public string Name { get; set; }
-        public string LastName { get; set; }
-        public string DateOfBirth { get; set; }
-        public string PIN { get; set; }
+        public string? Name { get; set; }
+        public string? LastName { get; set; }
+        public string? DateOfBirth { get; set; }
+        public string? PIN { get; set; }
         public Groups GroupId { get; set; }
     }
 }
