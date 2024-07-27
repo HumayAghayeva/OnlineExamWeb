@@ -13,6 +13,7 @@ using Domain.DTOs.Read;
 using Azure.Core;
 using static Azure.Core.HttpHeader;
 using AutoMapper;
+using FluentValidation.Results;
 
 namespace Business.Services.Write
 {
@@ -25,14 +26,15 @@ namespace Business.Services.Write
               uow = _uow ?? throw new ArgumentNullException(nameof(_uow));
               mapper = _mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
-        public async Task PostStudentAsync(StudentRequestDTO studentRequestDTO, CancellationToken token)
+
+        public async Task<ValidationResult> PostStudentAsync(StudentRequestDTO studentRequestDTO, CancellationToken token)
         {
             try
             {
                 await uow.BeginTransactionAsync(IsolationLevel.ReadCommitted, token);
 
                 var student = mapper.Map<Student>(studentRequestDTO);
-              
+
                 var studentRepository = uow.Repository<Student>();
 
                 studentRepository.Add(student);
@@ -40,15 +42,19 @@ namespace Business.Services.Write
                 await uow.SaveAsync(token);
 
                 await uow.CommitAsync(token);
+
+                return Helper.GenerateValidation.GenerateValidationResult(true, "Student created successfully", null);
             }
             catch (Exception ex)
             {
                 await uow.RollbackAsync(token);
-                // Handle the exception (logging, rethrowing, etc.)
+
+                return Helper.GenerateValidation.GenerateValidationResult(true, "Student created successfully", null);
             }
         }
 
-        public async Task<StudentReadDTO> GetStudentById(int id, CancellationToken token)
+        
+       public async Task<StudentReadDTO> GetStudentById(int id, CancellationToken token)
         {
             var studentRepository =  uow.Repository<Student>();       
 
