@@ -22,6 +22,7 @@ namespace Infrastructure.Repositories
         public void Add(T entity)
         {
             _dbSet.Add(entity);
+            _context.SaveChanges();
         }
 
         public void Update(T entity)

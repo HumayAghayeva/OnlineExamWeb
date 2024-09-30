@@ -20,7 +20,5 @@ namespace Abstraction
 
         // DbContext Class SaveChanges method
         Task SaveAsync(CancellationToken cancellationToken = default);
-
-        IRepository<T> Repository<T>() where T : class;
     }
 }

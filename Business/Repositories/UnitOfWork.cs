@@ -14,11 +14,12 @@ namespace Infrastructure.Repositories
     public class UnitOfWork : IUnitOfWork
     {
         private readonly DbContext _context;
-        private IDbContextTransaction _transaction;
+        private  IDbContextTransaction _transaction;
 
-        public UnitOfWork(DbContext context)
+        public UnitOfWork(DbContext context, IDbContextTransaction transaction)
         {
             _context = context;
+            _transaction=transaction;
         }
 
         public async Task BeginTransactionAsync(IsolationLevel isolationLevel = IsolationLevel.ReadCommitted,
@@ -55,11 +56,7 @@ namespace Infrastructure.Repositories
             await _context.SaveChangesAsync(cancellationToken);
         }
 
-        public IRepository<T> Repository<T>() where T : class
-        {
-           
-            return new Repository<T>(_context);
-        }
+       
 
         #region Dispose
 
