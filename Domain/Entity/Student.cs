@@ -1,4 +1,5 @@
 ﻿using Domain.Enums;
+using Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -6,9 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Models
+namespace Domain.Entity
 {
-    public class Student : BaseEntity
+    public class Student :BaseEntity
     {
         public string? Name { get; set; }
         public string? LastName { get; set; }

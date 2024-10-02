@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Domain.DTOs.Write;
-using Domain.Models;
+using Domain.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;

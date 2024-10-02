@@ -11,7 +11,7 @@ namespace Abstraction.Command
 {
     public interface IStudentCommandRepository 
     {
-        Task AddStudentById(StudentReadDTO studentReadDTO,
+        Task AddStudent(StudentRequestDTO studentRequestDTO,
                       CancellationToken cancellationToken);
     }
 }

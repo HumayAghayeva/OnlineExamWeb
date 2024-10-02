@@ -1,5 +1,5 @@
 ﻿using Domain.DTOs.Read;
-using Domain.Models;
+using Domain.Entity;
 using Abstraction.Command;
 using Infrastructure.DataContext.Write;
 using Infrastructure.Repositories;

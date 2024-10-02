@@ -36,7 +36,7 @@ builder.Services.AddDbContext<OEPWriteDB>(options =>
 builder.Services.AddDbContext<OEPReadDB>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("ReadDbContext")));
 
-////builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+//builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 //builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddScoped<IStudentCommandRepository, StudentCommandRepository>();
 builder.Services.AddScoped<IStudentQueryRepository, StudentQueryRepository>();
@@ -66,6 +66,6 @@ app.UseHttpsRedirection();
 
 app.MapControllerRoute(
    name: "default",
-   pattern: "{controller=Student}/{action=Index}/{id?}");
+   pattern: "{controller=Student}/{action=Create}/{id?}");
 
 app.Run();

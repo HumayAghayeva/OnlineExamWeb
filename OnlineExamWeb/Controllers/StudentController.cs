@@ -2,12 +2,19 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Abstraction.Queries;
+using Abstraction.Command;
+using Domain.DTOs.Write;
 
 namespace OnlineExamWeb.Controllers
 {
     public class StudentController : Controller
     {
-                 
+         private readonly IStudentCommandRepository _commandRepository;
+
+        public StudentController(IStudentCommandRepository commandRepository)
+        {
+          _commandRepository = commandRepository;
+        }
         // GET: StudentController
         public ActionResult Index(CancellationToken cancellationToken)
         {       
@@ -29,18 +36,24 @@ namespace OnlineExamWeb.Controllers
         // POST: StudentController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<IActionResult> Create(StudentRequestDTO studentRequestDTO)
         {
+            if (!ModelState.IsValid)            {
+              
+                return View(studentRequestDTO);
+            }
             try
-            {
+            {                
+                await _commandRepository.AddStudent(studentRequestDTO, CancellationToken.None);
+
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                TempData["ErrorMessage"] = "An error occurred while creating the student.";                
+                return View(studentRequestDTO);
             }
         }
-
         // GET: StudentController/Edit/5
         public ActionResult Edit(int id)
         {
