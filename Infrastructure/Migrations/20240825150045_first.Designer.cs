@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Infrastructure.Migrations
 {
-    [DbContext(typeof(DBConn))]
+    [DbContext(typeof(OEPWriteDB))]
     [Migration("20240825150045_first")]
     partial class first
     {

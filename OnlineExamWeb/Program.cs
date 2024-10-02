@@ -1,8 +1,10 @@
 using Abstraction;
 using Abstraction.Command;
+using Abstraction.Queries;
 using Business.Repositories;
-using Business.Services.Write;
+using Business.Repositories.Command;
 using Infrastructure.DataContext.Write;
+using Infrastructure.Persistent.Read;
 using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -27,13 +29,17 @@ var logger =NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
  * Add connection string to services container - using EF pooling for performance
  ************************************************/
 
-builder.Services.AddDbContext<DBConn>(options =>
+builder.Services.AddDbContext<OEPWriteDB>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("WriteDbContext")));
+
+
+builder.Services.AddDbContext<OEPReadDB>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("ReadDbContext")));
 
 ////builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 //builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-builder.Services.AddScoped<IStudentRepository, StudentRepository>();
-builder.Services.AddScoped<IStudentService, StudentServicesWrite>();
+builder.Services.AddScoped<IStudentCommandRepository, StudentCommandRepository>();
+builder.Services.AddScoped<IStudentQueryRepository, StudentQueryRepository>();
 
 
 /************************************************
@@ -60,6 +66,6 @@ app.UseHttpsRedirection();
 
 app.MapControllerRoute(
    name: "default",
-   pattern: "{controller=Home}/{action=Index}/{id?}");
+   pattern: "{controller=Student}/{action=Index}/{id?}");
 
 app.Run();

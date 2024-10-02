@@ -7,10 +7,12 @@ using System.Threading.Tasks;
 
 namespace Abstraction.Queries
 {
-    public interface IStudentCommandRepository
+    public interface IStudentQueryRepository
     {
 
         Task<StudentReadDTO> GetStudentById(int id,
                             CancellationToken cancellationToken);
+
+        Task<StudentReadDTO> GetStudents(CancellationToken cancellationToken);  
     }
 }

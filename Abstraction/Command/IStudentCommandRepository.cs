@@ -9,8 +9,9 @@ using System.Threading.Tasks;
 
 namespace Abstraction.Command
 {
-    public interface IStudentCommandRepository : IRepository<StudentRequestDTO>
+    public interface IStudentCommandRepository 
     {
-        
+        Task AddStudentById(StudentReadDTO studentReadDTO,
+                      CancellationToken cancellationToken);
     }
 }

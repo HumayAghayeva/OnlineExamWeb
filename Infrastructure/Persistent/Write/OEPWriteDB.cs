@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.DataContext.Write
 {
-    public class DBConn : DbContext
+    public class OEPWriteDB : DbContext
     {
-        public DBConn(DbContextOptions<DBConn> options) : base(options)
+        public OEPWriteDB(DbContextOptions<OEPWriteDB> options) : base(options)
         {
 
         }
