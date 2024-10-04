@@ -9,9 +9,9 @@ namespace Abstraction
 {
     public interface IRepository<T> where T : class
     {
-        void Add(T entity);
-        void Update(T entity);
-        void Delete(T entity);
+        Task AddAsync(T entity);
+        Task UpdateAsync(T entity);
+        Task DeleteAsync(T entity);
         Task<T> GetByIdAsync(object id);
         Task<IEnumerable<T>> GetAllAsync();
     }

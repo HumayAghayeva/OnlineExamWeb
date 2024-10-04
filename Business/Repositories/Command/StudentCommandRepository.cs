@@ -18,14 +18,14 @@ namespace Business.Repositories.Command
     public class StudentCommandRepository : Repository<StudentRequestDTO>,IStudentCommandRepository
     {
         private readonly OEPWriteDB _context;
-        //private readonly UnitOfWork _unitOfWork;
+        private UnitOfWork _unitOfWork; 
+       
         private readonly DbSet<Student> _entities;
 
         public StudentCommandRepository(OEPWriteDB context) : base(context)
         {
             _context = context;
             _entities = context.Set<Student>();
-          //  _unitOfWork = unitOfWork;
         }
 
         public async Task AddStudent(StudentRequestDTO studentReadDTO, CancellationToken cancellationToken)
@@ -44,6 +44,8 @@ namespace Business.Repositories.Command
             };
 
             await _entities.AddAsync(studentEntity, cancellationToken);
+
+            await _context.SaveChangesAsync(cancellationToken); // This is necessary to persist changes
 
             //await _unitOfWork.SaveAsync(cancellationToken);
         }

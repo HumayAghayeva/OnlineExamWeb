@@ -15,11 +15,13 @@ namespace Infrastructure.Repositories
     {
         private readonly DbContext _context;
         private  IDbContextTransaction _transaction;
+        private readonly Dictionary<Type, object> _repositories = new Dictionary<Type, object>();
 
-        public UnitOfWork(DbContext context, IDbContextTransaction transaction)
+        public UnitOfWork(DbContext context, IDbContextTransaction transaction, Dictionary<Type, object> repositories)
         {
             _context = context;
-            _transaction=transaction;
+            _transaction = transaction;
+            _repositories = repositories;   
         }
 
         public async Task BeginTransactionAsync(IsolationLevel isolationLevel = IsolationLevel.ReadCommitted,
@@ -56,7 +58,19 @@ namespace Infrastructure.Repositories
             await _context.SaveChangesAsync(cancellationToken);
         }
 
-       
+        public IRepository<T> GetRepository<T>() where T : class
+        {
+            if (_repositories.TryGetValue(typeof(T), out var repository))
+            {
+                return (IRepository<T>)repository;
+            }
+
+            var newRepository = new Repository<T>(_context); // Assumes a Repository<T> class exists
+            _repositories.Add(typeof(T), newRepository);
+
+            return newRepository;
+        }
+
 
         #region Dispose
 

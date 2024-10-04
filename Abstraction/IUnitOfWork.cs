@@ -9,6 +9,7 @@ namespace Abstraction
 {
     public interface IUnitOfWork : IDisposable
     {
+        IRepository<T> GetRepository<T>() where T : class;  
         // Start the database Transaction
         Task BeginTransactionAsync(IsolationLevel isolationLevel = IsolationLevel.ReadCommitted, CancellationToken cancellationToken = default);
 
