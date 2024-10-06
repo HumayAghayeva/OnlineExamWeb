@@ -24,7 +24,7 @@ namespace Domain.Entity
         public string? Password { get; set; }
 
         [Required(ErrorMessage = "The ConfirmPassword field  is required")]
-        [Compare("Password")]
+        //[Compare("Password")]
         public string? ConfirmPassword { get; set; }
     }
 }
