@@ -10,15 +10,24 @@ namespace OnlineExamWeb.Controllers
     public class StudentController : Controller
     {
          private readonly IStudentCommandRepository _commandRepository;
+         private readonly IStudentQueryRepository _studentQueryRepository;
 
-        public StudentController(IStudentCommandRepository commandRepository)
+        public StudentController(IStudentCommandRepository commandRepository, IStudentQueryRepository studentQueryRepository)
         {
           _commandRepository = commandRepository;
+          _studentQueryRepository = studentQueryRepository;
         }
         // GET: StudentController
-        public ActionResult Index(CancellationToken cancellationToken)
+        public ActionResult Index()
         {       
             return View();
+        }
+
+        // GET: StudentController
+        public async Task<ActionResult> Students(CancellationToken cancellationToken)
+        {
+            var students = await _studentQueryRepository.GetStudents(cancellationToken);
+            return View(students);
         }
 
         // GET: StudentController/Details/5
@@ -46,7 +55,7 @@ namespace OnlineExamWeb.Controllers
             {                
                 await _commandRepository.AddStudent(studentRequestDTO, CancellationToken.None);
 
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Students));
             }
             catch (Exception ex)
             {

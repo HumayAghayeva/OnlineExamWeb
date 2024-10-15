@@ -10,9 +10,9 @@ namespace Abstraction.Queries
     public interface IStudentQueryRepository
     {
 
-        Task<StudentReadDTO> GetStudentById(int id,
+        Task<StudentResponseDTO> GetStudentById(int id,
                             CancellationToken cancellationToken);
 
-        Task<StudentReadDTO> GetStudents(CancellationToken cancellationToken);  
+        Task<List<StudentResponseDTO>> GetStudents(CancellationToken cancellationToken);  
     }
 }

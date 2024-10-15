@@ -11,30 +11,41 @@ using System.Text;
 using System.Threading.Tasks;
 using Abstraction.Queries;
 using System.Diagnostics.Metrics;
-using Domain.DTOs.Read;
 using Domain.DTOs.Write;
 
 namespace Business.Repositories
 {
     public class StudentQueryRepository : Repository<StudentRequestDTO>, IStudentQueryRepository
     {
-        private readonly OEPWriteDB _context;
-        private readonly DbSet<Student> entities;
+        private readonly OEPWriteDB _context; /// <summary>
+        /// read db cevrilmelidir
+        /// </summary>
+        private readonly DbSet<Student> _entities;
 
         public StudentQueryRepository(OEPWriteDB context) : base(context)
         {
             _context = context;
-            entities = context.Set<Student>();
+            _entities = context.Set<Student>();
         }
 
-        public Task<StudentReadDTO> GetStudentById(int id, CancellationToken cancellationToken)
+        public Task<StudentResponseDTO> GetStudentById(int id, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
 
-        public Task<StudentReadDTO> GetStudents(CancellationToken cancellationToken)
+        public async Task<List<StudentResponseDTO>> GetStudents(CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var students= await  _entities.ToListAsync(cancellationToken);
+
+            var studentDtos = students.Select(s => new StudentResponseDTO
+            {
+                Id = s.ID,
+                Name = s.Name,
+                LastName= s.LastName,
+                PIN = s.PIN                
+            }).ToList();
+
+            return studentDtos;
         }
     }
 }
