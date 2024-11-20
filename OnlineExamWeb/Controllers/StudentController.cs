@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Abstraction.Queries;
 using Abstraction.Command;
 using Domain.DTOs.Write;
+using Domain.DTOs.Read;
 
 namespace OnlineExamWeb.Controllers
 {
@@ -18,13 +19,13 @@ namespace OnlineExamWeb.Controllers
           _studentQueryRepository = studentQueryRepository;
         }
         // GET: StudentController
-        public ActionResult Index()
+        public ActionResult Index(StudentResponseDTO student)
         {       
-            return View();
+            return View(student);
         }
 
         // GET: StudentController
-        public async Task<ActionResult> Students(CancellationToken cancellationToken)
+        public async Task<ActionResult> GetStudents(CancellationToken cancellationToken)
         {
             var students = await _studentQueryRepository.GetStudents(cancellationToken);
             return View(students);
@@ -37,7 +38,7 @@ namespace OnlineExamWeb.Controllers
         }
 
         // GET: StudentController/Create
-        public ActionResult Create()
+        public ActionResult CreateStudent()
         {
             return View();
         }
@@ -45,7 +46,7 @@ namespace OnlineExamWeb.Controllers
         // POST: StudentController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(StudentRequestDTO studentRequestDTO)
+        public async Task<IActionResult> CreateStudent(StudentRequestDTO studentRequestDTO)
         {
             if (!ModelState.IsValid)            {
               
@@ -55,7 +56,7 @@ namespace OnlineExamWeb.Controllers
             {                
                 await _commandRepository.AddStudent(studentRequestDTO, CancellationToken.None);
 
-                return RedirectToAction(nameof(Students));
+                return RedirectToAction(nameof(GetStudents));
             }
             catch (Exception ex)
             {
@@ -63,6 +64,20 @@ namespace OnlineExamWeb.Controllers
                 return View(studentRequestDTO);
             }
         }
+        
+        public ActionResult Login(int id)
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Login(StudentLoginDTO studentLoginDTO,CancellationToken cancellationToken)
+        {
+            var studentResponse= await _commandRepository.LoginStudent(studentLoginDTO, cancellationToken);
+
+            return RedirectToAction(nameof(Index));
+        }
+
         // GET: StudentController/Edit/5
         public ActionResult Edit(int id)
         {

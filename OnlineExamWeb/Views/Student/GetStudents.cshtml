@@ -1,0 +1,72 @@
+﻿@model IList<Domain.DTOs.Read.StudentResponseDTO>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h4>Students</h4>
+<hr />
+
+<!-- Add some inline CSS or link an external stylesheet -->
+<style>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    th, td {
+        padding: 12px;
+        text-align: left;
+        border: 1px solid #ddd;
+    }
+
+    th {
+        background-color: #f2f2f2;
+        color: #333;
+        font-weight: bold;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+
+    tr:hover {
+        background-color: #f1f1f1;
+    }
+
+    table td {
+        color: #555;
+    }
+
+    .table-container {
+        margin-top: 20px;
+        max-width: 1200px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+</style>
+
+<div class="table-container">
+    <table>
+        <thead>
+            <tr>
+                <th>Full Name</th>
+                <th>PIN</th>
+                <th>Email</th>
+                <th>GroupName</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Name @item.LastName</td> 
+                    <td>@item.PIN</td>
+                    <td>@item.Email</td>
+                    <td>@item.GroupName</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

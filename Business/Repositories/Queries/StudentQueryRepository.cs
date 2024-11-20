@@ -12,6 +12,8 @@ using System.Threading.Tasks;
 using Abstraction.Queries;
 using System.Diagnostics.Metrics;
 using Domain.DTOs.Write;
+using System.Text.RegularExpressions;
+using Domain.Enums;
 
 namespace Business.Repositories
 {
@@ -35,14 +37,16 @@ namespace Business.Repositories
 
         public async Task<List<StudentResponseDTO>> GetStudents(CancellationToken cancellationToken)
         {
-            var students= await  _entities.ToListAsync(cancellationToken);
+            var students= await _entities.ToListAsync(cancellationToken);
 
             var studentDtos = students.Select(s => new StudentResponseDTO
             {
                 Id = s.ID,
                 Name = s.Name,
                 LastName= s.LastName,
-                PIN = s.PIN                
+                PIN = s.PIN,
+                Email=s.Email,
+                GroupName=  Enum.GetName(typeof(Groups), s.GroupId)
             }).ToList();
 
             return studentDtos;

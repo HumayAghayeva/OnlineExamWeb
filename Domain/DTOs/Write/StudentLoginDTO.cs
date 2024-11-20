@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Domain.DTOs.Write
 {
-    public class StudentLogin
+    public class StudentLoginDTO
     {
         [Required(ErrorMessage = "The Username field is required")]
         public string? Email { get; set; }

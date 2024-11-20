@@ -9,6 +9,7 @@ using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using NLog.Web;
+using OnlineExamWeb.Utilities;
 using System.Reflection;
 
 
@@ -36,12 +37,8 @@ builder.Services.AddDbContext<OEPWriteDB>(options =>
 builder.Services.AddDbContext<OEPReadDB>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("ReadDbContext")));
 
-//builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-builder.Services.AddScoped<IStudentCommandRepository, StudentCommandRepository>();
-builder.Services.AddScoped<IStudentQueryRepository, StudentQueryRepository>();
 
-
+builder.Services.InjectDependencies(builder.Configuration); 
 /************************************************
  Add AutoMaper DI to services container
  ************************************************/
@@ -61,11 +58,10 @@ app.UseHttpsRedirection();
     app.UseStaticFiles();
 
     app.UseRouting();
-
     app.UseAuthorization();
 
 app.MapControllerRoute(
    name: "default",
-   pattern: "{controller=Student}/{action=Students}/{id?}");
+   pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();

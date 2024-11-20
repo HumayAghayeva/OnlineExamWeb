@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using Abstraction.Queries;
 using Domain.DTOs.Read;
 using System.ComponentModel.DataAnnotations;
+using Domain.Enums;
 
 namespace Business.Repositories.Command
 {
@@ -45,11 +46,29 @@ namespace Business.Repositories.Command
 
             await _entities.AddAsync(studentEntity, cancellationToken);
 
-            await _context.SaveChangesAsync(cancellationToken); // This is necessary to persist changes
+            await _context.SaveChangesAsync(cancellationToken); 
 
-            //await _unitOfWork.SaveAsync(cancellationToken);
+        }
+        public async Task<StudentResponseDTO> LoginStudent(StudentLoginDTO studentLoginDTO, CancellationToken cancellationToken)
+        {
+            var student = await _context.Students.Where(w => w.Email == studentLoginDTO.Email &&
+                             w.Password == studentLoginDTO.Password).FirstOrDefaultAsync(cancellationToken);
+            if (student == null)
+            {
+                throw new Exception("Invalid email or password."); 
+            }
+
+            var studentResponseDTO = new StudentResponseDTO
+            {
+                Id = student.ID,
+                Name = student.Name,
+                Email = student.Email,
+                PIN = student.Email,
+                GroupName = Enum.GetName(typeof(Groups), student.GroupId)
+            };
+
+            return studentResponseDTO;  
         }
 
-       
     }
 }

@@ -19,7 +19,7 @@
         </ul>
 
         <div id="login">
-            <form class="form" asp-action="Create">
+            <form class="form" asp-action="CreateStudent">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <p class="fieldset">
                     <label class="image-replace password" for="signin-password">Password</label>
@@ -44,32 +44,32 @@
 
         <div id="signup">
 
-            <form class="form" asp-action="Create" asp-controller="Student" method="post">
-              @*   <div asp-validation-summary="ModelOnly" class="text-danger"></div> *@
+            <form class="form" asp-action="CreateStudent" asp-controller="Student" method="post">
+                @*   <div asp-validation-summary="ModelOnly" class="text-danger"></div> *@
 
                 <p class="fieldset">
                     <label class="image-replace Name" asp-for="Name"></label>
                     <input class="full-width has-padding has-border" asp-for="Name" id="signup-Name" type="text" placeholder="Name">
-               @*      <span asp-validation-for="Name" class="error-message">Your Name can only contain numeric and alphabetic symbols!</span> *@
+                    @*      <span asp-validation-for="Name" class="error-message">Your Name can only contain numeric and alphabetic symbols!</span> *@
                 </p>
 
                 <p class="fieldset">
                     <label asp-for="LastName" class="image-replace" for="signup-LastName">E-mail</label>
                     <input asp-for="LastName" class="full-width has-padding has-border" id="signup-LastName" type="text" placeholder="LastName">
-                   @*  <span asp-validation-for="LastName" class="error-message">Enter a valid email address!</span> *@
+                    @*  <span asp-validation-for="LastName" class="error-message">Enter a valid email address!</span> *@
                 </p>
 
                 <p class="fieldset">
                     <label asp-for="PIN" class="image-replace" for="signup-PIN">PIN</label>
                     <input asp-for="PIN" class="full-width has-padding has-border" id="signup-PIN" type="text" placeholder="PIN">
-                   @*  <span asp-validation-for="PIN" class="error-message">Enter a valid email address!</span> *@
+                    @*  <span asp-validation-for="PIN" class="error-message">Enter a valid email address!</span> *@
                 </p>
 
 
                 <p class="fieldset">
                     <label asp-for="Email" class="image-replace" for="signup-Email">Email</label>
                     <input asp-for="Email" class="full-width has-padding has-border" id="signup-Email" type="text" placeholder="Email">
-                   @*  <span asp-validation-for="PIN" class="error-message">Enter a valid email address!</span> *@
+                    @*  <span asp-validation-for="PIN" class="error-message">Enter a valid email address!</span> *@
                 </p>
 
                 <p class="fieldset">
@@ -80,7 +80,7 @@
                         <option value="3">Group 3</option>
                         <option value="4">Group 4</option>
                     </select>
-                </p>             
+                </p>
 
                 <p class="fieldset">
                     <label asp-for="Password" class="image-replace" for="signup-Email">Password</label>

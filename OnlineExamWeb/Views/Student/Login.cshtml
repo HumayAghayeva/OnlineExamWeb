@@ -1,0 +1,128 @@
+﻿@model Domain.Entity.Student
+@{
+    Layout = "~/Views/Shared/_LayoutStudent.cshtml";
+}
+
+
+<nav class="main-nav">
+    <ul>
+        <li><a class="signin" href="#0">Sign in</a></li>
+        <li><a class="signup" href="#0">Sign up</a></li>
+    </ul>
+</nav>
+
+<div class="user-modal">
+    <div class="user-modal-container">
+        <ul class="switcher">
+            <li><a href="#0">Sign in</a></li>
+            <li><a href="#0">New account</a></li>
+        </ul>
+
+        <div id="login">
+            <form class="form" asp-action="CreateStudent">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <p class="fieldset">
+                    <label class="image-replace password" for="signin-password">Password</label>
+                    <input class="full-width has-padding has-border" id="signin-password" type="password" placeholder="Password">
+                    <a href="#0" class="hide-password">Show</a>
+                    <span class="error-message">Wrong password! Try again.</span>
+                </p>
+
+                <p class="fieldset">
+                    <input type="checkbox" id="remember-me" checked>
+                    <label for="remember-me">Remember me</label>
+                </p>
+
+                <p class="fieldset">
+                    <input class="full-width" type="submit" value="Login">
+                </p>
+            </form>
+
+            <p class="form-bottom-message"><a href="#0">Forgot your password?</a></p>
+            <!-- <a href="#0" class="close-form">Close</a> -->
+        </div>
+
+        <div id="signup">
+
+            <form class="form" asp-action="CreateStudent" asp-controller="Student" method="post">
+                @*   <div asp-validation-summary="ModelOnly" class="text-danger"></div> *@
+
+                <p class="fieldset">
+                    <label class="image-replace Name" asp-for="Name"></label>
+                    <input class="full-width has-padding has-border" asp-for="Name" id="signup-Name" type="text" placeholder="Name">
+                    @*      <span asp-validation-for="Name" class="error-message">Your Name can only contain numeric and alphabetic symbols!</span> *@
+                </p>
+
+                <p class="fieldset">
+                    <label asp-for="LastName" class="image-replace" for="signup-LastName">E-mail</label>
+                    <input asp-for="LastName" class="full-width has-padding has-border" id="signup-LastName" type="text" placeholder="LastName">
+                    @*  <span asp-validation-for="LastName" class="error-message">Enter a valid email address!</span> *@
+                </p>
+
+                <p class="fieldset">
+                    <label asp-for="PIN" class="image-replace" for="signup-PIN">PIN</label>
+                    <input asp-for="PIN" class="full-width has-padding has-border" id="signup-PIN" type="text" placeholder="PIN">
+                    @*  <span asp-validation-for="PIN" class="error-message">Enter a valid email address!</span> *@
+                </p>
+
+
+                <p class="fieldset">
+                    <label asp-for="Email" class="image-replace" for="signup-Email">Email</label>
+                    <input asp-for="Email" class="full-width has-padding has-border" id="signup-Email" type="text" placeholder="Email">
+                    @*  <span asp-validation-for="PIN" class="error-message">Enter a valid email address!</span> *@
+                </p>
+
+                <p class="fieldset">
+                    <select asp-for="GroupId" name="GroupId" class="slctGroupId">
+                        <option value="0">Select</option>
+                        <option value="1">Group 1</option>
+                        <option value="2">Group 2</option>
+                        <option value="3">Group 3</option>
+                        <option value="4">Group 4</option>
+                    </select>
+                </p>
+
+                <p class="fieldset">
+                    <label asp-for="Password" class="image-replace" for="signup-Email">Password</label>
+                    <input asp-for="Password" class="full-width has-padding has-border" id="signup-password" type="password" placeholder="Password">
+                    @* <span asp-validation-for="Password" class="error-message">Enter a valid Password address!</span> *@
+                </p>
+
+                <p class="fieldset">
+                    <label asp-for="ConfirmPassword" class="image-replace" for="signup-Email">ConfirmPassword</label>
+                    <input asp-for="ConfirmPassword" class="full-width has-padding has-border" id="signup-confirmPassword" type="password" placeholder="ConfirmPassword">
+                    @* <span asp-validation-for="ConfirmPassword" class="error-message">Enter a valid ConfirmPassword !</span> *@
+                </p>
+
+                <p class="fieldset">
+                    <input type="checkbox" id="accept-terms">
+                    <label for="accept-terms">I agree to the <a class="accept-terms" href="#0">Terms</a></label>
+                </p>
+
+                <p class="fieldset">
+                    <input class="full-width has-padding" type="submit" value="Create account">
+                </p>
+            </form>
+
+        </div>
+
+        <div id="reset-password">
+            <p class="form-message">Lost your password? Please enter your email address.</br> You will receive a link to create a new password.</p>
+
+            <form class="form">
+                <p class="fieldset">
+                    <label class="image-replace email" for="reset-email">E-mail</label>
+                    <input class="full-width has-padding has-border" id="reset-email" type="email" placeholder="E-mail">
+                    <span class="error-message">An account with this email does not exist!</span>
+                </p>
+
+                <p class="fieldset">
+                    <input class="full-width has-padding" type="submit" value="Reset password">
+                </p>
+            </form>
+
+            <p class="form-bottom-message"><a href="#0">Back to log-in</a></p>
+        </div>
+        <a href="#0" class="close-form">Close</a>
+    </div>
+</div>
