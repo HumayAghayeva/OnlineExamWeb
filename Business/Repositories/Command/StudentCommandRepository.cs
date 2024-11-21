@@ -25,7 +25,7 @@ namespace Business.Repositories.Command
 
         public StudentCommandRepository(OEPWriteDB context) : base(context)
         {
-            _context = context;
+            _context = context; 
             _entities = context.Set<Student>();
         }
 

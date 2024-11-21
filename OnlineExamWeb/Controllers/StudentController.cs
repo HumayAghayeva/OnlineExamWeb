@@ -26,7 +26,7 @@ namespace OnlineExamWeb.Controllers
         }
         public async Task<ActionResult> GetStudent(int studentId, CancellationToken cancellationToken)
         {
-            var student = await _studentQueryRepository.GetStudentById(1005,cancellationToken);
+            var student = await _studentQueryRepository.GetStudentById(studentId, cancellationToken);
             return View(student);
         }
         // GET: StudentController
@@ -69,18 +69,22 @@ namespace OnlineExamWeb.Controllers
                 return View(studentRequestDTO);
             }
         }
-        
-        public ActionResult Login(int id)
+
+        [HttpGet]
+        public async Task<IActionResult> LoginStudent()
         {
-            return View();
+            return  View();
         }
 
         [HttpPost]
-        public async Task<ActionResult> Login(StudentLoginDTO studentLoginDTO,CancellationToken cancellationToken)
+        public async Task<ActionResult> LoginStudent(StudentLoginDTO studentLoginDTO,CancellationToken cancellationToken)
         {
             var studentResponse= await _commandRepository.LoginStudent(studentLoginDTO, cancellationToken);
 
-            return RedirectToAction(nameof(Index));
+            if(studentResponse !=null)
+                return RedirectToAction(nameof(GetStudent), new { studentId = studentResponse.Id });
+            else
+                throw new Exception("Invalid email or password.");
         }
 
         // GET: StudentController/Edit/5

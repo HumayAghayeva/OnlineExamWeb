@@ -1,4 +1,6 @@
-jQuery(document).ready(function($){
+jQuery(document).ready(function ($) {
+
+
    var $form_modal = $('.user-modal'),
     $form_login = $form_modal.find('#login'),
     $form_signup = $form_modal.find('#signup'),
@@ -10,22 +12,22 @@ jQuery(document).ready(function($){
 //  //  $back_to_login_link = $form_forgot_password.find('.form-bottom-message a'),
    $main_nav = $('.main-nav');
 
-//  //open modal
-  $main_nav.on('click', function(event){
+////  //open modal
+//  $main_nav.on('click', function(event){
 
-    if( $(event.target).is($main_nav) ) {
-      // on mobile open the submenu
-      $(this).children('ul').toggleClass('is-visible');
-    } else {
-      // on mobile close submenus
-      $main_nav.children('ul').removeClass('is-visible');
-      //show modal layer
-      $form_modal.addClass('is-visible'); 
-      //show the selected form
-      ( $(event.target).is('.signup') ) ? signup_selected() : login_selected();
-    }
+//    if( $(event.target).is($main_nav) ) {
+//      // on mobile open the submenu
+//      $(this).children('ul').toggleClass('is-visible');
+//    } else {
+//      // on mobile close submenus
+//      $main_nav.children('ul').removeClass('is-visible');
+//      //show modal layer
+//      $form_modal.addClass('is-visible'); 
+//      //show the selected form
+//      ( $(event.target).is('.signup') ) ? signup_selected() : login_selected();
+//    }
 
-  });
+//  });
 
 //  //close modal
 //  $('.user-modal').on('click', function(event){
@@ -41,10 +43,10 @@ jQuery(document).ready(function($){
 //    });
 
 //  switch from a tab to another
-  $form_modal_tab.on('click', function(event) {
-    event.preventDefault();
-    ( $(event.target).is( $tab_login ) ) ? login_selected() : signup_selected();
-  });
+  //$form_modal_tab.on('click', function(event) {
+  //  event.preventDefault();
+  //  ( $(event.target).is( $tab_login ) ) ? login_selected() : signup_selected();
+  //});
 
 //  //hide or show password
 //  $('.hide-password').on('click', function(){

@@ -1,0 +1,38 @@
+﻿@model Domain.Entity.Student
+@{
+    
+}
+
+
+
+
+        <div id="login">
+            <form class="form" asp-action="LoginStudent" asp-controller="Student" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <p class="fieldset">
+                    <label asp-for="Email" class="image-replace" for="signup-Email">Email</label>
+                    <input asp-for="Email" class="full-width has-padding has-border" id="signup-email" type="text" placeholder="Email">
+                </p>
+
+                <p class="fieldset">
+                    <label asp-for="Password" class="image-replace" for="signup-Email">Password</label>
+                    <input asp-for="Password" class="full-width has-padding has-border" id="signup-password" type="password" placeholder="Password">
+                </p>
+
+                <p class="fieldset">
+                    <input type="checkbox" id="remember-me" checked>
+                    <label for="remember-me">Remember me</label>
+                </p>
+
+                <p class="fieldset">
+                    <input class="full-width" type="submit" value="Login">
+                </p>
+            </form>
+
+            <p class="form-bottom-message"><a href="#0">Forgot your password?</a></p>
+            <!-- <a href="#0" class="close-form">Close</a> -->
+        </div>
+
+
+        <a href="#0" class="close-form">Close</a>
