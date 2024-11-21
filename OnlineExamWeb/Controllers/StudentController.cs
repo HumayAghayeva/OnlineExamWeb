@@ -5,6 +5,7 @@ using Abstraction.Queries;
 using Abstraction.Command;
 using Domain.DTOs.Write;
 using Domain.DTOs.Read;
+using System.Threading;
 
 namespace OnlineExamWeb.Controllers
 {
@@ -23,7 +24,11 @@ namespace OnlineExamWeb.Controllers
         {       
             return View(student);
         }
-
+        public async Task<ActionResult> GetStudent(int studentId, CancellationToken cancellationToken)
+        {
+            var student = await _studentQueryRepository.GetStudentById(1005,cancellationToken);
+            return View(student);
+        }
         // GET: StudentController
         public async Task<ActionResult> GetStudents(CancellationToken cancellationToken)
         {

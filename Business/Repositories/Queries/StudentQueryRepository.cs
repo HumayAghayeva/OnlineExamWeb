@@ -30,9 +30,21 @@ namespace Business.Repositories
             _entities = context.Set<Student>();
         }
 
-        public Task<StudentResponseDTO> GetStudentById(int id, CancellationToken cancellationToken)
+        public async Task<StudentResponseDTO> GetStudentById(int id, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var student = await _entities.FirstOrDefaultAsync(s => s.ID == id, cancellationToken);
+
+            if (student == null)
+                return null;
+
+            return new StudentResponseDTO
+            {
+                Id = student.ID,
+                Name = student.Name,
+                LastName = student.LastName,
+                Email = student.Email,
+                PIN= student.PIN
+            };
         }
 
         public async Task<List<StudentResponseDTO>> GetStudents(CancellationToken cancellationToken)

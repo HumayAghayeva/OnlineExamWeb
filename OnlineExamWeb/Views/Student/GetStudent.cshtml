@@ -1,0 +1,41 @@
+﻿@model Domain.DTOs.Read.StudentResponseDTO
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<div>
+    <h4>Student</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.LastName)
+        </dt>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PIN)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.PIN)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+  
+
+    </dl>
+</div>
+<div>
+  
+    <a asp-action="Index">Back to List</a>
+</div>
