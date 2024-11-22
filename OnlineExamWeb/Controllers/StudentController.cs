@@ -19,36 +19,31 @@ namespace OnlineExamWeb.Controllers
           _commandRepository = commandRepository;
           _studentQueryRepository = studentQueryRepository;
         }
-        // GET: StudentController
+       
         public ActionResult Index(StudentResponseDTO student)
         {       
             return View(student);
         }
+
         public async Task<ActionResult> GetStudent(int studentId, CancellationToken cancellationToken)
         {
             var student = await _studentQueryRepository.GetStudentById(studentId, cancellationToken);
             return View(student);
         }
-        // GET: StudentController
+
         public async Task<ActionResult> GetStudents(CancellationToken cancellationToken)
         {
             var students = await _studentQueryRepository.GetStudents(cancellationToken);
             return View(students);
         }
 
-        // GET: StudentController/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-
-        // GET: StudentController/Create
+    
         public ActionResult CreateStudent()
         {
             return View();
         }
 
-        // POST: StudentController/Create
+      
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateStudent(StudentRequestDTO studentRequestDTO)
@@ -87,13 +82,13 @@ namespace OnlineExamWeb.Controllers
                 throw new Exception("Invalid email or password.");
         }
 
-        // GET: StudentController/Edit/5
+      
         public ActionResult Edit(int id)
         {
             return View();
         }
 
-        // POST: StudentController/Edit/5
+     
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, IFormCollection collection)
@@ -108,13 +103,13 @@ namespace OnlineExamWeb.Controllers
             }
         }
 
-        // GET: StudentController/Delete/5
+    
         public ActionResult Delete(int id)
         {
             return View();
         }
 
-        // POST: StudentController/Delete/5
+     
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, IFormCollection collection)

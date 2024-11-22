@@ -17,15 +17,7 @@ namespace Infrastructure.DataContext.Write
 
         }
         public virtual DbSet<Student> Students { get; set; }
+        public virtual DbSet<StudentPhoto> StudentPhotos { get; set; }
     }
-    //public class YourDbContextFactory : IDesignTimeDbContextFactory<DBConn>
-    //{
-    //    public DBConn CreateDbContext(string[] args)
-    //    {
-    //        var optionsBuilder = new DbContextOptionsBuilder<DBConn>();
-    //        optionsBuilder.UseSqlServer(DBConn);
-
-    //        return new DBConn(optionsBuilder.Options);
-    //    }
-    //}
+ 
 }

@@ -15,6 +15,8 @@ namespace Domain.DTOs.Write
         public string? DateOfBirth { get; set; }
         public string? PIN { get; set; }
         public Groups GroupId { get; set; }
+        public int StudentId {  get; set; }
+        public string? PhotoUrls { get; set; }   
         public string? Password { get; set; }
         public string? ConfirmPassword { get; set; }
     }

@@ -1,4 +1,4 @@
-﻿@model Domain.Entity.Student
+﻿@model Domain.DTOs.Write.StudentRequestDTO
 @{
     Layout = "~/Views/Shared/_LayoutStudent.cshtml";
 }
@@ -58,6 +58,9 @@
                     </select>
                 </p>
 
+                <p class="fieldset">
+                    <input type="file" id="myfile" asp-for="PhotoUrls" name="myfile" accept=".jpg, .png">
+                </p>
                 <p class="fieldset">
                     <label asp-for="Password" class="image-replace" for="signup-Email">Password</label>
                     <input asp-for="Password" class="full-width has-padding has-border" id="signup-password" type="password" placeholder="Password">

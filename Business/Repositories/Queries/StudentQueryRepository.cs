@@ -20,7 +20,6 @@ namespace Business.Repositories
     public class StudentQueryRepository : Repository<StudentRequestDTO>, IStudentQueryRepository
     {
         private readonly OEPWriteDB _context; /// <summary>
-        /// read db cevrilmelidir
         /// </summary>
         private readonly DbSet<Student> _entities;
 
