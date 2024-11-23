@@ -1,26 +1,15 @@
 ﻿@model Domain.DTOs.Write.StudentRequestDTO
 @{
-    Layout = "~/Views/Shared/_LayoutStudent.cshtml";
+    
 }
 
 
-<nav class="main-nav">
-    <ul>
-        <li><a class="signin" href="#0">Sign in</a></li>
-        <li><a class="signup" href="#0">Sign up</a></li>
-    </ul>
-</nav>
 
 <div class="user-modal">
     <div class="user-modal-container">
 
-        <ul class="switcher">
-            <li><a asp-controller="Student" asp-action="LoginStudent">Sign in</a></li>
-            <li><a asp-controller="Student" asp-action="CreateStudent">New account</a></li>
-        </ul>
-
         <div id="signup">
-            <form class="form" asp-action="CreateStudent" asp-controller="Student" method="post">
+            <form class="form" asp-action="CreateStudent" asp-controller="Student" method="post" enctype="multipart/form-data">
                 @*   <div asp-validation-summary="ModelOnly" class="text-danger"></div> *@
 
                 <p class="fieldset">
@@ -59,7 +48,7 @@
                 </p>
 
                 <p class="fieldset">
-                    <input type="file" id="myfile" asp-for="PhotoUrls" name="myfile" accept=".jpg, .png">
+                    <input type="file" id="myfile"  name="studentPhoto" accept=".jpg, .png">
                 </p>
                 <p class="fieldset">
                     <label asp-for="Password" class="image-replace" for="signup-Email">Password</label>

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Domain.DTOs.Read
 {
-    public class StudentResponseDTO
+    public record StudentResponseDTO
     {
         public int Id { get; set; } 
         public string? Name { get; set; }

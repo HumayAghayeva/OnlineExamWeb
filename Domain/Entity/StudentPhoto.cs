@@ -12,7 +12,9 @@ namespace Domain.Entity
     {
         [Key]
         public int Id { get; set; } 
-        public virtual Student StudentId { get; set; }    
-        public string? Url {  get; set; }
+        public int StudentId { get; set; }
+        public virtual Student Student { get; set; }    
+        public string? FileName {  get; set; }
+        public string?  PhotoPath {  get; set; }
     }
 }

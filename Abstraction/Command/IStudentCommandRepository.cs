@@ -6,13 +6,17 @@ using FluentValidation.Results;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Domain.Entity;
+using Microsoft.Owin;
 
 namespace Abstraction.Command
 {
     public interface IStudentCommandRepository 
     {
-        Task AddStudent(StudentRequestDTO studentRequestDTO,
+        Task<ResponseDTO> AddStudent(StudentRequestDTO studentRequestDTO,  
                       CancellationToken cancellationToken);
         Task<StudentResponseDTO> LoginStudent(StudentLoginDTO studentLoginDTO, CancellationToken cancellationToken);    
+
+        Task AddStudentPhoto(StudentPhotoDTO studentPhoto, CancellationToken cancellationToken);  
     }
 }

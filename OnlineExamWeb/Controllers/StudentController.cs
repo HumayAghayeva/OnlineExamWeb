@@ -1,12 +1,11 @@
 ﻿using Business.Repositories;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Abstraction.Queries;
 using Abstraction.Command;
 using Domain.DTOs.Write;
 using Domain.DTOs.Read;
 using System.Threading;
-
+using Domain.Entity;
 namespace OnlineExamWeb.Controllers
 {
     public class StudentController : Controller
@@ -46,15 +45,44 @@ namespace OnlineExamWeb.Controllers
       
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateStudent(StudentRequestDTO studentRequestDTO)
+        public async Task<IActionResult> CreateStudent(StudentRequestDTO studentRequestDTO,IFormCollection formCollection,  CancellationToken cancellationToken)
         {
-            if (!ModelState.IsValid)            {
+            if (!ModelState.IsValid) {
               
                 return View(studentRequestDTO);
             }
             try
-            {                
-                await _commandRepository.AddStudent(studentRequestDTO, CancellationToken.None);
+            {
+                var uploadedPhoto = formCollection.Files["studentPhoto"];
+
+                var student = await _commandRepository.AddStudent(studentRequestDTO, cancellationToken);
+
+                if (student.Success == false)
+                    throw new Exception("student elave olunmadi");
+                else
+                if (uploadedPhoto != null && uploadedPhoto.Length > 0)
+                {
+                    string photoPath;
+
+                    string photosDirectory = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "StudentPhotos");
+
+                    if (!Directory.Exists(photosDirectory))
+                    {
+                        Directory.CreateDirectory(photosDirectory);
+                    }
+
+                    string fileName = uploadedPhoto.FileName;
+
+                    photoPath = Path.Combine(photosDirectory, fileName);
+
+                    var studentPhotoDto = new StudentPhotoDTO
+                    {
+                        PhotoPath = photoPath,
+                        StudentId = student.Id,
+                        FileName = fileName
+                    };
+
+                }
 
                 return RedirectToAction(nameof(GetStudents));
             }
@@ -89,19 +117,7 @@ namespace OnlineExamWeb.Controllers
         }
 
      
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+        
 
     
         public ActionResult Delete(int id)
@@ -110,18 +126,6 @@ namespace OnlineExamWeb.Controllers
         }
 
      
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+    
     }
 }

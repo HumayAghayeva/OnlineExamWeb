@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Domain.DTOs.Write
 {
-    public class StudentRequestDTO
+    public record StudentRequestDTO
     {
         public string? Name { get; set; }
         public string? LastName { get; set; }
@@ -15,8 +15,6 @@ namespace Domain.DTOs.Write
         public string? DateOfBirth { get; set; }
         public string? PIN { get; set; }
         public Groups GroupId { get; set; }
-        public int StudentId {  get; set; }
-        public string? PhotoUrls { get; set; }   
         public string? Password { get; set; }
         public string? ConfirmPassword { get; set; }
     }

@@ -13,49 +13,33 @@ using Abstraction.Queries;
 using Domain.DTOs.Read;
 using System.ComponentModel.DataAnnotations;
 using Domain.Enums;
+using System.Threading;
+using Microsoft.Owin;
 
 namespace Business.Repositories.Command
 {
-    public class StudentCommandRepository : Repository<StudentRequestDTO>,IStudentCommandRepository
+    public class StudentCommandRepository : Repository<StudentRequestDTO>, IStudentCommandRepository
     {
         private readonly OEPWriteDB _context;
-        private UnitOfWork _unitOfWork; 
-       
-        private readonly DbSet<Student> _entities;
+
+        private readonly DbSet<Student> _studentEntity;
+        private readonly DbSet<StudentPhoto> _studentPhotos;
 
         public StudentCommandRepository(OEPWriteDB context) : base(context)
         {
-            _context = context; 
-            _entities = context.Set<Student>();
+            _context = context;
+            _studentEntity = context.Set<Student>();
+            _studentPhotos = context.Set<StudentPhoto>();
         }
 
-        public async Task AddStudent(StudentRequestDTO studentReadDTO, CancellationToken cancellationToken)
-        {
-        
-            var studentEntity = new Student
-            {
-                Name = studentReadDTO.Name,
-                LastName = studentReadDTO.LastName,
-                DateOfBirth = studentReadDTO.DateOfBirth,
-                PIN = studentReadDTO.PIN,
-                GroupId =(int)studentReadDTO.GroupId,
-                Email = studentReadDTO.Email,
-                Password = studentReadDTO.Password,
-                ConfirmPassword = studentReadDTO.ConfirmPassword
-            };
-
-            await _entities.AddAsync(studentEntity, cancellationToken);
-
-            await _context.SaveChangesAsync(cancellationToken); 
-
-        }
         public async Task<StudentResponseDTO> LoginStudent(StudentLoginDTO studentLoginDTO, CancellationToken cancellationToken)
         {
             var student = await _context.Students.Where(w => w.Email == studentLoginDTO.Email &&
                              w.Password == studentLoginDTO.Password).FirstOrDefaultAsync(cancellationToken);
+
             if (student == null)
             {
-                throw new Exception("Invalid email or password."); 
+                throw new Exception("Invalid email or password.");
             }
 
             var studentResponseDTO = new StudentResponseDTO
@@ -67,8 +51,64 @@ namespace Business.Repositories.Command
                 GroupName = Enum.GetName(typeof(Groups), student.GroupId)
             };
 
-            return studentResponseDTO;  
+            return studentResponseDTO;
         }
 
+        public async Task AddStudentPhoto(StudentPhotoDTO studentPhotoDTO, CancellationToken cancellationToken)
+        {
+
+            var studentPhoto = new StudentPhoto
+            {
+                StudentId = studentPhotoDTO.StudentId,
+                FileName = studentPhotoDTO.FileName,
+                PhotoPath = studentPhotoDTO.PhotoPath
+            };
+
+            await _studentPhotos.AddAsync(studentPhoto, cancellationToken);
+
+            await _context.SaveChangesAsync(cancellationToken);
+        }
+
+        public async Task<ResponseDTO> AddStudent(StudentRequestDTO studentReadDTO, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var studentEntity = new Student
+                {
+                    Name = studentReadDTO.Name,
+                    LastName = studentReadDTO.LastName,
+                    DateOfBirth = studentReadDTO.DateOfBirth,
+                    PIN = studentReadDTO.PIN,
+                    GroupId = (int)studentReadDTO.GroupId,
+                    Email = studentReadDTO.Email,
+                    Password = studentReadDTO.Password,
+                    ConfirmPassword = studentReadDTO.ConfirmPassword
+                };
+
+                await _studentEntity.AddAsync(studentEntity, cancellationToken);
+
+                await _context.SaveChangesAsync(cancellationToken);
+
+                return new ResponseDTO
+                {
+                    Success = true,
+                    Message = "Student was added successfully.",
+                    Id = studentEntity.ID
+                };
+            }
+            catch (Exception ex)
+            {
+                {
+                    return new ResponseDTO
+                    {
+                        Success = false,
+                        Message = ex.Message,
+                        Id = 0
+                    };
+                }
+            }
+
+        }
     }
 }
+
