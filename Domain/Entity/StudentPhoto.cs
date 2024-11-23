@@ -8,8 +8,10 @@ using System.Threading.Tasks;
 
 namespace Domain.Entity
 {
-    public class StudentPhoto : BaseEntity
+    public class StudentPhoto
     {
+        [Key]
+        public int Id { get; set; } 
         public virtual Student StudentId { get; set; }    
         public string? Url {  get; set; }
     }
