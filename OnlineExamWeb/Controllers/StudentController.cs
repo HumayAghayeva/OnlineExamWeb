@@ -70,10 +70,15 @@ namespace OnlineExamWeb.Controllers
                     {
                         Directory.CreateDirectory(photosDirectory);
                     }
-
                     string fileName = uploadedPhoto.FileName;
 
                     photoPath = Path.Combine(photosDirectory, fileName);
+
+
+                    using (var stream = new FileStream(photoPath, FileMode.Create))
+                    {
+                        await uploadedPhoto.CopyToAsync(stream);
+                    }
 
                     var studentPhotoDto = new StudentPhotoDTO
                     {
