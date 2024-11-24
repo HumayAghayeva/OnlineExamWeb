@@ -6,17 +6,20 @@ using Domain.DTOs.Write;
 using Domain.DTOs.Read;
 using System.Threading;
 using Domain.Entity;
+using Business.Services;
 namespace OnlineExamWeb.Controllers
 {
     public class StudentController : Controller
     {
          private readonly IStudentCommandRepository _commandRepository;
          private readonly IStudentQueryRepository _studentQueryRepository;
+          private readonly IConfigureImageServices _configureImageServices;   
 
-        public StudentController(IStudentCommandRepository commandRepository, IStudentQueryRepository studentQueryRepository)
+        public StudentController(IStudentCommandRepository commandRepository, IStudentQueryRepository studentQueryRepository,IConfigureImageServices configureImageServices)
         {
           _commandRepository = commandRepository;
           _studentQueryRepository = studentQueryRepository;
+          _configureImageServices = configureImageServices; 
         }
        
         public ActionResult Index(StudentResponseDTO student)
@@ -62,29 +65,14 @@ namespace OnlineExamWeb.Controllers
                 else
                 if (uploadedPhoto != null && uploadedPhoto.Length > 0)
                 {
-                    string photoPath;
 
-                    string photosDirectory = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "StudentPhotos");
-
-                    if (!Directory.Exists(photosDirectory))
-                    {
-                        Directory.CreateDirectory(photosDirectory);
-                    }
-                    string fileName = uploadedPhoto.FileName;
-
-                    photoPath = Path.Combine(photosDirectory, fileName);
-
-
-                    using (var stream = new FileStream(photoPath, FileMode.Create))
-                    {
-                        await uploadedPhoto.CopyToAsync(stream);
-                    }
+                    var fileResponse = await _configureImageServices.ConfigureImage(uploadedPhoto);
 
                     var studentPhotoDto = new StudentPhotoDTO
                     {
-                        PhotoPath = photoPath,
+                        PhotoPath = fileResponse.FilePath,
                         StudentId = student.Id,
-                        FileName = fileName
+                        FileName = fileResponse.FileName
                     };
 
                 }
