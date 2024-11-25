@@ -1,6 +1,7 @@
 using Abstraction;
 using Abstraction.Command;
 using Abstraction.Queries;
+using Business.BackGroundServices;
 using Business.Repositories;
 using Business.Repositories.Command;
 using Infrastructure.DataContext.Write;
@@ -37,6 +38,7 @@ builder.Services.AddDbContext<OEPWriteDB>(options =>
 builder.Services.AddDbContext<OEPReadDB>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("ReadDbContext")));
 
+builder.Services.AddHostedService<TransferDataFromWriteToRead>();
 
 builder.Services.InjectDependencies(builder.Configuration); 
 /************************************************
