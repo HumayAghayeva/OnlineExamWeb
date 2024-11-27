@@ -12,11 +12,10 @@ namespace Business.BackGroundServices
     {
         private readonly ITransferDataToReadDbServices _transferDataToReadDbServices;
 
-        public TransferDataFromWriteToRead(ITransferDataToReadDbServices transferDataToReadDbServices){
-
+        public TransferDataFromWriteToRead(ITransferDataToReadDbServices transferDataToReadDbServices)
+        {
             _transferDataToReadDbServices=transferDataToReadDbServices; 
-
-            }
+        }
         protected override async Task ExecuteAsync(CancellationToken cancellationToken)
         {
             while (!cancellationToken.IsCancellationRequested)

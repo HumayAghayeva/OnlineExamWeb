@@ -1,5 +1,4 @@
 ﻿using Domain.DTOs.Read;
-using Domain.Entity;
 using Abstraction.Command;
 using Infrastructure.DataContext.Write;
 using Infrastructure.Repositories;
@@ -14,6 +13,7 @@ using System.Diagnostics.Metrics;
 using Domain.DTOs.Write;
 using System.Text.RegularExpressions;
 using Domain.Enums;
+using Domain.Entity.Write;
 
 namespace Business.Repositories
 {

@@ -1,5 +1,5 @@
-﻿using Domain.DTOs.Write;
-using Domain.Entity;
+﻿using Domain.DTOs.Read;
+using Domain.DTOs.Write;
 using Abstraction.Command;
 using Infrastructure.DataContext.Write;
 using Infrastructure.Repositories;
@@ -10,11 +10,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Abstraction.Queries;
-using Domain.DTOs.Read;
 using System.ComponentModel.DataAnnotations;
 using Domain.Enums;
 using System.Threading;
 using Microsoft.Owin;
+using Domain.Entity.Write;
 
 namespace Business.Repositories.Command
 {

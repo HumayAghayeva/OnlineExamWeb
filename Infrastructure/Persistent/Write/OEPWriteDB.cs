@@ -1,4 +1,4 @@
-﻿using Domain.Entity;
+﻿using Domain.Entity.Write;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;

@@ -7,9 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Entity
+namespace Domain.Entity.Write
 {
-    public class Student :BaseEntity
+    public class Student : BaseEntity
     {
         public string? Name { get; set; }
         public string? LastName { get; set; }
