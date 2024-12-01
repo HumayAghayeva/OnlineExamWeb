@@ -5,6 +5,8 @@ using Business.Repositories.Command;
 using Business.Repositories;
 using Infrastructure.Repositories;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Abstraction.Interfaces;
+using Business.Services;
 
 namespace OnlineExamWeb.Utilities
 {
@@ -16,6 +18,7 @@ namespace OnlineExamWeb.Utilities
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IStudentCommandRepository, StudentCommandRepository>();
             services.AddScoped<IStudentQueryRepository, StudentQueryRepository>();
+            services.AddScoped<IEmailOperations, IEmailOperationServices>();
             return services;
         }
        

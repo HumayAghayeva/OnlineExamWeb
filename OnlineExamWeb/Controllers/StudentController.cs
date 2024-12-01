@@ -13,13 +13,18 @@ namespace OnlineExamWeb.Controllers
     {
          private readonly IStudentCommandRepository _commandRepository;
          private readonly IStudentQueryRepository _studentQueryRepository;
-          private readonly IConfigureImageServices _configureImageServices;   
+         private readonly IEmailOperationServices _emailOperationServices;
+         private readonly IConfigureImageServices _configureImageServices;   
 
-        public StudentController(IStudentCommandRepository commandRepository, IStudentQueryRepository studentQueryRepository,IConfigureImageServices configureImageServices)
+        public StudentController(IStudentCommandRepository commandRepository,
+            IStudentQueryRepository studentQueryRepository,
+            IConfigureImageServices configureImageServices,
+            IEmailOperationServices emailOperationServices)
         {
           _commandRepository = commandRepository;
           _studentQueryRepository = studentQueryRepository;
           _configureImageServices = configureImageServices; 
+          _emailOperationServices = emailOperationServices;
         }
        
         public ActionResult Index(StudentResponseDTO student)
@@ -77,7 +82,17 @@ namespace OnlineExamWeb.Controllers
 
                 }
 
-                return RedirectToAction(nameof(GetStudents));
+                var emailResponse=await _emailOperationServices.SendEmail(student.Id, cancellationToken);
+
+                if (emailResponse.IsConfirmed == true)
+                {
+
+                    return RedirectToAction(nameof(GetStudent));
+                }
+                else
+                {
+                    return RedirectToAction(nameof(CreateStudent));
+                }
             }
             catch (Exception ex)
             {

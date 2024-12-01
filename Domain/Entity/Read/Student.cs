@@ -16,6 +16,5 @@ namespace Domain.Entity.Read
         public string? GroupName { get; set; }
         public string? Email { get; set; }
         public string? PhotoUrl { get; set; }
-
     }
 }

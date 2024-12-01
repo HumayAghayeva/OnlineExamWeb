@@ -4,9 +4,11 @@ using Abstraction.Queries;
 using Business.BackGroundServices;
 using Business.Repositories;
 using Business.Repositories.Command;
+using Domain.OptionDP;
 using Infrastructure.DataContext.Write;
 using Infrastructure.Persistent.Read;
 using Infrastructure.Repositories;
+using Microsoft.CodeAnalysis.Emit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using NLog.Web;
@@ -27,9 +29,8 @@ var logger =NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
     builder.Logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Information);
     builder.Host.UseNLog();
 
-/************************************************
- * Add connection string to services container - using EF pooling for performance
- ************************************************/
+
+builder.Services.Configure<SenderEmail>(builder.Configuration.GetSection("SenderEmail"));
 
 builder.Services.AddDbContext<OEPWriteDB>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("WriteDbContext")));
@@ -41,9 +42,7 @@ builder.Services.AddDbContext<OEPReadDB>(options =>
 builder.Services.AddHostedService<TransferDataFromWriteToRead>();
 
 builder.Services.InjectDependencies(builder.Configuration); 
-/************************************************
- Add AutoMaper DI to services container
- ************************************************/
+
 builder.Services.AddAutoMapper(typeof(Program));
 
 var app = builder.Build();

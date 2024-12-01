@@ -11,7 +11,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abstraction", "Abstraction\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{DE233A16-4BA4-41B4-9609-D1B26A2C764B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Business", "Business\Business.csproj", "{DC0D38D7-3816-49D4-B492-5384C3B1EC80}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Business", "Business\Business.csproj", "{DC0D38D7-3816-49D4-B492-5384C3B1EC80}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{8452B4C5-B496-4B08-AB26-D34BD0607CA5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Testing", "Testing", "{699C21F1-F2C0-405E-968C-B9F9E082F31D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -42,6 +46,13 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D10DB582-6630-46B1-AECD-C4AEB59FF239} = {8452B4C5-B496-4B08-AB26-D34BD0607CA5}
+		{22565AB7-29BF-4B9E-93BE-461624ABBDB8} = {8452B4C5-B496-4B08-AB26-D34BD0607CA5}
+		{D2F3ED2A-0A83-4EA2-991B-A566B558BBFA} = {8452B4C5-B496-4B08-AB26-D34BD0607CA5}
+		{DE233A16-4BA4-41B4-9609-D1B26A2C764B} = {8452B4C5-B496-4B08-AB26-D34BD0607CA5}
+		{DC0D38D7-3816-49D4-B492-5384C3B1EC80} = {8452B4C5-B496-4B08-AB26-D34BD0607CA5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EDA14CF1-3366-4A1E-9173-C5A0441392B1}
