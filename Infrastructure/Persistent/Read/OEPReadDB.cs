@@ -1,4 +1,4 @@
-﻿using Domain.Entity.Write;
+﻿using Domain.Entity.Read;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
