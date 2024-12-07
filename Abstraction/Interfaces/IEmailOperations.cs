@@ -9,6 +9,6 @@ namespace Abstraction.Interfaces
 {
     public interface IEmailOperations
     {
-        public Task<EmailResponse> SendEmail(int studentId,CancellationToken cancellationToken = default);
+         Task<EmailResponse> SendEmail(int studentId,CancellationToken cancellationToken = default);
     }
 }

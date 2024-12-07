@@ -54,7 +54,7 @@ namespace Business.Repositories.Command
             return studentResponseDTO;
         }
 
-        public async Task AddStudentPhoto(StudentPhotoDTO studentPhotoDTO, CancellationToken cancellationToken)
+        public async Task<ResponseDTO> AddStudentPhoto(StudentPhotoDTO studentPhotoDTO, CancellationToken cancellationToken)
         {
 
             var studentPhoto = new StudentPhoto
@@ -67,6 +67,15 @@ namespace Business.Repositories.Command
             await _studentPhotos.AddAsync(studentPhoto, cancellationToken);
 
             await _context.SaveChangesAsync(cancellationToken);
+
+            var response = new ResponseDTO
+            {
+                Id = studentPhoto.Id,
+                Success =true,
+                Message="Added successfully!"
+            };
+
+           return response;
         }
 
         public async Task<ResponseDTO> AddStudent(StudentRequestDTO studentReadDTO, CancellationToken cancellationToken)

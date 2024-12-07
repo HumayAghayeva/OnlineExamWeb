@@ -12,6 +12,7 @@ using Microsoft.CodeAnalysis.Emit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using NLog.Web;
+using OnlineExamWeb.Middleware;
 using OnlineExamWeb.Utilities;
 using System.Reflection;
 
@@ -29,8 +30,11 @@ var logger =NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
     builder.Logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Information);
     builder.Host.UseNLog();
 
+builder.Configuration.SetBasePath(Directory.GetCurrentDirectory())
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+    .AddJsonFile($"appsetting.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json",optional:true).AddEnvironmentVariables();
 
-builder.Services.Configure<SenderEmail>(builder.Configuration.GetSection("SenderEmail"));
+builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("SenderEmail"));
 
 builder.Services.AddDbContext<OEPWriteDB>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("WriteDbContext")));
@@ -39,9 +43,9 @@ builder.Services.AddDbContext<OEPWriteDB>(options =>
 builder.Services.AddDbContext<OEPReadDB>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("ReadDbContext")));
 
-builder.Services.AddHostedService<TransferDataFromWriteToRead>();
+builder.Services.InjectDependencies(builder.Configuration);
 
-builder.Services.InjectDependencies(builder.Configuration); 
+//builder.Services.AddHostedService<TransferDataFromWriteToRead>();
 
 builder.Services.AddAutoMapper(typeof(Program));
 
@@ -58,7 +62,9 @@ var app = builder.Build();
 app.UseHttpsRedirection();
     app.UseStaticFiles();
 
-    app.UseRouting();
+app.UseMiddleware<ErrorHandlerMiddleware>();
+
+app.UseRouting();
     app.UseAuthorization();
 
 app.MapControllerRoute(

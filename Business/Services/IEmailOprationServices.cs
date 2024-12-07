@@ -19,26 +19,12 @@ namespace Business.Services
     {
 
         private readonly IStudentQueryRepository _studentQueryRepository;
-        private readonly IOptions<SenderEmail> _senderEmail;
-        private readonly string _host;
-        private readonly int _port;
-        private readonly string _recipientEmail;
-        private readonly string _body;
-        private readonly string _subject;
+        private readonly IOptions<EmailSettings> _emailSetting;     
 
-        public IEmailOperationServices(IStudentQueryRepository studentQueryRepository, IOptions<SenderEmail> senderEmail,
-            string host, int port,
-            string recipientEmail,
-            string body,
-            string subject)
+        public IEmailOperationServices(IStudentQueryRepository studentQueryRepository, IOptions<EmailSettings> emailSetting)
         {
-            _host = host;
-            _port = port;
-            _recipientEmail = recipientEmail;
-            _subject = subject;
-            _body = body;
             _studentQueryRepository = studentQueryRepository;
-            _senderEmail = senderEmail;
+            _emailSetting = emailSetting;
         }
 
         public async Task<EmailResponse> SendEmail(int studentId, CancellationToken cancellationToken = default)
@@ -50,14 +36,14 @@ namespace Business.Services
 
             try
             {
-                using (var smtpClient = new SmtpClient(_host, _port)
+                using (var smtpClient = new SmtpClient(_emailSetting.Value.Host.ToString(),_emailSetting.Value.Port )
                 {
-                    Credentials = new System.Net.NetworkCredential(_senderEmail.Value.Email, _senderEmail.Value.Password),
+                    Credentials = new System.Net.NetworkCredential(_emailSetting.Value.SenderEmail, _emailSetting.Value.Password),
                     EnableSsl = true
                 })
-                using (var mailMessage = new MailMessage(_senderEmail.Value.Email, student.Email)
+                using (var mailMessage = new MailMessage(_emailSetting.Value.SenderEmail, _emailSetting.Value.Password)
                 {
-                    Subject = "Welcome to Our OnlineExamPlatform",
+                    Subject =_emailSetting.Value.Subject ,
                     Body = $"Dear {student.Name}, please click the confirm button",
                     IsBodyHtml = true
                 })

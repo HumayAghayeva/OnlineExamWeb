@@ -15,8 +15,9 @@ namespace Abstraction.Command
     {
         Task<ResponseDTO> AddStudent(StudentRequestDTO studentRequestDTO,  
                       CancellationToken cancellationToken);
+
         Task<StudentResponseDTO> LoginStudent(StudentLoginDTO studentLoginDTO, CancellationToken cancellationToken);    
 
-        Task AddStudentPhoto(StudentPhotoDTO studentPhoto, CancellationToken cancellationToken);  
+        Task<ResponseDTO> AddStudentPhoto(StudentPhotoDTO studentPhoto, CancellationToken cancellationToken);  
     }
 }

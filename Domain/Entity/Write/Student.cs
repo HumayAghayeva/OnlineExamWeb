@@ -16,15 +16,8 @@ namespace Domain.Entity.Write
         public string? DateOfBirth { get; set; }
         public string? PIN { get; set; }
         public int GroupId { get; set; }
-        [EmailAddress]
-        [Required(ErrorMessage = "The Email field is required")]
         public string? Email { get; set; }
-
-        [Required(ErrorMessage = "The Password field  is required")]
         public string? Password { get; set; }
-
-        [Required(ErrorMessage = "The ConfirmPassword field  is required")]
-        //[Compare("Password")]
         public string? ConfirmPassword { get; set; }
     }
 }

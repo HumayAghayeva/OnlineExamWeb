@@ -7,26 +7,30 @@ using Domain.DTOs.Read;
 using System.Threading;
 using Domain.Entity;
 using Business.Services;
+using Abstraction.Interfaces;
+using Domain.Entity.Read;
 namespace OnlineExamWeb.Controllers
 {
     public class StudentController : Controller
     {
          private readonly IStudentCommandRepository _commandRepository;
          private readonly IStudentQueryRepository _studentQueryRepository;
-         private readonly IEmailOperationServices _emailOperationServices;
-         private readonly IConfigureImageServices _configureImageServices;   
+         private readonly IAppLogger<StudentController> _logger;    
+         private readonly IEmailOperations _emailOperations;
+         private readonly IFileManager _fileManager;   
 
         public StudentController(IStudentCommandRepository commandRepository,
             IStudentQueryRepository studentQueryRepository,
-            IConfigureImageServices configureImageServices,
-            IEmailOperationServices emailOperationServices)
+            IFileManager fileManager,
+            IEmailOperations emailOperations,IAppLogger<StudentController> logger)
         {
           _commandRepository = commandRepository;
           _studentQueryRepository = studentQueryRepository;
-          _configureImageServices = configureImageServices; 
-          _emailOperationServices = emailOperationServices;
+          _fileManager = fileManager;
+          _emailOperations = emailOperations;
+         _logger= logger;
         }
-       
+
         public ActionResult Index(StudentResponseDTO student)
         {       
             return View(student);
@@ -44,34 +48,42 @@ namespace OnlineExamWeb.Controllers
             return View(students);
         }
 
-    
+        [HttpGet]
         public ActionResult CreateStudent()
         {
             return View();
         }
 
-      
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateStudent(StudentRequestDTO studentRequestDTO,IFormCollection formCollection,  CancellationToken cancellationToken)
+        public async Task<IActionResult> CreateStudent(
+      StudentRequestDTO studentRequestDTO,
+      IFormCollection formCollection,
+      CancellationToken cancellationToken)
         {
-            if (!ModelState.IsValid) {
-              
+            if (!ModelState.IsValid)
+            {
                 return View(studentRequestDTO);
             }
+
             try
             {
+                // Upload photo from the form
                 var uploadedPhoto = formCollection.Files["studentPhoto"];
 
+                // Add student to the database
                 var student = await _commandRepository.AddStudent(studentRequestDTO, cancellationToken);
+                if (!student.Success)
+                {
+                    throw new Exception("The student was not added successfully.");
+                }
 
-                if (student.Success == false)
-                    throw new Exception("student elave olunmadi");
-                else
+                // If a photo is uploaded, process it
                 if (uploadedPhoto != null && uploadedPhoto.Length > 0)
                 {
-
-                    var fileResponse = await _configureImageServices.ConfigureImage(uploadedPhoto);
+                    var fileResponse = await _fileManager.ConfigureImage(uploadedPhoto);
+                    if (fileResponse == null || string.IsNullOrEmpty(fileResponse.FilePath))
+                    {
+                        throw new Exception("Failed to process the uploaded photo.");
+                    }
 
                     var studentPhotoDto = new StudentPhotoDTO
                     {
@@ -80,26 +92,31 @@ namespace OnlineExamWeb.Controllers
                         FileName = fileResponse.FileName
                     };
 
+                    var photoResult = await _commandRepository.AddStudentPhoto(studentPhotoDto, cancellationToken);
+                    if (!photoResult.Success)
+                    {
+                        throw new Exception("The photo was not added successfully.");
+                    }
                 }
 
-                var emailResponse=await _emailOperationServices.SendEmail(student.Id, cancellationToken);
-
-                if (emailResponse.IsConfirmed == true)
+                // Send email notification
+                var emailResponse = await _emailOperations.SendEmail(student.Id, cancellationToken);
+                if (!emailResponse.IsConfirmed)
                 {
+                    throw new Exception("Failed to send the email notification.");
+                }
 
-                    return RedirectToAction(nameof(GetStudent));
-                }
-                else
-                {
-                    return RedirectToAction(nameof(CreateStudent));
-                }
+                TempData["SuccessMessage"] = "Student created successfully!";
+                return RedirectToAction("Index"); // Redirect to a success page or list view
             }
             catch (Exception ex)
             {
-                TempData["ErrorMessage"] = "An error occurred while creating the student.";                
+                // Log the exception (logging not shown for simplicity)
+                TempData["ErrorMessage"] = $"An error occurred while creating the student: {ex.Message}";
                 return View(studentRequestDTO);
             }
         }
+
 
         [HttpGet]
         public async Task<IActionResult> LoginStudent()

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Abstraction.Interfaces
 {
-    public interface ITransferDataFromWriteToRead
+    public interface ITransferDataToReadDb
     {
         public  async Task ITransferDataFromWriteToRead(CancellationToken cancellationToken) { }   
     }
