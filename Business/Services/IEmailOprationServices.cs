@@ -7,6 +7,7 @@ using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Mail;
@@ -36,21 +37,21 @@ namespace Business.Services
 
             try
             {
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
                 using (var smtpClient = new SmtpClient(_emailSetting.Value.Host.ToString(),_emailSetting.Value.Port )
                 {
                     Credentials = new System.Net.NetworkCredential(_emailSetting.Value.SenderEmail, _emailSetting.Value.Password),
-                    EnableSsl = true
+                    EnableSsl = true,
+                    UseDefaultCredentials = false
                 })
-                using (var mailMessage = new MailMessage(_emailSetting.Value.SenderEmail, _emailSetting.Value.Password)
+                using (var mailMessage = new MailMessage(_emailSetting.Value.SenderEmail, student.Email)
                 {
-                    Subject =_emailSetting.Value.Subject ,
+                    Subject =_emailSetting.Value.Subject ,                    
                     Body = $"Dear {student.Name}, please click the confirm button",
                     IsBodyHtml = true
                 })
                 {
-                    //// Wrap sending in Task.Run to support async
-                    await Task.Run(() => smtpClient.Send(mailMessage), cancellationToken);
-
+                    await smtpClient.SendMailAsync(mailMessage);
 
                     var response = new EmailResponse
                     {

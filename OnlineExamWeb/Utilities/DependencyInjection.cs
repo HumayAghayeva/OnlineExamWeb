@@ -23,25 +23,9 @@ namespace OnlineExamWeb.Utilities
             //services.AddScoped<ITransferDataToReadDb,ITransferDataToReadDbServices > ();
             services.Configure<EmailSettings>(configuration.GetSection("SenderEmail"));
             services.AddScoped<IEmailOperations, IEmailOperationServices>();
-            services.AddSingleton(typeof(IAppLogger<>), typeof(AppLogger<>));
-            // Logger usually Singleton
-            //services.AddScoped<IEmailOperations>(provider =>
-            //{
-            //    var studentQueryRepository = provider.GetRequiredService<IStudentQueryRepository>();
-            //    var senderEmail = provider.GetRequiredService<IOptions<EmailSettings>>();
-
-            //    return new IEmailOperationServices(
-            //        studentQueryRepository,
-            //        senderEmail
-
-            //    );
-            //});
+            services.AddSingleton(typeof(IAppLogger<>), typeof(AppLogger<>));          
             services.AddScoped<IStudentQueryRepository, StudentQueryRepository>();
-            services.AddScoped<IFileManager, IConfigureImageServices>();
-            services.PostConfigure<EmailSettings>(senderEmail =>
-            {
-              
-            });
+            services.AddScoped<IFileManager, IConfigureImageServices>();       
             return services;
         }
        

@@ -34,7 +34,7 @@ builder.Configuration.SetBasePath(Directory.GetCurrentDirectory())
     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
     .AddJsonFile($"appsetting.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json",optional:true).AddEnvironmentVariables();
 
-builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("SenderEmail"));
+builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
 
 builder.Services.AddDbContext<OEPWriteDB>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("WriteDbContext")));

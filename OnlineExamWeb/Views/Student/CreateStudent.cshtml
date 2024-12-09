@@ -8,31 +8,37 @@
 
         <div id="signup">
             <form class="form" asp-action="CreateStudent" asp-controller="Student" method="post" enctype="multipart/form-data">
-                @*   <div asp-validation-summary="ModelOnly" class="text-danger"></div> *@
+                  <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
                 <p class="fieldset">
                     <label class="image-replace Name" asp-for="Name"></label>
                     <input class="full-width has-padding has-border" asp-for="Name" id="signup-Name" type="text" placeholder="Name">
-                    @*      <span asp-validation-for="Name" class="error-message">Your Name can only contain numeric and alphabetic symbols!</span> *@
+                   @* <span asp-validation-for="Name" class="error-message">Your Name can only contain numeric and alphabetic symbols!</span>  *@
                 </p>
 
                 <p class="fieldset">
                     <label asp-for="LastName" class="image-replace" for="signup-LastName">E-mail</label>
                     <input asp-for="LastName" class="full-width has-padding has-border" id="signup-LastName" type="text" placeholder="LastName">
-                    @*  <span asp-validation-for="LastName" class="error-message">Enter a valid email address!</span> *@
+                   @*  <span asp-validation-for="LastName" class="error-message">Enter a valid email address!</span> *@
+                </p>
+
+                 <p class="fieldset">
+                    <label asp-for="DateOfBirth" class="image-replace" for="signup-dateOfBirth">DateOfBirth</label>
+                    <input asp-for="DateOfBirth" class="full-width has-padding has-border" id="signup-DateOfBirth" type="datetime" placeholder="DateOfBirth">
+                   @*  <span asp-validation-for="DateOfBirth" class="error-message">Enter a valid email address!</span> *@
                 </p>
 
                 <p class="fieldset">
                     <label asp-for="PIN" class="image-replace" for="signup-PIN">PIN</label>
                     <input asp-for="PIN" class="full-width has-padding has-border" id="signup-PIN" type="text" placeholder="PIN">
-                    @*  <span asp-validation-for="PIN" class="error-message">Enter a valid email address!</span> *@
+                  @*   <span asp-validation-for="PIN" class="error-message">Enter a valid email address!</span>  *@
                 </p>
 
 
                 <p class="fieldset">
                     <label asp-for="Email" class="image-replace" for="signup-Email">Email</label>
                     <input asp-for="Email" class="full-width has-padding has-border" id="signup-Email" type="text" placeholder="Email">
-                    @*  <span asp-validation-for="PIN" class="error-message">Enter a valid email address!</span> *@
+                   @*  <span asp-validation-for="Email" class="error-message">Enter a valid email address!</span> *@
                 </p>
 
                 <p class="fieldset">
@@ -51,28 +57,19 @@
                 <p class="fieldset">
                     <label asp-for="Password" class="image-replace" for="signup-Email">Password</label>
                     <input asp-for="Password" class="full-width has-padding has-border" id="signup-password" type="password" placeholder="Password">
-                    @* <span asp-validation-for="Password" class="error-message">Enter a valid Password address!</span> *@
+               @*     <span asp-validation-for="Password" class="error-message">Enter a valid Password address!</span>  *@
                 </p>
 
                 <p class="fieldset">
                     <label asp-for="ConfirmPassword" class="image-replace" for="signup-Email">ConfirmPassword</label>
                     <input asp-for="ConfirmPassword" class="full-width has-padding has-border" id="signup-confirmPassword" type="password" placeholder="ConfirmPassword">
-                    @* <span asp-validation-for="ConfirmPassword" class="error-message">Enter a valid ConfirmPassword !</span> *@
-                </p>
-
-                <p class="fieldset">
-                    <input type="checkbox" id="accept-terms">
-                    <label for="accept-terms">I agree to the <a class="accept-terms" href="#0">Terms</a></label>
+                 @*  <span asp-validation-for="ConfirmPassword" class="error-message">Enter a valid ConfirmPassword !</span> *@
                 </p>
 
                 <p class="fieldset">
                     <input class="full-width has-padding" type="submit" value="Create account">
                 </p>
             </form>
-
         </div>
-
-       
-        <a href="#0" class="close-form">Close</a>
     </div>
 </div>
