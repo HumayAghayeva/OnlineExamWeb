@@ -78,6 +78,32 @@ namespace Business.Repositories.Command
            return response;
         }
 
+        public async Task<ResponseDTO> ConfirmStudent(int studentId, CancellationToken cancellationToken)
+        {
+          
+            var student = await _context.Students
+                .Where(w => w.ID == studentId)
+                .FirstOrDefaultAsync(cancellationToken);
+
+            if (student == null)
+            {
+                throw new Exception("Invalid data.");
+            }
+
+            student.IsConfirmed = true;
+          
+            _context.Students.Update(student); 
+
+            await _context.SaveChangesAsync(cancellationToken);
+          
+            return new ResponseDTO
+            {
+                Success = true,
+                Message = "Student was confirmed successfully.",
+                Id = student.ID
+            };
+        }
+
         public async Task<ResponseDTO> AddStudent(StudentRequestDTO studentReadDTO, CancellationToken cancellationToken)
         {
             try
@@ -95,6 +121,8 @@ namespace Business.Repositories.Command
                 };
 
                 await _studentEntity.AddAsync(studentEntity, cancellationToken);
+
+
 
                 await _context.SaveChangesAsync(cancellationToken);
 

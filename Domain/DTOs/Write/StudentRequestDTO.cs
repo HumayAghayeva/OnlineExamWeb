@@ -21,7 +21,7 @@ namespace Domain.DTOs.Write
         public string? DateOfBirth { get; set; }
         [Required(ErrorMessage = "The PIN field is required")]
         public string? PIN { get; set; }
-        public Groups GroupId { get; set; }
+        public Enums.Groups GroupId { get; set; }
         [Required(ErrorMessage = "The Password field  is required")]
         public string? Password { get; set; }
         [Required(ErrorMessage = "The ConfirmPassword field  is required")]

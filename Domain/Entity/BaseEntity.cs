@@ -14,5 +14,6 @@ namespace Domain.Models
         public DateTime CreatedTime { get; set; } = DateTime.Now;
         public DateTime UpdatedTime { get; set; }
         public bool IsDeleted { get; set; }
+        public bool IsConfirmed { get; set; }
     }
 }

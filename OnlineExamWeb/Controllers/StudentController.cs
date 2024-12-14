@@ -52,8 +52,7 @@ namespace OnlineExamWeb.Controllers
 
         [HttpGet]
         public async Task<ActionResult> CreateStudent(CancellationToken cancellationToken)
-        {
-           // var emailResponse = await _emailOperations.SendEmail(1003, cancellationToken);
+        {  
             return View();
         }
 
@@ -103,12 +102,11 @@ namespace OnlineExamWeb.Controllers
 
             var emailResponse = await _emailOperations.SendEmail(student.Id, cancellationToken);
 
-            if (!emailResponse.IsConfirmed)
-            {
+            if (!emailResponse.IsSuccess)
                 throw new Exception("Failed to send the email notification.");
-            }
-
-            return RedirectToAction("Index");
+            else
+               ViewBag.Message = "Your account has been created successfully!,Please check your email and click the confirmation link";
+               return View(studentRequestDTO);
         }
     
 

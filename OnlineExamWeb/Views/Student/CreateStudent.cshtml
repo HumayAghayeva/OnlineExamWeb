@@ -74,6 +74,7 @@
 
                 <p class="fieldset">
                     <input class="full-width has-padding" type="submit" value="Create account">
+                    <span>@(string.IsNullOrEmpty(ViewBag.Message) ? "" : ViewBag.Message)</span>
                 </p>
             </form>
         </div>
