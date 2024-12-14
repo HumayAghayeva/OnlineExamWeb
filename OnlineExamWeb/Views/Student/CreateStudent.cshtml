@@ -1,46 +1,51 @@
 ﻿@model Domain.DTOs.Write.StudentRequestDTO
 @{
-    
+    Layout = "~/Views/Shared/_LayoutStudent.cshtml";
 }
+  
 
 <div class="user-modal">
     <div class="user-modal-container">
 
         <div id="signup">
+            <h2 class="title">Create Student Form</h2>
             <form class="form" asp-action="CreateStudent" asp-controller="Student" method="post" enctype="multipart/form-data">
                   <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
+
+
                 <p class="fieldset">
                     <label class="image-replace Name" asp-for="Name"></label>
-                    <input class="full-width has-padding has-border" asp-for="Name" id="signup-Name" type="text" placeholder="Name">
+                    <input class="full-width has-padding has-border" asp-for="Name" id="signup-Name" type="text" placeholder="Enter your name">
                    @* <span asp-validation-for="Name" class="error-message">Your Name can only contain numeric and alphabetic symbols!</span>  *@
                 </p>
 
                 <p class="fieldset">
                     <label asp-for="LastName" class="image-replace" for="signup-LastName">E-mail</label>
-                    <input asp-for="LastName" class="full-width has-padding has-border" id="signup-LastName" type="text" placeholder="LastName">
+                    <input asp-for="LastName" class="full-width has-padding has-border" id="signup-LastName" type="text" placeholder="Enter your lastname">
                    @*  <span asp-validation-for="LastName" class="error-message">Enter a valid email address!</span> *@
                 </p>
 
                  <p class="fieldset">
                     <label asp-for="DateOfBirth" class="image-replace" for="signup-dateOfBirth">DateOfBirth</label>
-                    <input asp-for="DateOfBirth" class="full-width has-padding has-border" id="signup-DateOfBirth" type="datetime" placeholder="DateOfBirth">
+                    <input asp-for="DateOfBirth" class="full-width has-padding has-border" id="signup-DateOfBirth" type="datetime" placeholder="Enter your birth date">
                    @*  <span asp-validation-for="DateOfBirth" class="error-message">Enter a valid email address!</span> *@
                 </p>
 
                 <p class="fieldset">
                     <label asp-for="PIN" class="image-replace" for="signup-PIN">PIN</label>
-                    <input asp-for="PIN" class="full-width has-padding has-border" id="signup-PIN" type="text" placeholder="PIN">
+                    <input asp-for="PIN" class="full-width has-padding has-border" id="signup-PIN" type="text" placeholder="Enter your pin">
                   @*   <span asp-validation-for="PIN" class="error-message">Enter a valid email address!</span>  *@
                 </p>
 
 
                 <p class="fieldset">
                     <label asp-for="Email" class="image-replace" for="signup-Email">Email</label>
-                    <input asp-for="Email" class="full-width has-padding has-border" id="signup-Email" type="text" placeholder="Email">
+                    <input asp-for="Email" class="full-width has-padding has-border" id="signup-Email" type="text" placeholder="Enter your email">
                    @*  <span asp-validation-for="Email" class="error-message">Enter a valid email address!</span> *@
                 </p>
 
+                <label id="group-label" >Group</label>
                 <p class="fieldset">
                     <select asp-for="GroupId" name="GroupId" class="slctGroupId">
                         <option value="0">Select</option>
@@ -52,17 +57,18 @@
                 </p>
 
                 <p class="fieldset">
+                    <label for="studentPhoto">Profile picture</label>
                     <input type="file" id="myfile"  name="studentPhoto" accept=".jpg, .png">
                 </p>
                 <p class="fieldset">
                     <label asp-for="Password" class="image-replace" for="signup-Email">Password</label>
-                    <input asp-for="Password" class="full-width has-padding has-border" id="signup-password" type="password" placeholder="Password">
+                    <input asp-for="Password" class="full-width has-padding has-border" id="signup-password" type="password" placeholder="Enter your password">
                @*     <span asp-validation-for="Password" class="error-message">Enter a valid Password address!</span>  *@
                 </p>
 
                 <p class="fieldset">
                     <label asp-for="ConfirmPassword" class="image-replace" for="signup-Email">ConfirmPassword</label>
-                    <input asp-for="ConfirmPassword" class="full-width has-padding has-border" id="signup-confirmPassword" type="password" placeholder="ConfirmPassword">
+                    <input asp-for="ConfirmPassword" class="full-width has-padding has-border" id="signup-confirmPassword" type="password" placeholder="Confirm your password">
                  @*  <span asp-validation-for="ConfirmPassword" class="error-message">Enter a valid ConfirmPassword !</span> *@
                 </p>
 

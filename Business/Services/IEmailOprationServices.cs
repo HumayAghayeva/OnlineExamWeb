@@ -47,7 +47,7 @@ namespace Business.Services
                 using (var mailMessage = new MailMessage(_emailSetting.Value.SenderEmail, student.Email)
                 {
                     Subject =_emailSetting.Value.Subject ,                    
-                    Body = $"Dear {student.Name}, please click the confirm button",
+                    Body = "<h2>This is an HTML-Formatted Email Send Using the <code>IsBodyHtml</code> Property</h2><p>Isn't HTML <em>neat</em>?</p><p>You can make all sorts of <span style=\"color:red;font-weight:bold;\">pretty colors!!</span>.</p>",  
                     IsBodyHtml = true
                 })
                 {

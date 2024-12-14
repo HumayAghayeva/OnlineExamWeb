@@ -53,7 +53,7 @@ namespace OnlineExamWeb.Controllers
         [HttpGet]
         public async Task<ActionResult> CreateStudent(CancellationToken cancellationToken)
         {
-            var emailResponse = await _emailOperations.SendEmail(1003, cancellationToken);
+           // var emailResponse = await _emailOperations.SendEmail(1003, cancellationToken);
             return View();
         }
 
@@ -101,14 +101,14 @@ namespace OnlineExamWeb.Controllers
                 }
             }
 
-            //var emailResponse = await _emailOperations.SendEmail(student.Id, cancellationToken);
+            var emailResponse = await _emailOperations.SendEmail(student.Id, cancellationToken);
 
-            //if (!emailResponse.IsConfirmed)
-            //{
-            //    throw new Exception("Failed to send the email notification.");
-            //}
+            if (!emailResponse.IsConfirmed)
+            {
+                throw new Exception("Failed to send the email notification.");
+            }
 
-            return RedirectToAction("Index"); // Redirect to a success page or list view
+            return RedirectToAction("Index");
         }
     
 
