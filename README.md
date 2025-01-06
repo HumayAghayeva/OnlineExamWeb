@@ -1,1 +1,3 @@
-Hello
+## About Project
+## Features
+## Technologies Used
