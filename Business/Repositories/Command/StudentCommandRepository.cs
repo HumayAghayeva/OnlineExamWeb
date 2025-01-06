@@ -46,6 +46,7 @@ namespace Business.Repositories.Command
             {
                 Id = student.ID,
                 Name = student.Name,
+                LastName=student.LastName,
                 Email = student.Email,
                 PIN = student.Email,
                 GroupName = Enum.GetName(typeof(Groups), student.GroupId)

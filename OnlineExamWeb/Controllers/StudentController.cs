@@ -120,6 +120,8 @@ namespace OnlineExamWeb.Controllers
         [HttpPost]
         public async Task<ActionResult> LoginStudent(StudentLoginDTO studentLoginDTO,CancellationToken cancellationToken)
         {
+            studentLoginDTO.Password = EncryptionHelper.Encrypt(studentLoginDTO.Password);
+
             var studentResponse= await _commandRepository.LoginStudent(studentLoginDTO, cancellationToken);
 
             if(studentResponse !=null)
