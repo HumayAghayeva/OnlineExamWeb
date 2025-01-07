@@ -14,6 +14,7 @@ namespace Domain.DTOs.Read
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; } 
+        public string WriteDBId {  get; set; }  
         public string? Name { get; set; }
         public string? LastName { get; set; }
         public string? FullName { get; set; }
@@ -21,9 +22,9 @@ namespace Domain.DTOs.Read
         public string? Email { get; set; }
         public string? PIN { get; set; }
         public string CreatedTime { get; set; } 
-        public string UpdatedTime { get; set; } 
+        public string? UpdatedTime { get; set; } 
         public bool IsDeleted { get; set; }
         public string? GroupName { get; set; }
-        public string PhotoUrl { get; set; }    
+        public string? PhotoUrl { get; set; }    
     }
 }

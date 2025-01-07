@@ -74,3 +74,43 @@
     .fieldset input[type='submit']:hover {
         transform: scale(0.98);
     }
+
+/*login page*/
+
+    #login{
+        min-height:100vh;
+        overflow: hidden;
+        display:grid;
+        place-items:center;
+    }
+
+    #login .form{
+        width:50%;
+        min-width:350px;
+        max-width:500px;
+    }
+
+    #login .form .title{
+        margin:0;
+        font-size:36px;
+        font-weight:600;
+        color:#fff;
+    }
+
+        #login .form .infoset {
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+     }
+     
+     #login .form .infoset .rememberMe input{
+        display:inline;
+     }
+
+        #login .form .infoset .forgotPassword{
+        margin:0;
+        }
+        #login .form .infoset .forgotPassword a{
+            text-decoration:none;
+            color:inherit;
+        }

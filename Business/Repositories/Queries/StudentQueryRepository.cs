@@ -44,7 +44,7 @@ namespace Business.Repositories
 
             return new StudentResponseDTO
             {
-                //Id = student.ID,
+                WriteDBId = student.ID.ToString(),
                 Name = student.Name,
                 LastName = student.LastName,
                 Email = student.Email,
