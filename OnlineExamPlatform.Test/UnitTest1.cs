@@ -40,7 +40,7 @@ namespace OnlineExamPlatform.Test
 
             var studentResponse = new StudentResponseDTO
             {
-                Id = 1,
+                //Id = 1,
                 Name = "Humay",
                 LastName = "Aghayeva",
                 FullName = "Aghayeva Humay",

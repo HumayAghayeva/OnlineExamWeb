@@ -14,6 +14,7 @@ using Domain.DTOs.Write;
 using System.Text.RegularExpressions;
 using Domain.Enums;
 using Domain.Entity.Write;
+using MongoDB.Driver;
 
 namespace Business.Repositories
 {
@@ -22,13 +23,18 @@ namespace Business.Repositories
         private readonly OEPWriteDB _context; /// <summary>
         /// </summary>
         private readonly DbSet<Student> _entities;
+        private readonly IMongoCollection<StudentResponseDTO> _studentResponseCollections;
 
-        public StudentQueryRepository(OEPWriteDB context) : base(context)
+        public StudentQueryRepository(OEPWriteDB context, IMongoCollection<StudentResponseDTO> studentResponseCollections) : base(context)
         {
             _context = context;
             _entities = context.Set<Student>();
+            _studentResponseCollections = studentResponseCollections;   
         }
-
+        public async Task<List<StudentResponseDTO>> GetStudents(CancellationToken cancellationToken)
+        {
+            return await _studentResponseCollections.Find(_ => true).ToListAsync();
+        }
         public async Task<StudentResponseDTO> GetStudentById(int id, CancellationToken cancellationToken)
         {
             var student = await _entities.FirstOrDefaultAsync(s => s.ID == id, cancellationToken);
@@ -38,29 +44,12 @@ namespace Business.Repositories
 
             return new StudentResponseDTO
             {
-                Id = student.ID,
+                //Id = student.ID,
                 Name = student.Name,
                 LastName = student.LastName,
                 Email = student.Email,
                 PIN= student.PIN
             };
-        }
-
-        public async Task<List<StudentResponseDTO>> GetStudents(CancellationToken cancellationToken)
-        {
-            var students= await _entities.ToListAsync(cancellationToken);
-
-            var studentDtos = students.Select(s => new StudentResponseDTO
-            {
-                Id = s.ID,
-                Name = s.Name,
-                LastName= s.LastName,
-                PIN = s.PIN,
-                Email=s.Email,
-                GroupName=  Enum.GetName(typeof(Groups), s.GroupId)
-            }).ToList();
-
-            return studentDtos;
         }
     }
 }

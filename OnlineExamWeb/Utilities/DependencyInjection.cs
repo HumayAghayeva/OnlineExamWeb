@@ -10,6 +10,9 @@ using Business.Services;
 using Domain.OptionDP;
 using Microsoft.Extensions.Options;
 using OnlineExamWeb.Controllers;
+using Infrastructure.Persistent.Read;
+using Domain.DTOs.Read;
+using MongoDB.Driver;
 
 namespace OnlineExamWeb.Utilities
 {
@@ -20,6 +23,13 @@ namespace OnlineExamWeb.Utilities
             //builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IStudentCommandRepository, StudentCommandRepository>();
+            services.AddSingleton<MongoDBContext>(); 
+
+            services.AddScoped<IMongoCollection<StudentResponseDTO>>(sp =>
+            {
+                var mongoDbContext = sp.GetRequiredService<MongoDBContext>();
+                return mongoDbContext.GetCollection<StudentResponseDTO>("Students");
+            });
             //services.AddScoped<ITransferDataToReadDb,ITransferDataToReadDbServices > ();
             services.Configure<EmailSettings>(configuration.GetSection("SenderEmail"));
             services.AddScoped<IEmailOperations, IEmailOperationServices>();

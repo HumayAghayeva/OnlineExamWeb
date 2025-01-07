@@ -39,9 +39,9 @@ builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("Emai
 builder.Services.AddDbContext<OEPWriteDB>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("WriteDbContext")));
 
-
 builder.Services.AddDbContext<OEPReadDB>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("ReadDbContext")));
+
 
 builder.Services.InjectDependencies(builder.Configuration);
 
