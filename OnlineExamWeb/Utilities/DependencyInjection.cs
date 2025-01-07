@@ -30,11 +30,11 @@ namespace OnlineExamWeb.Utilities
                 var mongoDbContext = sp.GetRequiredService<MongoDBContext>();
                 return mongoDbContext.GetCollection<StudentResponseDTO>("Students");
             });
-            //services.AddScoped<ITransferDataToReadDb,ITransferDataToReadDbServices > ();
             services.Configure<EmailSettings>(configuration.GetSection("SenderEmail"));
             services.AddScoped<IEmailOperations, IEmailOperationServices>();
             services.AddSingleton(typeof(IAppLogger<>), typeof(AppLogger<>));          
             services.AddScoped<IStudentQueryRepository, StudentQueryRepository>();
+            services.AddScoped<ITransferDataToReadDb, ITransferDataToReadDbServices>();
             services.AddScoped<IFileManager, IConfigureImageServices>();       
             return services;
         }

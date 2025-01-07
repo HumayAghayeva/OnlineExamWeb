@@ -1,10 +1,12 @@
 ﻿using Abstraction.Interfaces;
 using Business.BackGroundServices;
+using Domain.DTOs.Read;
 using Domain.Entity.Read;
 using Domain.Enums;
 using Infrastructure.DataContext.Write;
 using Infrastructure.Persistent.Read;
 using Microsoft.EntityFrameworkCore;
+using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,11 +19,13 @@ namespace Business.Services
     {
         private readonly OEPWriteDB _OEPWriteDB;
         private readonly OEPReadDB _OEPReadDB;
+        private readonly IMongoCollection<StudentResponseDTO> _studentResponseCollections;
 
-        public ITransferDataToReadDbServices(OEPWriteDB OEPWriteDB, OEPReadDB OEPReadDB)
+        public ITransferDataToReadDbServices(OEPWriteDB OEPWriteDB, OEPReadDB OEPReadDB,IMongoCollection<StudentResponseDTO> studentResponseCollections)
         {
             _OEPWriteDB = OEPWriteDB;
             _OEPReadDB = OEPReadDB;
+            _studentResponseCollections = studentResponseCollections;   
         }
 
         public async Task TransferDataToReadDb(CancellationToken cancellationToken)
@@ -40,7 +44,10 @@ namespace Business.Services
                                                GroupId = photo.Student.GroupId,
                                                Email = photo.Student.Email,
                                                PhotoFileName = photo.FileName,
-                                               PhotoPath = photo.PhotoPath
+                                               PhotoPath = photo.PhotoPath,
+                                               isDeleted=photo.Student.IsDeleted,
+                                               CreatedDate=photo.Student.CreatedTime,
+                                               UpdateDate=photo.Student.UpdatedTime
                                            })
                                            .ToList();
 
@@ -51,10 +58,11 @@ namespace Business.Services
             }
             else
             {
+                var mongoDbStudents = new List<StudentResponseDTO>();
 
                 foreach (var student in dataWriteDb)
                 {
-                    var readDBStudent = new Student()
+                    var readDBStudent = new StudentResponseDTO()
                     {
                         Name = student.Name,
                         LastName = student.LastName,
@@ -62,12 +70,16 @@ namespace Business.Services
                         PIN = student.PIN,
                         GroupName = Enum.GetName(typeof(Groups), student.GroupId),
                         Email = student.Email,
-                        PhotoUrl = student.PhotoPath
+                        PhotoUrl = student.PhotoPath,
+                        IsDeleted=student.isDeleted,
+                        CreatedTime=student.CreatedDate.ToString(),
+                        UpdatedTime=student.UpdateDate.ToString()
                     };
 
-
-                    await _OEPReadDB.Set<Student>().AddAsync(readDBStudent);
+                    mongoDbStudents.Add(readDBStudent);
+                  
                 }
+                await _studentResponseCollections.InsertManyAsync(mongoDbStudents, cancellationToken: cancellationToken);
 
             }
         }

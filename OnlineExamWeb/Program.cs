@@ -45,7 +45,7 @@ builder.Services.AddDbContext<OEPReadDB>(options =>
 
 builder.Services.InjectDependencies(builder.Configuration);
 
-//builder.Services.AddHostedService<TransferDataFromWriteToRead>();
+builder.Services.AddHostedService<TransferDataFromWriteToRead>();
 
 builder.Services.AddAutoMapper(typeof(Program));
 
