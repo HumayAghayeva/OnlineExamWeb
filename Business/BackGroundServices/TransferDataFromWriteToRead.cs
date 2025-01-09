@@ -5,16 +5,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Business.Services;
+using Abstraction.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Business.BackGroundServices
 {
     public class TransferDataFromWriteToRead : BackgroundService
     {
-        private readonly ITransferDataToReadDbServices _transferDataToReadDbServices;
+        private readonly IServiceProvider _serviceProvider; 
 
-        public TransferDataFromWriteToRead(ITransferDataToReadDbServices transferDataToReadDbServices)
+        public TransferDataFromWriteToRead(IServiceProvider serviceProvider)
         {
-            _transferDataToReadDbServices=transferDataToReadDbServices; 
+            _serviceProvider = serviceProvider; 
         }
         protected override async Task ExecuteAsync(CancellationToken cancellationToken)
         {
@@ -22,15 +24,23 @@ namespace Business.BackGroundServices
             {
                 try
                 {
-                   await  _transferDataToReadDbServices.TransferDataToReadDb(cancellationToken);    
+                    using (var scope = _serviceProvider.CreateScope())
+                    {
+
+                        ITransferDataToReadDb transferDataToRead=scope.ServiceProvider.GetRequiredService<ITransferDataToReadDb>();
+                        await transferDataToRead.TransferDataFromWriteToRead(cancellationToken);
+
+                    }
+
+                    // Optional delay to control the execution frequency
+                    await Task.Delay(TimeSpan.FromMinutes(5), cancellationToken);
                 }
-                catch (Exception ex) 
+                catch (Exception ex)
                 {
-
+                    // Log the exception (use a logging library like Serilog or NLog)
+                    // e.g., _logger.LogError(ex, "An error occurred while transferring data.");
                 }
-
             }
-
         }
     }
 }

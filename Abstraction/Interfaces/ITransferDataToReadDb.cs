@@ -8,6 +8,6 @@ namespace Abstraction.Interfaces
 {
     public interface ITransferDataToReadDb
     {
-        public  async Task ITransferDataFromWriteToRead(CancellationToken cancellationToken) { }   
+        Task TransferDataFromWriteToRead(CancellationToken cancellationToken);  
     }
 }

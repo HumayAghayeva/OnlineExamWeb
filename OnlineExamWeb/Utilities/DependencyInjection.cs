@@ -13,6 +13,7 @@ using OnlineExamWeb.Controllers;
 using Infrastructure.Persistent.Read;
 using Domain.DTOs.Read;
 using MongoDB.Driver;
+using Business.BackGroundServices;
 
 namespace OnlineExamWeb.Utilities
 {
@@ -35,7 +36,8 @@ namespace OnlineExamWeb.Utilities
             services.AddSingleton(typeof(IAppLogger<>), typeof(AppLogger<>));          
             services.AddScoped<IStudentQueryRepository, StudentQueryRepository>();
             services.AddScoped<ITransferDataToReadDb, ITransferDataToReadDbServices>();
-            services.AddScoped<IFileManager, IConfigureImageServices>();       
+            services.AddScoped<IFileManager, IConfigureImageServices>();
+            services.AddSingleton<IHostedService, TransferDataFromWriteToRead>();
             return services;
         }
        

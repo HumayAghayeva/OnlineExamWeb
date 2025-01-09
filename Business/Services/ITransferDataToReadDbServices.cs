@@ -28,7 +28,7 @@ namespace Business.Services
             _studentResponseCollections = studentResponseCollections;   
         }
 
-        public async Task TransferDataToReadDb(CancellationToken cancellationToken)
+        public async Task TransferDataFromWriteToRead(CancellationToken cancellationToken)
         {
             //var dataWriteDb = await _OEPWriteDB.Students.Where(w => w.CreatedTime == DateTime.Now.Date).ToListAsync(cancellationToken);
 
@@ -45,9 +45,9 @@ namespace Business.Services
                                                Email = photo.Student.Email,
                                                PhotoFileName = photo.FileName,
                                                PhotoPath = photo.PhotoPath,
-                                               isDeleted=photo.Student.IsDeleted,
-                                               CreatedDate=photo.Student.CreatedTime,
-                                               UpdateDate=photo.Student.UpdatedTime
+                                               isDeleted = photo.Student.IsDeleted,
+                                               CreatedDate = photo.Student.CreatedTime,
+                                               UpdateDate = photo.Student.UpdatedTime
                                            })
                                            .ToList();
 
@@ -71,13 +71,13 @@ namespace Business.Services
                         GroupName = Enum.GetName(typeof(Groups), student.GroupId),
                         Email = student.Email,
                         PhotoUrl = student.PhotoPath,
-                        IsDeleted=student.isDeleted,
-                        CreatedTime=student.CreatedDate.ToString(),
-                        UpdatedTime=student.UpdateDate.ToString()
+                        IsDeleted = student.isDeleted,
+                        CreatedTime = student.CreatedDate.ToString(),
+                        UpdatedTime = student.UpdateDate.ToString()
                     };
 
                     mongoDbStudents.Add(readDBStudent);
-                  
+
                 }
                 await _studentResponseCollections.InsertManyAsync(mongoDbStudents, cancellationToken: cancellationToken);
 
