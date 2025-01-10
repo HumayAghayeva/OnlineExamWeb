@@ -5,4 +5,8 @@ The following technologies and tools were used to build this application:
   - **.Net8**
   - **EF Core**
   - **MongoDB**
+  - **Quartz.NET**
+  - **Serilog**
+  - **Cross Cutting Concern**
+     - [Fluent Validation](https://fluentvalidation.net/)
   
