@@ -7,4 +7,6 @@ The following technologies and tools were used to build this application:
   - **MongoDB**
   - **Quartz.NET**
   - **Serilog**
+  - **Cross Cutting Concern**
+  -  Validation(Fluent Validation)
   
