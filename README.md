@@ -8,5 +8,5 @@ The following technologies and tools were used to build this application:
   - **Quartz.NET**
   - **Serilog**
   - **Cross Cutting Concern**
-  -  Validation(Fluent Validation)
+  -  - [Fluent Validation](https://fluentvalidation.net/)
   
