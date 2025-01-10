@@ -6,4 +6,5 @@ The following technologies and tools were used to build this application:
   - **EF Core**
   - **MongoDB**
   - **Quartz.NET**
+  - **Serilog**
   
