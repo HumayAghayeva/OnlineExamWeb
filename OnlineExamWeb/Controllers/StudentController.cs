@@ -11,6 +11,8 @@ using Abstraction.Interfaces;
 using Domain.Entity.Read;
 using OnlineExamWeb.Utilities;
 using Domain.Entity.Write;
+using FluentValidation;
+using System;
 namespace OnlineExamWeb.Controllers
 {
     public class StudentController : Controller
@@ -18,19 +20,23 @@ namespace OnlineExamWeb.Controllers
         private readonly IStudentCommandRepository _commandRepository;
         private readonly IStudentQueryRepository _studentQueryRepository;
         private readonly IAppLogger<StudentController> _logger;
+        private IValidator<StudentRequestDTO> _studentValidator;
         private readonly IEmailOperations _emailOperations;
         private readonly IFileManager _fileManager;
 
         public StudentController(IStudentCommandRepository commandRepository,
             IStudentQueryRepository studentQueryRepository,
             IFileManager fileManager,
-            IEmailOperations emailOperations, IAppLogger<StudentController> logger)
+            IEmailOperations emailOperations, 
+            IAppLogger<StudentController> logger,
+            IValidator<StudentRequestDTO> studentValidator)
         {
             _commandRepository = commandRepository;
             _studentQueryRepository = studentQueryRepository;
             _fileManager = fileManager;
             _emailOperations = emailOperations;
             _logger = logger;
+            _studentValidator = studentValidator;
         }
 
         public ActionResult Index(StudentResponseDTO student)
@@ -59,9 +65,11 @@ namespace OnlineExamWeb.Controllers
         public async Task<IActionResult> CreateStudent(StudentRequestDTO studentRequestDTO, IFormCollection formCollection,
                 CancellationToken cancellationToken)
         {
-            if (!ModelState.IsValid)
+            var studentvalidation = await _studentValidator.ValidateAsync(studentRequestDTO);
+
+            if (!studentvalidation.IsValid)
             {
-                return View(studentRequestDTO);
+               return View();
             }
             var uploadedPhoto = formCollection.Files["studentPhoto"];
 

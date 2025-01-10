@@ -14,6 +14,11 @@ using Infrastructure.Persistent.Read;
 using Domain.DTOs.Read;
 using MongoDB.Driver;
 using Business.BackGroundServices;
+using FluentValidation;
+using System;
+using Domain.Entity.Read;
+using Business.ValidationRules.FluentValidations.StudentValidator;
+using Domain.DTOs.Write;
 
 namespace OnlineExamWeb.Utilities
 {
@@ -38,6 +43,11 @@ namespace OnlineExamWeb.Utilities
             services.AddScoped<ITransferDataToReadDb, ITransferDataToReadDbServices>();
             services.AddScoped<IFileManager, IConfigureImageServices>();
             services.AddSingleton<IHostedService, TransferDataFromWriteToRead>();
+
+            //Validators
+            services.AddScoped<IValidator<StudentRequestDTO>, StudentValidator>();
+
+
             return services;
         }
        

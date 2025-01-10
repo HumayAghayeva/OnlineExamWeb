@@ -11,9 +11,11 @@ using Domain.DTOs.Write;
 using OnlineExamWeb.Utilities;
 using Domain.DTOs.Read;
 using Microsoft.AspNetCore.Mvc;
+using FluentValidation;
 using Abstraction.Command;
 using Abstraction.Interfaces;
 using Abstraction.Queries;
+using Microsoft.Extensions.Options;
 
 namespace OnlineExamPlatform.Test
 {
@@ -25,10 +27,11 @@ namespace OnlineExamPlatform.Test
         public async Task LoginStudentTest(CancellationToken cancellationToken)
         {
             // Arrange
-            var mockCommandRepository = new Mock<IStudentCommandRepository>(); 
+            var mockCommandRepository = new Mock<IStudentCommandRepository>();
             var mockQueryRepository = new Mock<IStudentQueryRepository>();
             var mockFileManager = new Mock<IFileManager>();
             var mockEmailOperations = new Mock<IEmailOperations>();
+            var mockValidation = new Mock<IValidator<StudentRequestDTO>>();
             var mockLogger = new Mock<IAppLogger<StudentController>>();
             var encryptedPassword = EncryptionHelper.Encrypt("Test");
 
@@ -56,7 +59,7 @@ namespace OnlineExamPlatform.Test
                 .ReturnsAsync(studentResponse);
 
             // Inject the mocked repository into the controller
-            var controller = new StudentController( mockCommandRepository.Object, mockQueryRepository.Object,  mockFileManager.Object,  mockEmailOperations.Object, mockLogger.Object );
+            var controller = new StudentController(mockCommandRepository.Object, mockQueryRepository.Object, mockFileManager.Object, mockEmailOperations.Object, mockLogger.Object, mockValidation.Object);
 
             // Act
             var result = await controller.LoginStudent(studentDto, CancellationToken.None) as RedirectToActionResult;

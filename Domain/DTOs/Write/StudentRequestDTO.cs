@@ -10,22 +10,13 @@ namespace Domain.DTOs.Write
 {
     public record StudentRequestDTO
     {
-        [Required(ErrorMessage = "The Name field is required")]
-        public string? Name { get; set; }
-        [Required(ErrorMessage = "The LastName field is required")]
-        public string? LastName { get; set; }
-        [EmailAddress]
-        [Required(ErrorMessage = "The Email field is required")]
-        public string? Email { get; set; }
-        [Required(ErrorMessage = "The Email field is required")]
-        public string? DateOfBirth { get; set; }
-        [Required(ErrorMessage = "The PIN field is required")]
+        public string? Name { get; set; }      
+        public string? LastName { get; set; }      
+        public string? Email { get; set; }      
+        public string? DateOfBirth { get; set; }     
         public string? PIN { get; set; }
         public Enums.Groups GroupId { get; set; }
-        [Required(ErrorMessage = "The Password field  is required")]
-        public string? Password { get; set; }
-        [Required(ErrorMessage = "The ConfirmPassword field  is required")]
-        [Compare("Password")]
+        public string? Password { get; set; }      
         public string? ConfirmPassword { get; set; }
     }
 }
