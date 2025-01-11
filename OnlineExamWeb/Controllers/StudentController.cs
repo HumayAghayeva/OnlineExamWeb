@@ -29,7 +29,6 @@ namespace OnlineExamWeb.Controllers
             IStudentQueryRepository studentQueryRepository,
             IFileManager fileManager,
             IEmailOperations emailOperations, 
-            ILogger<StudentController> logger,
             IValidator<StudentRequestDTO> studentValidator)
         {
             _commandRepository = commandRepository;
@@ -69,8 +68,11 @@ namespace OnlineExamWeb.Controllers
 
             if (!studentvalidation.IsValid)
             {
-               return View();
+               ViewBag.Message = studentvalidation.Errors.FirstOrDefault();
+
+                return View(studentRequestDTO); 
             }
+
             var uploadedPhoto = formCollection.Files["studentPhoto"];
 
             studentRequestDTO.Password= EncryptionHelper.Encrypt(studentRequestDTO.Password);

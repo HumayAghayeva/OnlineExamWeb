@@ -37,8 +37,7 @@ namespace OnlineExamWeb.Utilities
                 return mongoDbContext.GetCollection<StudentResponseDTO>("Students");
             });
             services.Configure<EmailSettings>(configuration.GetSection("SenderEmail"));
-            services.AddScoped<IEmailOperations, IEmailOperationServices>();
-            services.AddSingleton(typeof(IAppLogger<>), typeof(AppLogger<>));          
+            services.AddScoped<IEmailOperations, IEmailOperationServices>();        
             services.AddScoped<IStudentQueryRepository, StudentQueryRepository>();
             services.AddScoped<ITransferDataToReadDb, ITransferDataToReadDbServices>();
             services.AddScoped<IFileManager, IConfigureImageServices>();

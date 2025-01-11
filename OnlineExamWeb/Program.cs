@@ -44,7 +44,7 @@ Log.Logger = new LoggerConfiguration()
 
 builder.Services.InjectDependencies(builder.Configuration);
 
-builder.Services.AddHostedService<TransferDataFromWriteToRead>();
+//builder.Services.AddHostedService<TransferDataFromWriteToRead>();
 
 builder.Services.AddAutoMapper(typeof(Program));
 

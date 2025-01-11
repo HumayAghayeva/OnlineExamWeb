@@ -114,7 +114,6 @@ namespace Business.Repositories.Command
                     LastName = studentReadDTO.LastName,
                     DateOfBirth = studentReadDTO.DateOfBirth,
                     PIN = studentReadDTO.PIN,
-                    GroupId = (int)studentReadDTO.GroupId,
                     Email = studentReadDTO.Email,
                     Password = studentReadDTO.Password,
                     ConfirmPassword = studentReadDTO.ConfirmPassword
