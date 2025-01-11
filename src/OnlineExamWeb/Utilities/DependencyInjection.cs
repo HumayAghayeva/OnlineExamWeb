@@ -41,7 +41,7 @@ namespace OnlineExamWeb.Utilities
             services.AddScoped<IStudentQueryRepository, StudentQueryRepository>();
             services.AddScoped<ITransferDataToReadDb, ITransferDataToReadDbServices>();
             services.AddScoped<IFileManager, IConfigureImageServices>();
-            services.AddSingleton<IHostedService, TransferDataFromWriteToRead>();
+            //services.AddSingleton<IHostedService, TransferDataFromWriteToRead>();
 
             //Validators
             services.AddScoped<IValidator<StudentRequestDTO>, StudentValidator>();

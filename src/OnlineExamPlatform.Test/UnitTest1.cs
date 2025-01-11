@@ -7,9 +7,8 @@ using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using OnlineExamWeb.Controllers;
-using OnlineExamWeb.Utilities;
 
-namespace OnlineExamWebTest
+namespace OnlineExamPlatform.Test
 {
     public class UnitTest1
     {
@@ -17,7 +16,7 @@ namespace OnlineExamWebTest
         public async Task GetStudent_ShouldReturnViewResult_WithStudent()
         {
             // Arrange
-      
+
             var cancellationToken = CancellationToken.None;
             var studentId = 1007;
             var mockCommandRepository = new Mock<IStudentCommandRepository>();
