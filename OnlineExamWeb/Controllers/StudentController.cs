@@ -13,13 +13,14 @@ using OnlineExamWeb.Utilities;
 using Domain.Entity.Write;
 using FluentValidation;
 using System;
+using Serilog;
+
 namespace OnlineExamWeb.Controllers
 {
     public class StudentController : Controller
     {
         private readonly IStudentCommandRepository _commandRepository;
         private readonly IStudentQueryRepository _studentQueryRepository;
-        private readonly IAppLogger<StudentController> _logger;
         private IValidator<StudentRequestDTO> _studentValidator;
         private readonly IEmailOperations _emailOperations;
         private readonly IFileManager _fileManager;
@@ -28,14 +29,13 @@ namespace OnlineExamWeb.Controllers
             IStudentQueryRepository studentQueryRepository,
             IFileManager fileManager,
             IEmailOperations emailOperations, 
-            IAppLogger<StudentController> logger,
+            ILogger<StudentController> logger,
             IValidator<StudentRequestDTO> studentValidator)
         {
             _commandRepository = commandRepository;
             _studentQueryRepository = studentQueryRepository;
             _fileManager = fileManager;
             _emailOperations = emailOperations;
-            _logger = logger;
             _studentValidator = studentValidator;
         }
 

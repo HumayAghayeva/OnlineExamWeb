@@ -17,6 +17,7 @@ using Abstraction.Interfaces;
 using Abstraction.Queries;
 using Microsoft.Extensions.Options;
 
+
 namespace OnlineExamPlatform.Test
 {
     [TestClass]
@@ -32,7 +33,6 @@ namespace OnlineExamPlatform.Test
             var mockFileManager = new Mock<IFileManager>();
             var mockEmailOperations = new Mock<IEmailOperations>();
             var mockValidation = new Mock<IValidator<StudentRequestDTO>>();
-            var mockLogger = new Mock<IAppLogger<StudentController>>();
             var encryptedPassword = EncryptionHelper.Encrypt("Test");
 
             var studentDto = new StudentLoginDTO
@@ -59,7 +59,7 @@ namespace OnlineExamPlatform.Test
                 .ReturnsAsync(studentResponse);
 
             // Inject the mocked repository into the controller
-            var controller = new StudentController(mockCommandRepository.Object, mockQueryRepository.Object, mockFileManager.Object, mockEmailOperations.Object, mockLogger.Object, mockValidation.Object);
+            var controller = new StudentController(mockCommandRepository.Object, mockQueryRepository.Object, mockFileManager.Object, mockEmailOperations.Object, mockValidation.Object);
 
             // Act
             var result = await controller.LoginStudent(studentDto, CancellationToken.None) as RedirectToActionResult;

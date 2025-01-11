@@ -10,8 +10,7 @@ using Infrastructure.Persistent.Read;
 using Infrastructure.Repositories;
 using Microsoft.CodeAnalysis.Emit;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-using NLog.Web;
+using Serilog;
 using OnlineExamWeb.Middleware;
 using OnlineExamWeb.Utilities;
 using System.Reflection;
@@ -22,13 +21,6 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-builder.Logging.AddConsole();
-var logger =NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
-
-   logger.Info("init main");
-    builder.Logging.ClearProviders();
-    builder.Logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Information);
-    builder.Host.UseNLog();
 
 builder.Configuration.SetBasePath(Directory.GetCurrentDirectory())
     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
@@ -42,6 +34,13 @@ builder.Services.AddDbContext<OEPWriteDB>(options =>
 builder.Services.AddDbContext<OEPReadDB>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("ReadDbContext")));
 
+// Configure Serilog
+Log.Logger = new LoggerConfiguration()
+    .ReadFrom.Configuration(builder.Configuration)
+    .Enrich.FromLogContext() 
+    .WriteTo.Console() 
+    .WriteTo.File("Logs/log-.txt", rollingInterval: RollingInterval.Day) 
+    .CreateLogger();
 
 builder.Services.InjectDependencies(builder.Configuration);
 
