@@ -20,11 +20,13 @@ using Microsoft.Extensions.Options;
 
 namespace OnlineExamPlatform.Test
 {
-    [TestClass]
+   
     public class UnitTest1
     {
         [TestMethod]
         [Priority(1)]
+
+        #region LoginStudentTest
         public async Task LoginStudentTest(CancellationToken cancellationToken)
         {
             // Arrange
@@ -72,4 +74,14 @@ namespace OnlineExamPlatform.Test
 
         }
     }
+    #endregion
+
+    //[TestMethod]
+    //public async Task GetStudentTest(int id, CancellationToken cancellation)
+    //{
+    //    //arrange
+    //    //act
+    //    //assert
+
+    //}
 }

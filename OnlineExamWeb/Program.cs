@@ -14,6 +14,7 @@ using Serilog;
 using OnlineExamWeb.Middleware;
 using OnlineExamWeb.Utilities;
 using System.Reflection;
+using Quartz;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -43,6 +44,7 @@ Log.Logger = new LoggerConfiguration()
     .CreateLogger();
 
 builder.Services.InjectDependencies(builder.Configuration);
+
 
 //builder.Services.AddHostedService<TransferDataFromWriteToRead>();
 
