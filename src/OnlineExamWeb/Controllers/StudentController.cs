@@ -14,11 +14,13 @@ using Domain.Entity.Write;
 using FluentValidation;
 using System;
 using Serilog;
+using Abstraction;
 
 namespace OnlineExamWeb.Controllers
 {
     public class StudentController : Controller
     {
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IStudentCommandRepository _commandRepository;
         private readonly IStudentQueryRepository _studentQueryRepository;
         private IValidator<StudentRequestDTO> _studentValidator;
@@ -29,13 +31,14 @@ namespace OnlineExamWeb.Controllers
             IStudentQueryRepository studentQueryRepository,
             IFileManager fileManager,
             IEmailOperations emailOperations, 
-            IValidator<StudentRequestDTO> studentValidator)
+            IValidator<StudentRequestDTO> studentValidator,IUnitOfWork unitOfWork)
         {
             _commandRepository = commandRepository;
             _studentQueryRepository = studentQueryRepository;
             _fileManager = fileManager;
             _emailOperations = emailOperations;
             _studentValidator = studentValidator;
+            _unitOfWork = unitOfWork;   
         }
 
         public ActionResult Index(StudentResponseDTO student)
@@ -64,60 +67,79 @@ namespace OnlineExamWeb.Controllers
         public async Task<IActionResult> CreateStudent(StudentRequestDTO studentRequestDTO, IFormCollection formCollection,
                 CancellationToken cancellationToken)
         {
-            var studentvalidation = await _studentValidator.ValidateAsync(studentRequestDTO);
-
-            if (!studentvalidation.IsValid)
+            try
             {
-               ViewBag.Message = studentvalidation.Errors.FirstOrDefault();
+                // Start a transaction
+                await _unitOfWork.BeginTransactionAsync(cancellationToken: cancellationToken);
 
-                return View(studentRequestDTO); 
-            }
+                var studentvalidation = await _studentValidator.ValidateAsync(studentRequestDTO);
 
-            var uploadedPhoto = formCollection.Files["studentPhoto"];
-
-            studentRequestDTO.Password= EncryptionHelper.Encrypt(studentRequestDTO.Password);
-
-            studentRequestDTO.ConfirmPassword= EncryptionHelper.Encrypt(studentRequestDTO.ConfirmPassword);
-
-            var student = await _commandRepository.AddStudent(studentRequestDTO, cancellationToken);
-
-            if (!student.Success)
-            {
-                throw new Exception("The student was not added successfully.");
-            }
-
-            if (uploadedPhoto != null && uploadedPhoto.Length > 0)
-            {
-                var fileResponse = await _fileManager.ConfigureImage(uploadedPhoto);
-
-                if (fileResponse == null || string.IsNullOrEmpty(fileResponse.FilePath))
+                if (!studentvalidation.IsValid)
                 {
-                    throw new Exception("Failed to process the uploaded photo.");
+                    ViewBag.Message = studentvalidation.Errors.FirstOrDefault();
+
+                    return View(studentRequestDTO);
                 }
 
-                var studentPhotoDto = new StudentPhotoDTO
-                {
-                    PhotoPath = fileResponse.FilePath,
-                    StudentId = student.Id,
-                    FileName = fileResponse.FileName
-                };
+                var uploadedPhoto = formCollection.Files["studentPhoto"];
 
-                var photoResult = await _commandRepository.AddStudentPhoto(studentPhotoDto, cancellationToken);
+                studentRequestDTO.Password = EncryptionHelper.Encrypt(studentRequestDTO.Password);
 
-                if (!photoResult.Success)
+                studentRequestDTO.ConfirmPassword = EncryptionHelper.Encrypt(studentRequestDTO.ConfirmPassword);
+
+                var student = await _commandRepository.AddStudent(studentRequestDTO, cancellationToken);
+
+                if (!student.Success)
                 {
-                    throw new Exception("The photo was not added successfully.");
+                    throw new Exception("The student was not added successfully.");
                 }
+
+                if (uploadedPhoto != null && uploadedPhoto.Length > 0)
+                {
+                    var fileResponse = await _fileManager.ConfigureImage(uploadedPhoto);
+
+                    if (fileResponse == null || string.IsNullOrEmpty(fileResponse.FilePath))
+                    {
+                        throw new Exception("Failed to process the uploaded photo.");
+                    }
+
+                    var studentPhotoDto = new StudentPhotoDTO
+                    {
+                        PhotoPath = fileResponse.FilePath,
+                        StudentId = student.Id,
+                        FileName = fileResponse.FileName
+                    };
+
+                    var photoResult = await _commandRepository.AddStudentPhoto(studentPhotoDto, cancellationToken);
+
+                    if (!photoResult.Success)
+                    {
+                        throw new Exception("The photo was not added successfully.");
+                    }
+                }
+                // Save changes
+                await _unitOfWork.SaveAsync(cancellationToken);
+
+                var emailResponse = await _emailOperations.SendEmail(student.Id, cancellationToken);
+
+                if (!emailResponse.IsSuccess)
+                    throw new Exception("Failed to send the email notification.");
+                // Commit transaction
+                await _unitOfWork.CommitAsync(cancellationToken);
+
+                ViewBag.Message = "Your account has been created successfully! Please check your email and click the confirmation link.";
+                return View(studentRequestDTO);
             }
+            
+            catch (Exception ex) {
+                // Rollback transaction on failure
+                await _unitOfWork.RollbackAsync(cancellationToken);
 
-            var emailResponse = await _emailOperations.SendEmail(student.Id, cancellationToken);
-
-            if (!emailResponse.IsSuccess)
-                throw new Exception("Failed to send the email notification.");
-            else
-               ViewBag.Message = "Your account has been created successfully!,Please check your email and click the confirmation link";
-               return View(studentRequestDTO);
-        }
+                // Log exception (add proper logging)
+                ViewBag.Message = ex.Message;
+                return View(studentRequestDTO);
+            }
+         }
     
 
 

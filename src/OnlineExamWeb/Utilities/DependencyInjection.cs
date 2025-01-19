@@ -19,6 +19,7 @@ using System;
 using Domain.Entity.Read;
 using Business.ValidationRules.FluentValidations.StudentValidator;
 using Domain.DTOs.Write;
+using Microsoft.EntityFrameworkCore;
 
 namespace OnlineExamWeb.Utilities
 {
@@ -26,7 +27,17 @@ namespace OnlineExamWeb.Utilities
     {
         public static IServiceCollection InjectDependencies(this IServiceCollection services, IConfiguration configuration)
         {
-            //builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+            // Register your specific DbContext
+            services.AddDbContext<DbContext>(options =>
+                options.UseSqlServer(configuration.GetConnectionString("WriteDbContext")));
+
+            // Use the specific DbContext in the UnitOfWork registration
+            services.AddScoped<IUnitOfWork>(provider =>
+            {
+                var context = provider.GetRequiredService<DbContext>(); // Replace with your specific DbContext
+                return new UnitOfWork(context);
+            });
+
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IStudentCommandRepository, StudentCommandRepository>();
             services.AddSingleton<MongoDBContext>(); 

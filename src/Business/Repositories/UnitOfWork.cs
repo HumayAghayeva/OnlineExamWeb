@@ -14,45 +14,14 @@ namespace Infrastructure.Repositories
     public class UnitOfWork : IUnitOfWork
     {
         private readonly DbContext _context;
-        private  IDbContextTransaction _transaction;
-        private readonly Dictionary<Type, object> _repositories = new Dictionary<Type, object>();
+        private IDbContextTransaction _transaction;
+        private readonly Dictionary<Type, object> _repositories = new();
 
-        public UnitOfWork(DbContext context, IDbContextTransaction transaction, Dictionary<Type, object> repositories)
+        public UnitOfWork(DbContext context)
         {
             _context = context;
-            _transaction = transaction;
-            _repositories = repositories;   
         }
 
-        public async Task BeginTransactionAsync(IsolationLevel isolationLevel = IsolationLevel.ReadCommitted,
-            CancellationToken cancellationToken = default)
-        {
-            _transaction = await _context.Database.BeginTransactionAsync(isolationLevel, cancellationToken);
-        }
-
-        public async Task CommitAsync(CancellationToken cancellationToken = default)
-        {
-            try
-            {
-                await _transaction.CommitAsync(cancellationToken);
-            }
-            finally
-            {
-                await _transaction.DisposeAsync();
-            }
-        }
-
-        public async Task RollbackAsync(CancellationToken cancellationToken = default)
-        {
-            try
-            {
-                await _transaction.RollbackAsync(cancellationToken);
-            }
-            finally
-            {
-                await _transaction.DisposeAsync();
-            }
-        }
         public async Task SaveAsync(CancellationToken cancellationToken = default)
         {
             await _context.SaveChangesAsync(cancellationToken);
@@ -71,26 +40,45 @@ namespace Infrastructure.Repositories
             return newRepository;
         }
 
-
-        #region Dispose
-
-        private bool disposed = false;
-        protected virtual void Dispose(bool disposing)
+        public async Task RollbackAsync(CancellationToken cancellationToken = default)
         {
-            if (!this.disposed)
+            if (_transaction != null)
             {
-                if (disposing)
+                _transaction.Rollback();
+                _transaction.Dispose();
+                _transaction = null;
+            }
+        }
+
+        public async Task CommitAsync(CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                await _context.SaveChangesAsync(cancellationToken);
+                if (_transaction != null)
                 {
-                    // _dbContext.Dispose();
+                    await _transaction.CommitAsync(cancellationToken);
                 }
             }
-            this.disposed = true;
+            catch
+            {
+             await RollbackAsync(cancellationToken);
+                throw;
+            }
         }
+
+        
         public void Dispose()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
+            _transaction?.Dispose();
+            _context.Dispose();
         }
-        #endregion
+
+        public async Task BeginTransactionAsync(IsolationLevel isolationLevel = IsolationLevel.ReadCommitted, CancellationToken cancellationToken = default)
+        {
+            _transaction = await _context.Database.BeginTransactionAsync(cancellationToken);
+        }
+
+       
     }
 }
