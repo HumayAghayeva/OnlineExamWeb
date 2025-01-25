@@ -5,11 +5,14 @@ The following technologies and tools were used to build this application:
   - **.Net8**
   - **EF Core**
   - **Linq**
-  - **Unit of Work**
   - **MongoDB**
   - **Quartz.NET**
   - **xUnit**
   - **Serilog**
   - **Cross Cutting Concern**
      - [Fluent Validation](https://fluentvalidation.net/)
-  
+
+  ## Design Patterns
+  - **Unit of Work**
+  - **The Options Pattern**
+ 
