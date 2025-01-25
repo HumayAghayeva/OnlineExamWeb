@@ -4,6 +4,8 @@ This project is crafted to empower pupils preparing for university and college a
 The following technologies and tools were used to build this application:
   - **.Net8**
   - **EF Core**
+  - **Linq**
+  - **Unit of Work**
   - **MongoDB**
   - **Quartz.NET**
   - **xUnit**
