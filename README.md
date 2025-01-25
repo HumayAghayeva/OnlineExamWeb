@@ -14,5 +14,6 @@ The following technologies and tools were used to build this application:
 
   ## Design Patterns
   - **Unit of Work**
+  - **Generic Repository**
   - **The Options Pattern**
  
