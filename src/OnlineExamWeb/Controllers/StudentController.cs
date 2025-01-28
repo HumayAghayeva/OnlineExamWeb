@@ -157,7 +157,7 @@ namespace OnlineExamWeb.Controllers
             var studentResponse= await _commandRepository.LoginStudent(studentLoginDTO, cancellationToken);
 
             if(studentResponse !=null)
-                return RedirectToAction(nameof(GetStudent), new { studentId = studentResponse.Id });
+                return RedirectToAction(nameof(GetStudent), new { studentId = studentResponse.WriteDBId });
             else
                 throw new Exception("Invalid email or password.");
         }

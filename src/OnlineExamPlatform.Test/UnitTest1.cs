@@ -1,3 +1,4 @@
+using Abstraction;
 using Abstraction.Command;
 using Abstraction.Interfaces;
 using Abstraction.Queries;
@@ -21,12 +22,13 @@ namespace OnlineExamPlatform.Test
             var studentId = 1007;
             var mockCommandRepository = new Mock<IStudentCommandRepository>();
             var mockQueryRepository = new Mock<IStudentQueryRepository>();
+            var mockUnitOfWork = new Mock<IUnitOfWork>();
             var mockFileManager = new Mock<IFileManager>();
             var mockEmailOperations = new Mock<IEmailOperations>();
             var mockValidation = new Mock<IValidator<StudentRequestDTO>>();
             var expectedStudent = new StudentResponseDTO
             {
-                //Id = 1,
+                WriteDBId = "1",
                 Name = "Humay",
                 LastName = "Aghayeva",
                 FullName = "Aghayeva Humay",
@@ -41,7 +43,7 @@ namespace OnlineExamPlatform.Test
                 .ReturnsAsync(expectedStudent);
 
             // Inject the mocked repository into the controller
-            var controller = new StudentController(mockCommandRepository.Object, mockQueryRepository.Object, mockFileManager.Object, mockEmailOperations.Object, mockValidation.Object);
+            var controller = new StudentController(mockCommandRepository.Object, mockQueryRepository.Object, mockFileManager.Object, mockEmailOperations.Object, mockValidation.Object,mockUnitOfWork.Object);
 
 
             // Act

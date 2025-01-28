@@ -4,38 +4,95 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
 
-<div>
-    <h4>Student</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class="col-sm-10">
+<style>
+    #studentDetails{
+        color:#353535;
+    }
+
+    h4{
+        font-size:32px;
+        line-height:1;
+        text-align:center;
+        margin-top:48px;
+        margin-bottom:0;
+    }
+
+    .details{
+        background:#f9f9f9;
+        width:fit-content;
+        min-width:50%;
+        border-radius:8px;
+        margin:24px auto;
+        padding: 24px 18px;
+
+        display:flex;
+        flex-wrap:wrap;
+        align-items:center;
+        justify-content:space-between;
+        gap: 12px;
+        box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    }
+
+    .details div{
+        flex-basis:calc(32% - 12px);
+        flex-basis:calc(50% - 12px);
+        flex-basis:100%;
+    }
+
+    .btn-group{
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        gap:24px;
+    }
+
+    .btn-group a{
+        text-align:center;
+        flex-basis:calc(25% - 12px);
+        background:#f9f9f9;
+        padding:6px;
+        text-decoration:none;
+        color:#353535;
+        font-weight:500;
+        border-radius:8px;
+        box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+        transition: transform 0.3s ease;
+    }
+
+    .btn-group a:hover{
+        transform:scale(0.96);
+    }
+
+</style>
+
+
+<div id="studentDetails">
+    <h4>My Profile</h4>
+    <dl class="details">
+        <div>
+        <dt>
             @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.LastName)
         </dt>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.PIN)
+        </div>
+        <div>
+        <dt>
+            @Html.DisplayFor(model => model.LastName)
         </dt>
-        <dd class="col-sm-10">
+       
+        </div>
+        <div>
+        <dt>
             @Html.DisplayFor(model => model.PIN)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Email)
         </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Email)
-        </dd>
-  
-
+        </div>
+        <div>
+        <dt> @Html.DisplayFor(model => model.Email)
+        </dt>
+        </div>
     </dl>
-</div>
-<div>
-  
+<div class="btn-group">
     <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Take Quiz</a>
+</div>
 </div>
