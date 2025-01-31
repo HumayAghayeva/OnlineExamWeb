@@ -45,6 +45,8 @@ Log.Logger = new LoggerConfiguration()
 
 builder.Services.InjectDependencies(builder.Configuration);
 
+builder.Services.AddHealthChecks()
+    .AddCheck<DatabaseHealthCheck<OEPWriteDB>>("Database");
 
 //builder.Services.AddHostedService<TransferDataFromWriteToRead>();
 
@@ -62,6 +64,8 @@ var app = builder.Build();
 }
 app.UseHttpsRedirection();
     app.UseStaticFiles();
+
+app.MapHealthChecks("/health");
 
 app.UseMiddleware<ErrorHandlerMiddleware>();
 

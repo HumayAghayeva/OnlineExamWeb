@@ -4,7 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace OnlineExamWeb.Controllers
 {
-    public class ConfirmController : Controller
+    [ApiController]
+    [Route("[controller]")]
+    public class ConfirmController : ControllerBase
     {
         private readonly IStudentCommandRepository _commandRepository;
 
@@ -13,15 +15,17 @@ namespace OnlineExamWeb.Controllers
             _commandRepository = commandRepository; 
         }
 
-        // GET: ConfirmController
-        public async Task<ActionResult> Index(int studentId, CancellationToken cancellationToken)
+        [HttpPut("{studentId}")]
+        public async Task<IActionResult> ConfirmStudent(int studentId, CancellationToken cancellationToken)
         {
-           var result= await _commandRepository.ConfirmStudent(studentId, cancellationToken);
+            var result = await _commandRepository.ConfirmStudent(studentId, cancellationToken);
 
-           if(result.Success)
-                return RedirectToAction("GetStudent", "StudentController", new { id = result.Id });
-            else
-                return RedirectToAction("Index");
+            if (!result.Success)
+            {
+                return NotFound("Student not found or confirmation failed.");
+            }
+
+            return NoContent(); 
         }
 
     }
