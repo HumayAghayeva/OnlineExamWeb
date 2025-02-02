@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 
-namespace OnlineExamWeb.Middleware
+namespace OnlineExamWebApi.HealthChecks
 {
     public class DatabaseHealthCheck<TContext> : IHealthCheck where TContext : DbContext
     {
@@ -17,7 +17,7 @@ namespace OnlineExamWeb.Middleware
         {
             try
             {
-                var Ocg = await _dbContext.Database.ExecuteSqlRawAsync("SELECT 1", cancellationToken); 
+                var Ocg = await _dbContext.Database.ExecuteSqlRawAsync("SELECT 1", cancellationToken);
                 return HealthCheckResult.Healthy("Database is up and running.");
             }
             catch (Exception ex)

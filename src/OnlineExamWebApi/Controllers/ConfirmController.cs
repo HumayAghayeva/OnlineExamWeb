@@ -1,18 +1,15 @@
 ﻿using Abstraction.Command;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace OnlineExamWeb.Controllers
+namespace OnlineExamWebApi.Controllers
 {
-    [ApiController]
-    [Route("[controller]")]
     public class ConfirmController : ControllerBase
     {
         private readonly IStudentCommandRepository _commandRepository;
 
         public ConfirmController(IStudentCommandRepository commandRepository)
         {
-            _commandRepository = commandRepository; 
+            _commandRepository = commandRepository;
         }
 
         [HttpPut("{studentId}")]
@@ -25,8 +22,7 @@ namespace OnlineExamWeb.Controllers
                 return NotFound("Student not found or confirmation failed.");
             }
 
-            return NoContent(); 
+            return NoContent();
         }
-
     }
 }
