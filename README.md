@@ -10,6 +10,7 @@ The following technologies and tools were used to build this application:
   - **Quartz.NET**
   - **xUnit**
   - **Serilog**
+  - **Health Check**
   - **Cross Cutting Concern**
      - [Fluent Validation](https://fluentvalidation.net/)
 
