@@ -1,0 +1,6 @@
+@OnlineExamPaymentAPI_HostAddress = http://localhost:5249
+
+GET {{OnlineExamPaymentAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

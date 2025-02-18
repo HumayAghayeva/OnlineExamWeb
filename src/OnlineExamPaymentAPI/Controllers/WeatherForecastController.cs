@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace PaymentAPI.Controllers
+namespace OnlineExamPaymentAPI.Controllers
 {
     [ApiController]
     [Route("[controller]")]

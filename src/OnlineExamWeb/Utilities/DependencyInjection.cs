@@ -20,6 +20,7 @@ using Domain.Entity.Read;
 using Business.ValidationRules.FluentValidations.StudentValidator;
 using Domain.DTOs.Write;
 using Microsoft.EntityFrameworkCore;
+using Hazelcast;
 
 namespace OnlineExamWeb.Utilities
 {
@@ -57,7 +58,7 @@ namespace OnlineExamWeb.Utilities
             //Validators
             services.AddScoped<IValidator<StudentRequestDTO>, StudentValidator>();
 
-
+           
             return services;
         }
        

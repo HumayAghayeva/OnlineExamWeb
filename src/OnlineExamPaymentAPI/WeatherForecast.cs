@@ -1,4 +1,4 @@
-namespace PaymentAPI
+namespace OnlineExamPaymentAPI
 {
     public class WeatherForecast
     {

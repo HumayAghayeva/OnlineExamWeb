@@ -15,6 +15,8 @@ using OnlineExamWeb.Middleware;
 using OnlineExamWeb.Utilities;
 using System.Reflection;
 using Quartz;
+using Hazelcast;
+using Autofac.Core;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -45,8 +47,21 @@ Log.Logger = new LoggerConfiguration()
 
 builder.Services.InjectDependencies(builder.Configuration);
 
-
 //builder.Services.AddHostedService<TransferDataFromWriteToRead>();
+
+// Add Hazelcast Client as a Singleton
+builder.Services.AddSingleton<Task<IHazelcastClient>>(async provider =>
+{
+    var options = new HazelcastOptionsBuilder()
+        .With(o =>
+        {
+            o.Networking.Addresses.Add("127.0.0.1:5701"); // Ensure Hazelcast server is running here
+            o.Networking.ReconnectMode = Hazelcast.Networking.ReconnectMode.ReconnectAsync;
+        })
+        .Build();
+
+    return await HazelcastClientFactory.StartNewClientAsync(options);
+});
 
 builder.Services.AddAutoMapper(typeof(Program));
 
@@ -62,8 +77,6 @@ var app = builder.Build();
 }
 app.UseHttpsRedirection();
     app.UseStaticFiles();
-
-app.MapHealthChecks("/health");
 
 app.UseMiddleware<ErrorHandlerMiddleware>();
 
