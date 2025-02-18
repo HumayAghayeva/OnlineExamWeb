@@ -11,6 +11,7 @@ The following technologies and tools were used to build this application:
   - **xUnit**
   - **Serilog**
   - **Health Check**
+  - **Docker**
   - **Cross Cutting Concern**
      - [Fluent Validation](https://fluentvalidation.net/)
 
