@@ -12,7 +12,8 @@ namespace OnlineExamWebApi.Controllers
             _commandRepository = commandRepository;
         }
 
-        [HttpPut("Confirm/{studentId}")]
+        [HttpPut("{studentId}")]
+        [Route("Confirm")]
         public async Task<IActionResult> ConfirmStudent(int studentId, CancellationToken cancellationToken)
         {
             var result = await _commandRepository.ConfirmStudent(studentId, cancellationToken);
