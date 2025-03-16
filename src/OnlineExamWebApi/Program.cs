@@ -18,7 +18,10 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.ListenAnyIP(2030);  // Ensure it listens on all network interfaces, port 2030
+});
 builder.Services.AddHealthChecks().AddSqlServer(builder.Configuration.GetConnectionString("WriteDbContext"), name: "Write DB");
 builder.Services.AddHealthChecks()
     .AddCheck<DatabaseHealthCheck<OEPWriteDB>>("Database").
