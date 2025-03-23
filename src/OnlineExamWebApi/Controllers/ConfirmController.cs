@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace OnlineExamWebApi.Controllers
 {
+    [Route("api/student")]
+    [ApiController] 
     public class ConfirmController : ControllerBase
     {
         private readonly IStudentCommandRepository _commandRepository;
@@ -12,8 +14,7 @@ namespace OnlineExamWebApi.Controllers
             _commandRepository = commandRepository;
         }
 
-        [HttpPut("{studentId}")]
-        [Route("Confirm")]
+        [HttpPut("confirm/{studentId}")]
         public async Task<IActionResult> ConfirmStudent(int studentId, CancellationToken cancellationToken)
         {
             var result = await _commandRepository.ConfirmStudent(studentId, cancellationToken);
