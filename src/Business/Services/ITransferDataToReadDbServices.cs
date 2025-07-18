@@ -18,9 +18,9 @@ namespace Business.Services
     public class ITransferDataToReadDbServices : ITransferDataToReadDb
     {
         private readonly OEPWriteDB _OEPWriteDB;
-        private readonly IMongoCollection<StudentResponseDTO> _studentResponseCollections;
+        private readonly IMongoCollection<StudentResponseDto> _studentResponseCollections;
 
-        public ITransferDataToReadDbServices(OEPWriteDB OEPWriteDB,IMongoCollection<StudentResponseDTO> studentResponseCollections)
+        public ITransferDataToReadDbServices(OEPWriteDB OEPWriteDB,IMongoCollection<StudentResponseDto> studentResponseCollections)
         {
             _OEPWriteDB = OEPWriteDB;
           
@@ -56,11 +56,11 @@ namespace Business.Services
             }
             else
             {
-                var mongoDbStudents = new List<StudentResponseDTO>();
+                var mongoDbStudents = new List<StudentResponseDto>();
 
                 foreach (var student in dataWriteDb)
                 {
-                    var readDBStudent = new StudentResponseDTO()
+                    var readDBStudent = new StudentResponseDto()
                     {
                         Name = student.Name,
                         LastName = student.LastName,

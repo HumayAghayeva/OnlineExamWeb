@@ -13,13 +13,13 @@ namespace Abstraction.Command
 {
     public interface IStudentCommandRepository 
     {
-        Task<ResponseDTO> AddStudent(StudentRequestDTO studentRequestDTO,  
+        Task<ResponseDto> AddStudent(StudentRequestDto studentRequestDto,  
                       CancellationToken cancellationToken);
 
-        Task<StudentResponseDTO> LoginStudent(StudentLoginDTO studentLoginDTO, CancellationToken cancellationToken);    
+        Task<StudentResponseDto> LoginStudent(StudentLoginDto studentLoginDto, CancellationToken cancellationToken);    
 
-        Task<ResponseDTO> AddStudentPhoto(StudentPhotoDTO studentPhoto, CancellationToken cancellationToken);  
+        Task<ResponseDto> AddStudentPhoto(StudentPhotoDto studentPhoto, CancellationToken cancellationToken);  
 
-        Task<ResponseDTO> ConfirmStudent(int studentId, CancellationToken cancellationToken);  
+        Task<ResponseDto> ConfirmStudent(int studentId, CancellationToken cancellationToken);  
     }
 }

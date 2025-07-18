@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Domain.DTOs.Read
 {
-    public class EmailResponse
+    public class EmailResponseDto
     {
         public bool IsSuccess { get; set; }
         public string Message { get; set; }

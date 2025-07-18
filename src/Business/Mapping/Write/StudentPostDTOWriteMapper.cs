@@ -13,7 +13,7 @@ namespace Business.Mapping.Write
     {
         public StudentPostDTOWriteMapper()
         {
-            CreateMap<StudentRequestDTO, Student>();
+            CreateMap<StudentRequestDto, Student>();
         }
     }
 }

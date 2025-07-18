@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Business.ValidationRules.FluentValidations.StudentValidator
 {
-    public class StudentValidator : AbstractValidator<StudentRequestDTO>
+    public class StudentValidator : AbstractValidator<StudentRequestDto>
     {
         public StudentValidator() 
         {

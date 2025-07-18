@@ -18,7 +18,7 @@ using Domain.Entity.Write;
 
 namespace Business.Repositories.Command
 {
-    public class StudentCommandRepository : Repository<StudentRequestDTO>, IStudentCommandRepository
+    public class StudentCommandRepository : Repository<StudentRequestDto>, IStudentCommandRepository
     {
         private readonly OEPWriteDB _context;
 
@@ -32,17 +32,17 @@ namespace Business.Repositories.Command
             _studentPhotos = context.Set<StudentPhoto>();
         }
 
-        public async Task<StudentResponseDTO> LoginStudent(StudentLoginDTO studentLoginDTO, CancellationToken cancellationToken)
+        public async Task<StudentResponseDto> LoginStudent(StudentLoginDto studentLoginDto, CancellationToken cancellationToken)
         {
-            var student = await _context.Students.Where(w => w.Email == studentLoginDTO.Email &&
-                             w.Password == studentLoginDTO.Password).FirstOrDefaultAsync(cancellationToken);
+            var student = await _context.Students.Where(w => w.Email == studentLoginDto.Email &&
+                             w.Password == studentLoginDto.Password).FirstOrDefaultAsync(cancellationToken);
 
             if (student == null)
             {
                 throw new Exception("Invalid email or password.");
             }
 
-            var studentResponseDTO = new StudentResponseDTO
+            var studentResponseDto = new StudentResponseDto
             {
                 WriteDBId = student.ID.ToString(),
                 Name = student.Name,
@@ -52,24 +52,24 @@ namespace Business.Repositories.Command
                 GroupName = Enum.GetName(typeof(Groups), student.GroupId)
             };
 
-            return studentResponseDTO;
+            return studentResponseDto;
         }
 
-        public async Task<ResponseDTO> AddStudentPhoto(StudentPhotoDTO studentPhotoDTO, CancellationToken cancellationToken)
+        public async Task<ResponseDto> AddStudentPhoto(StudentPhotoDto studentPhotoDto, CancellationToken cancellationToken)
         {
 
             var studentPhoto = new StudentPhoto
             {
-                StudentId = studentPhotoDTO.StudentId,
-                FileName = studentPhotoDTO.FileName,
-                PhotoPath = studentPhotoDTO.PhotoPath
+                StudentId = studentPhotoDto.StudentId,
+                FileName = studentPhotoDto.FileName,
+                PhotoPath = studentPhotoDto.PhotoPath
             };
 
             await _studentPhotos.AddAsync(studentPhoto, cancellationToken);
 
             await _context.SaveChangesAsync(cancellationToken);
 
-            var response = new ResponseDTO
+            var response = new ResponseDto
             {
                 Id = studentPhoto.Id,
                 Success =true,
@@ -79,7 +79,7 @@ namespace Business.Repositories.Command
            return response;
         }
 
-        public async Task<ResponseDTO> ConfirmStudent(int studentId, CancellationToken cancellationToken)
+        public async Task<ResponseDto> ConfirmStudent(int studentId, CancellationToken cancellationToken)
         {
           
             var student = await _context.Students
@@ -97,26 +97,26 @@ namespace Business.Repositories.Command
 
             await _context.SaveChangesAsync(cancellationToken);
           
-            return new ResponseDTO
+            return new ResponseDto
             {
                 Success = true,
                 Message = "Student was confirmed successfully.",
                 Id = student.ID
             };
         }
-        public async Task<ResponseDTO> AddStudent(StudentRequestDTO studentReadDTO, CancellationToken cancellationToken)
+        public async Task<ResponseDto> AddStudent(StudentRequestDto studentReadDto, CancellationToken cancellationToken)
         {
             try
             {
                 var studentEntity = new Student
                 {
-                    Name = studentReadDTO.Name,
-                    LastName = studentReadDTO.LastName,
-                    DateOfBirth = studentReadDTO.DateOfBirth,
-                    PIN = studentReadDTO.PIN,
-                    Email = studentReadDTO.Email,
-                    Password = studentReadDTO.Password,
-                    ConfirmPassword = studentReadDTO.ConfirmPassword
+                    Name = studentReadDto.Name,
+                    LastName = studentReadDto.LastName,
+                    DateOfBirth = studentReadDto.DateOfBirth,
+                    PIN = studentReadDto.PIN,
+                    Email = studentReadDto.Email,
+                    Password = studentReadDto.Password,
+                    ConfirmPassword = studentReadDto.ConfirmPassword
                 };
 
                 await _studentEntity.AddAsync(studentEntity, cancellationToken);
@@ -125,7 +125,7 @@ namespace Business.Repositories.Command
 
                 await _context.SaveChangesAsync(cancellationToken);
 
-                return new ResponseDTO
+                return new ResponseDto
                 {
                     Success = true,
                     Message = "Student was added successfully.",
@@ -135,7 +135,7 @@ namespace Business.Repositories.Command
             catch (Exception ex)
             {
                 {
-                    return new ResponseDTO
+                    return new ResponseDto
                     {
                         Success = false,
                         Message = ex.Message,

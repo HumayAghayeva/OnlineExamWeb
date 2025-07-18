@@ -25,8 +25,8 @@ namespace OnlineExamPlatform.Test
             var mockUnitOfWork = new Mock<IUnitOfWork>();
             var mockFileManager = new Mock<IFileManager>();
             var mockEmailOperations = new Mock<IEmailOperations>();
-            var mockValidation = new Mock<IValidator<StudentRequestDTO>>();
-            var expectedStudent = new StudentResponseDTO
+            var mockValidation = new Mock<IValidator<StudentRequestDto>>();
+            var expectedStudent = new StudentResponseDto
             {
                 WriteDBId = "1",
                 Name = "Humay",
@@ -51,7 +51,7 @@ namespace OnlineExamPlatform.Test
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(result);
-            var model = Assert.IsAssignableFrom<StudentResponseDTO>(viewResult.Model);
+            var model = Assert.IsAssignableFrom<StudentResponseDto>(viewResult.Model);
             Assert.Equal(expectedStudent.Id, model.Id);
             Assert.Equal(expectedStudent.Name, model.Name);
         }

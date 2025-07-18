@@ -11,7 +11,7 @@ namespace Business.Services
 {
     public class IConfigureImageServices : IFileManager
     {
-        public async  Task<FileResponse> ConfigureImage(IFormFile file)
+        public async  Task<FileResponseDto> ConfigureImage(IFormFile file)
         {
             string photoPath;
 
@@ -29,7 +29,7 @@ namespace Business.Services
                 await file.CopyToAsync(stream);
             }
 
-            return new FileResponse {   FileName= file.FileName, FilePath = photoPath };
+            return new FileResponseDto {   FileName= file.FileName, FilePath = photoPath };
 
            }
     }

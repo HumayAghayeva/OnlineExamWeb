@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace Domain.DTOs.Read
 {
-    public class ResponseDTO
+    public record FileResponseDto
     {
-        public int Id { get; set; }
-        public bool Success { get; set; }
-        public string? Message { get; set; }
+       public string FileName { get; set; }
+       public string FilePath { get; set; }
     }
 }

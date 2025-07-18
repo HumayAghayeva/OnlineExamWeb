@@ -11,6 +11,6 @@ namespace Abstraction.Interfaces
 {
     public interface  IFileManager
     {
-         Task<FileResponse> ConfigureImage(IFormFile file);   
+         Task<FileResponseDto> ConfigureImage(IFormFile file);   
     }
 }

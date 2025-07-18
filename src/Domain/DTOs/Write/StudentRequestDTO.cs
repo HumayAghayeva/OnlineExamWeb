@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Domain.DTOs.Write
 {
-    public record StudentRequestDTO
+    public record StudentRequestDto
     {
         public string? Name { get; set; }      
         public string? LastName { get; set; }      

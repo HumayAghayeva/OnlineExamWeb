@@ -43,10 +43,10 @@ namespace OnlineExamWeb.Utilities
             services.AddScoped<IStudentCommandRepository, StudentCommandRepository>();
             services.AddSingleton<MongoDBContext>(); 
 
-            services.AddScoped<IMongoCollection<StudentResponseDTO>>(sp =>
+            services.AddScoped<IMongoCollection<StudentResponseDto>>(sp =>
             {
                 var mongoDbContext = sp.GetRequiredService<MongoDBContext>();
-                return mongoDbContext.GetCollection<StudentResponseDTO>("Students");
+                return mongoDbContext.GetCollection<StudentResponseDto>("Students");
             });
             services.Configure<EmailSettings>(configuration.GetSection("SenderEmail"));
             services.AddScoped<IEmailOperations, IEmailOperationServices>();        
@@ -56,7 +56,7 @@ namespace OnlineExamWeb.Utilities
             //services.AddSingleton<IHostedService, TransferDataFromWriteToRead>();
 
             //Validators
-            services.AddScoped<IValidator<StudentRequestDTO>, StudentValidator>();
+            services.AddScoped<IValidator<StudentRequestDto>, StudentValidator>();
 
            
             return services;

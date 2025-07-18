@@ -9,7 +9,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace Domain.DTOs.Read
 {
-    public record StudentResponseDTO
+    public record StudentResponseDto
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]

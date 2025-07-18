@@ -28,7 +28,7 @@ namespace Business.Services
             _emailSetting = emailSetting;
         }
 
-        public async Task<EmailResponse> SendEmail(int studentId, CancellationToken cancellationToken = default)
+        public async Task<EmailResponseDto> SendEmail(int studentId, CancellationToken cancellationToken = default)
         {
             var student = await _studentQueryRepository.GetStudentById(studentId, cancellationToken);
 
@@ -53,7 +53,7 @@ namespace Business.Services
                 {
                     await smtpClient.SendMailAsync(mailMessage);
 
-                    var response = new EmailResponse
+                    var response = new EmailResponseDto
                     {
                         IsSuccess = true,
                         IsConfirmed = true,
@@ -66,7 +66,7 @@ namespace Business.Services
             }
             catch (Exception ex) 
             {
-                var response = new EmailResponse
+                var response = new EmailResponseDto
                 {
                     IsSuccess = false,
                     IsConfirmed = false,

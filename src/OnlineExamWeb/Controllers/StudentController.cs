@@ -23,7 +23,7 @@ namespace OnlineExamWeb.Controllers
         private readonly IUnitOfWork _unitOfWork;
         private readonly IStudentCommandRepository _commandRepository;
         private readonly IStudentQueryRepository _studentQueryRepository;
-        private IValidator<StudentRequestDTO> _studentValidator;
+        private IValidator<StudentRequestDto> _studentValidator;
         private readonly IEmailOperations _emailOperations;
         private readonly IFileManager _fileManager;
 
@@ -31,7 +31,7 @@ namespace OnlineExamWeb.Controllers
             IStudentQueryRepository studentQueryRepository,
             IFileManager fileManager,
             IEmailOperations emailOperations, 
-            IValidator<StudentRequestDTO> studentValidator,IUnitOfWork unitOfWork)
+            IValidator<StudentRequestDto> studentValidator,IUnitOfWork unitOfWork)
         {
             _commandRepository = commandRepository;
             _studentQueryRepository = studentQueryRepository;
@@ -41,7 +41,7 @@ namespace OnlineExamWeb.Controllers
             _unitOfWork = unitOfWork;   
         }
 
-        public ActionResult Index(StudentResponseDTO student)
+        public ActionResult Index(StudentResponseDto student)
         {
             return View(student);
         }
@@ -64,7 +64,7 @@ namespace OnlineExamWeb.Controllers
             return View();
         }
 
-        public async Task<IActionResult> CreateStudent(StudentRequestDTO studentRequestDTO, IFormCollection formCollection,
+        public async Task<IActionResult> CreateStudent(StudentRequestDto studentRequestDto, IFormCollection formCollection,
                 CancellationToken cancellationToken)
         {
             try
@@ -72,22 +72,22 @@ namespace OnlineExamWeb.Controllers
                 // Start a transaction
                 await _unitOfWork.BeginTransactionAsync(cancellationToken: cancellationToken);
 
-                var studentvalidation = await _studentValidator.ValidateAsync(studentRequestDTO);
+                var studentvalidation = await _studentValidator.ValidateAsync(studentRequestDto);
 
                 if (!studentvalidation.IsValid)
                 {
                     ViewBag.Message = studentvalidation.Errors.FirstOrDefault();
 
-                    return View(studentRequestDTO);
+                    return View(studentRequestDto);
                 }
 
                 var uploadedPhoto = formCollection.Files["studentPhoto"];
 
-                studentRequestDTO.Password = EncryptionHelper.Encrypt(studentRequestDTO.Password);
+                studentRequestDto.Password = EncryptionHelper.Encrypt(studentRequestDto.Password);
 
-                studentRequestDTO.ConfirmPassword = EncryptionHelper.Encrypt(studentRequestDTO.ConfirmPassword);
+                studentRequestDto.ConfirmPassword = EncryptionHelper.Encrypt(studentRequestDto.ConfirmPassword);
 
-                var student = await _commandRepository.AddStudent(studentRequestDTO, cancellationToken);
+                var student = await _commandRepository.AddStudent(studentRequestDto, cancellationToken);
 
                 if (!student.Success)
                 {
@@ -103,14 +103,14 @@ namespace OnlineExamWeb.Controllers
                         throw new Exception("Failed to process the uploaded photo.");
                     }
 
-                    var studentPhotoDto = new StudentPhotoDTO
+                    var StudentPhotoDto = new StudentPhotoDto
                     {
                         PhotoPath = fileResponse.FilePath,
                         StudentId = student.Id,
                         FileName = fileResponse.FileName
                     };
 
-                    var photoResult = await _commandRepository.AddStudentPhoto(studentPhotoDto, cancellationToken);
+                    var photoResult = await _commandRepository.AddStudentPhoto(StudentPhotoDto, cancellationToken);
 
                     if (!photoResult.Success)
                     {
@@ -128,7 +128,7 @@ namespace OnlineExamWeb.Controllers
                 await _unitOfWork.CommitAsync(cancellationToken);
 
                 ViewBag.Message = "Your account has been created successfully! Please check your email and click the confirmation link.";
-                return View(studentRequestDTO);
+                return View(studentRequestDto);
             }
             
             catch (Exception ex) {
@@ -137,7 +137,7 @@ namespace OnlineExamWeb.Controllers
 
                 // Log exception (add proper logging)
                 ViewBag.Message = ex.Message;
-                return View(studentRequestDTO);
+                return View(studentRequestDto);
             }
          }
     
@@ -150,11 +150,11 @@ namespace OnlineExamWeb.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> LoginStudent(StudentLoginDTO studentLoginDTO,CancellationToken cancellationToken)
+        public async Task<ActionResult> LoginStudent(StudentLoginDto studentLoginDto,CancellationToken cancellationToken)
         {
-            studentLoginDTO.Password = EncryptionHelper.Encrypt(studentLoginDTO.Password);
+            studentLoginDto.Password = EncryptionHelper.Encrypt(studentLoginDto.Password);
 
-            var studentResponse= await _commandRepository.LoginStudent(studentLoginDTO, cancellationToken);
+            var studentResponse= await _commandRepository.LoginStudent(studentLoginDto, cancellationToken);
 
             if(studentResponse !=null)
                 return RedirectToAction(nameof(GetStudent), new { studentId = studentResponse.WriteDBId });
