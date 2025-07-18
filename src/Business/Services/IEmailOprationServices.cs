@@ -1,7 +1,7 @@
 ﻿using Abstraction.Interfaces;
 using Abstraction.Queries;
 using Azure;
-using Domain.DTOs.Read;
+using Domain.Dtos.Read;
 using Domain.OptionDP;
 using Microsoft.Extensions.Options;
 using System;

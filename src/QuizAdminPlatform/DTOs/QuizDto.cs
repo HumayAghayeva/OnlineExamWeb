@@ -1,6 +1,6 @@
 ﻿namespace QuizAdminPlatform.DTOs
 {
-    public class Quiz
+    public record QuizDto
     {
         public int Id { get;set; }
         public string Duration { get; set; }   
