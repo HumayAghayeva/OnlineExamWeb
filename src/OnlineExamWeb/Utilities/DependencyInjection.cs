@@ -32,6 +32,7 @@ namespace OnlineExamWeb.Utilities
             services.AddDbContext<DbContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("WriteDbContext")));
 
+            services.AddScoped<JwtTokenService>();
             // Use the specific DbContext in the UnitOfWork registration
             services.AddScoped<IUnitOfWork>(provider =>
             {
@@ -53,6 +54,7 @@ namespace OnlineExamWeb.Utilities
             services.AddScoped<IStudentQueryRepository, StudentQueryRepository>();
             services.AddScoped<ITransferDataToReadDb, ITransferDataToReadDbServices>();
             services.AddScoped<IFileManager, IConfigureImageServices>();
+   
             //services.AddSingleton<IHostedService, TransferDataFromWriteToRead>();
 
             //Validators

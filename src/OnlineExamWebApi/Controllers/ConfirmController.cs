@@ -1,4 +1,5 @@
 ﻿using Abstraction.Command;
+using Abstraction.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace OnlineExamWebApi.Controllers
@@ -8,7 +9,6 @@ namespace OnlineExamWebApi.Controllers
     public class ConfirmController : ControllerBase
     {
         private readonly IStudentCommandRepository _commandRepository;
-
         public ConfirmController(IStudentCommandRepository commandRepository)
         {
             _commandRepository = commandRepository;
@@ -18,7 +18,7 @@ namespace OnlineExamWebApi.Controllers
         public async Task<IActionResult> ConfirmStudent(int studentId, CancellationToken cancellationToken)
         {
             var result = await _commandRepository.ConfirmStudent(studentId, cancellationToken);
-
+          
             if (!result.Success)
             {
                 return NotFound("Student not found or confirmation failed.");

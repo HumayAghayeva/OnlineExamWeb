@@ -26,12 +26,13 @@ namespace OnlineExamWeb.Controllers
         private IValidator<StudentRequestDto> _studentValidator;
         private readonly IEmailOperations _emailOperations;
         private readonly IFileManager _fileManager;
+        private readonly JwtTokenService _jwtTokenService;
 
         public StudentController(IStudentCommandRepository commandRepository,
             IStudentQueryRepository studentQueryRepository,
             IFileManager fileManager,
             IEmailOperations emailOperations, 
-            IValidator<StudentRequestDto> studentValidator,IUnitOfWork unitOfWork)
+            IValidator<StudentRequestDto> studentValidator,IUnitOfWork unitOfWork , JwtTokenService jwtTokenService)
         {
             _commandRepository = commandRepository;
             _studentQueryRepository = studentQueryRepository;
@@ -39,6 +40,7 @@ namespace OnlineExamWeb.Controllers
             _emailOperations = emailOperations;
             _studentValidator = studentValidator;
             _unitOfWork = unitOfWork;   
+            _jwtTokenService = jwtTokenService; 
         }
 
         public ActionResult Index(StudentResponseDto student)
@@ -150,19 +152,28 @@ namespace OnlineExamWeb.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> LoginStudent(StudentLoginDto studentLoginDto,CancellationToken cancellationToken)
+        public async Task<ActionResult> LoginStudent(StudentLoginDto studentLoginDto, CancellationToken cancellationToken)
         {
-            studentLoginDto.Password = EncryptionHelper.Encrypt(studentLoginDto.Password);
+            var encryptedPassword = EncryptionHelper.Encrypt(studentLoginDto.Password);
 
-            var studentResponse= await _commandRepository.LoginStudent(studentLoginDto, cancellationToken);
+            var isAuthenticated = await _jwtTokenService.AuthenticateAsync(studentLoginDto.Email, encryptedPassword);
+            if (isAuthenticated is null)
+            {
+                return Unauthorized("Invalid credentials.");
+            }
 
-            if(studentResponse !=null)
-                return RedirectToAction(nameof(GetStudent), new { studentId = studentResponse.WriteDBId });
-            else
-                throw new Exception("Invalid email or password.");
+            studentLoginDto.Password = encryptedPassword;
+
+            var studentResponse = await _commandRepository.LoginStudent(studentLoginDto, cancellationToken);
+            if (studentResponse == null)
+            {
+                return Unauthorized("Invalid email or password.");
+            }
+
+            return RedirectToAction(nameof(GetStudent), new { studentId = studentResponse.WriteDBId });
         }
 
-      
+
         public ActionResult Edit(int id)
         {
             return View();

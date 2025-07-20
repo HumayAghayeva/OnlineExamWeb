@@ -13,10 +13,13 @@ using Microsoft.EntityFrameworkCore;
 using Serilog;
 using OnlineExamWeb.Middleware;
 using OnlineExamWeb.Utilities;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using System.Reflection;
 using Quartz;
 using Hazelcast;
 using Autofac.Core;
+using System.Text;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -30,6 +33,7 @@ builder.Configuration.SetBasePath(Directory.GetCurrentDirectory())
     .AddJsonFile($"appsetting.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json",optional:true).AddEnvironmentVariables();
 
 builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
+builder.Services.Configure<JWTSettings>(builder.Configuration.GetSection("JWT"));
 
 builder.Services.AddDbContext<OEPWriteDB>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("WriteDbContext")));
@@ -62,7 +66,28 @@ builder.Services.AddSingleton<Task<IHazelcastClient>>(async provider =>
 
     return await HazelcastClientFactory.StartNewClientAsync(options);
 });
+#region jwt auth
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
 
+}).AddJwtBearer(options => {
+    options.SaveToken = true;
+    options.RequireHttpsMetadata = false;
+    options.TokenValidationParameters = new TokenValidationParameters()
+    {
+        ValidateIssuer = true,
+        ValidIssuer = builder.Configuration["JWT:Issuer"],
+        ValidateAudience = true,
+        ValidAudience = builder.Configuration["JWT:Audience"],
+        IssuerSigningKey =
+        new SymmetricSecurityKey(
+            Encoding.UTF8.GetBytes(builder.Configuration["JWT:SecretKey"]))
+    };
+});
+#endregion
 builder.Services.AddAutoMapper(typeof(Program));
 
 var app = builder.Build();
