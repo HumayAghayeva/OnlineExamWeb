@@ -1,23 +1,25 @@
 
-using Infrastructure.DataContext.Write;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using HealthChecks.UI.Client;
-using Autofac.Core;
 using OnlineExamWebApi.HealthChecks;
 using Microsoft.Extensions.DependencyInjection;
-using Abstraction.Command;
-using Business.Repositories.Command;
 using Microsoft.EntityFrameworkCore;
 using System.Configuration;
 using Domain.OptionDP;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using OnlineExamWebApi.DBContext;
+using OnlineExamWebApi.Interfaces;
+using OnlineExamWebApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Configuration.AddJsonFile("appsettings.api.json", optional: false, reloadOnChange: true);
+builder.Configuration
+    .AddJsonFile("appsettings.api.json", optional: true, reloadOnChange: true)
+    .AddJsonFile($"appsettings.api.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json", optional: true, reloadOnChange: true);
+
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -25,23 +27,23 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.Configure<JWTSettings>(builder.Configuration.GetSection("JWT"));
 
-builder.Services.AddHealthChecks().AddSqlServer(builder.Configuration.GetConnectionString("WriteDbContext"), name: "Write DB");
-builder.Services.AddHealthChecks()
-    .AddCheck<DatabaseHealthCheck<OEPWriteDB>>("Database").
-    AddCheck<StudentConfirmationHealthCheck>("student_confirmation");
+//builder.Services.AddHealthChecks().AddSqlServer(builder.Configuration.GetConnectionString("WriteDbContext"), name: "Write DB");
+//builder.Services.AddHealthChecks()
+//    .AddCheck<DatabaseHealthCheck<OEPWriteDB>>("Database").
+//    AddCheck<StudentConfirmationHealthCheck>("student_confirmation");
 
-builder.Services.AddHealthChecksUI(options =>
-{
-    options.SetEvaluationTimeInSeconds(15); 
-    options.MaximumHistoryEntriesPerEndpoint(60);
-    options.AddHealthCheckEndpoint("API Health", "/health");
-})
-.AddSqlServerStorage(builder.Configuration.GetConnectionString("WriteDbContext"));
+//builder.Services.AddHealthChecksUI(options =>
+//{
+//    options.SetEvaluationTimeInSeconds(15); 
+//    options.MaximumHistoryEntriesPerEndpoint(60);
+//    options.AddHealthCheckEndpoint("API Health", "/health");
+//})
+//.AddSqlServerStorage(builder.Configuration.GetConnectionString("WriteDbContext"));
 
 builder.Services.AddDbContext<OEPWriteDB>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("WriteDbContext")));
 
-builder.Services.AddScoped<IStudentCommandRepository, StudentCommandRepository>();
+builder.Services.AddScoped<IStudentRepository, StudentRepositoryServices>();
 
 builder.Services.AddCors(options =>
 {
@@ -86,16 +88,16 @@ app.UseAuthorization();
 
 app.UseStaticFiles(); 
 
-app.MapHealthChecks("/health", new HealthCheckOptions
-{
-    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
-});
+//app.MapHealthChecks("/health", new HealthCheckOptions
+//{
+//    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+//});
 
-app.MapHealthChecksUI(options =>
-{
-    options.UIPath = "/health-ui"; 
-    options.ApiPath = "/health-ui-api"; 
-});
+//app.MapHealthChecksUI(options =>
+//{
+//    options.UIPath = "/health-ui"; 
+//    options.ApiPath = "/health-ui-api"; 
+//});
 
 app.MapControllers();
 

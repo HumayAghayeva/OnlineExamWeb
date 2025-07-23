@@ -1,14 +1,13 @@
-﻿using Abstraction.Command;
-using Business.Repositories.Command;
-using Microsoft.Extensions.Diagnostics.HealthChecks;
+﻿using Microsoft.Extensions.Diagnostics.HealthChecks;
+using OnlineExamWebApi.Services;
 
 namespace OnlineExamWebApi.HealthChecks
 {
     public class StudentConfirmationHealthCheck : IHealthCheck
     {
-        private readonly StudentCommandRepository _studentCommandRepository;
+        private readonly StudentRepositoryServices _studentCommandRepository;
 
-        public StudentConfirmationHealthCheck(StudentCommandRepository studentCommandRepository)
+        public StudentConfirmationHealthCheck(StudentRepositoryServices studentCommandRepository)
         {
             _studentCommandRepository = studentCommandRepository
 ;

@@ -1,6 +1,5 @@
-﻿using Abstraction.Command;
-using Abstraction.Interfaces;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using OnlineExamWebApi.Interfaces;
 
 namespace OnlineExamWebApi.Controllers
 {
@@ -8,13 +7,13 @@ namespace OnlineExamWebApi.Controllers
     [ApiController] 
     public class ConfirmController : ControllerBase
     {
-        private readonly IStudentCommandRepository _commandRepository;
-        public ConfirmController(IStudentCommandRepository commandRepository)
+        private readonly IStudentRepository _commandRepository;
+        public ConfirmController(IStudentRepository commandRepository)
         {
             _commandRepository = commandRepository;
         }
 
-        [HttpPut("confirm/{studentId}")]
+        [HttpGet("confirm/{studentId}")]
         public async Task<IActionResult> ConfirmStudent(int studentId, CancellationToken cancellationToken)
         {
             var result = await _commandRepository.ConfirmStudent(studentId, cancellationToken);
