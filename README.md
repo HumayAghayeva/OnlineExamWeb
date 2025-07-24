@@ -7,6 +7,7 @@ The following technologies and tools were used to build this application:
   - **Linq**
    - **MSSQL**
   - **MongoDB**
+  - **JWT Token**
   - **Quartz.NET**
   - **xUnit**
   - **Serilog**
