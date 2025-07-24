@@ -29,6 +29,7 @@ namespace OnlineExamWeb.Middleware
             response.ContentType = "application/json";
             response.StatusCode = (int)HttpStatusCode.InternalServerError;
 
+           
             var errorDetails = new
             {
                 StatusCode = response.StatusCode,
