@@ -1,4 +1,7 @@
-﻿using System.Net;
+﻿using Domain.Contract;
+using Domain.Enums;
+using System.Net;
+using System.Text.Json;
 
 namespace OnlineExamWeb.Middleware
 {
@@ -23,21 +26,31 @@ namespace OnlineExamWeb.Middleware
         }
 
 
-        private static Task HandleExceptionAsync(HttpContext context, Exception exception)
+        private static Task HandleExceptionAsync(HttpContext context, Exception error)
         {
             var response = context.Response;
             response.ContentType = "application/json";
             response.StatusCode = (int)HttpStatusCode.InternalServerError;
 
-           
-            var errorDetails = new
+            ApiResponse apiResponse = new ApiResponse();
+            if(error is GlobalException)
             {
-                StatusCode = response.StatusCode,
-                Message = "An unexpected error occurred. Please try again later.",
-                Detail = exception.Message 
-            };
+                GlobalException exception = (GlobalException)error;
+                apiResponse.Code = exception.Code; 
+                apiResponse.Message = exception.Message;
+            }
+            else
+            {
+                apiResponse.Code = ResponseCode.InternalServerError;
+                apiResponse.Message = error.Message;    
+            }
+            var result = JsonSerializer.Serialize(apiResponse, new JsonSerializerOptions
+            {
+                PropertyNamingPolicy =JsonNamingPolicy.CamelCase,
+                DefaultIgnoreCondition=System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
+            });
 
-            return response.WriteAsJsonAsync(errorDetails);
+            return response.WriteAsync(result);
         }
     }
 }
