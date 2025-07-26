@@ -1,0 +1,17 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace OnlineExamPaymentAPI.Entity
+{
+    public class PlasticCardModel
+    {
+        public string HolderName { get; set; }
+        public string CardNumber { get; set; }
+        public string ExpireMonth { get; set; }
+        public string ExpireYear { get; set; }
+        public string CVV { get; set; }
+    }
+}
