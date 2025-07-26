@@ -20,4 +20,9 @@ The following technologies and tools were used to build this application:
   - **Unit of Work**
   - **Generic Repository**
   - **The Options Pattern**
+
+     ## PaymentGateway
+  - **Luhn algorithm to validate card structure**
+  - **BIN prefix check for Visa and MasterCard**
+ 
  
