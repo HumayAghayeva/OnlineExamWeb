@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Domain.Dtos.Write;
 using Domain.DTOs.Write;
 using Domain.Entity.Write;
 using System;
@@ -14,6 +15,7 @@ namespace Business.Mapping.Write
         public StudentPostDTOWriteMapper()
         {
             CreateMap<StudentRequestDto, Student>();
+            CreateMap<StudentRolesDto, StudentRolesDto>();
         }
     }
 }

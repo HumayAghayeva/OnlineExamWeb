@@ -15,6 +15,8 @@ using Domain.Enums;
 using System.Threading;
 using Microsoft.Owin;
 using Domain.Entity.Write;
+using Domain.Dtos.Write;
+using AutoMapper;
 
 namespace Business.Repositories.Command
 {
@@ -24,14 +26,19 @@ namespace Business.Repositories.Command
 
         private readonly DbSet<Student> _studentEntity;
         private readonly DbSet<StudentPhoto> _studentPhotos;
+        private readonly DbSet<StudentRoles> _studentRoles;
+        private readonly IMapper _mapper;
 
-        public StudentCommandRepository(OEPWriteDB context) : base(context)
+        public StudentCommandRepository(OEPWriteDB context , IMapper mapper) : base(context)
         {
             _context = context;
             _studentEntity = context.Set<Student>();
             _studentPhotos = context.Set<StudentPhoto>();
+            _studentRoles = context.Set<StudentRoles>();
+            _mapper = mapper;
         }
 
+        #region LoginStudent
         public async Task<StudentResponseDto> LoginStudent(StudentLoginDto studentLoginDto, CancellationToken cancellationToken)
         {
             var student = await _context.Students.Where(w => w.Email == studentLoginDto.Email &&
@@ -54,7 +61,9 @@ namespace Business.Repositories.Command
 
             return studentResponseDto;
         }
+        #endregion
 
+        #region AddStudentPhoto
         public async Task<ResponseDto> AddStudentPhoto(StudentPhotoDto studentPhotoDto, CancellationToken cancellationToken)
         {
 
@@ -79,7 +88,9 @@ namespace Business.Repositories.Command
            return response;
         }
 
-       
+        #endregion
+
+        #region AddStudent
         public async Task<ResponseDto> AddStudent(StudentRequestDto studentReadDto, CancellationToken cancellationToken)
         {
             try
@@ -121,6 +132,34 @@ namespace Business.Repositories.Command
             }
 
         }
+        #endregion
+
+        #region AssignRoleToStudentAsync
+        public async Task<ResponseDto> AssignRoleToStudentAsync(StudentRolesDto studentRolesDto, CancellationToken cancellationToken)
+        {
+            var studentRoledto = new StudentRolesDto
+            {
+                StudentId = studentRolesDto.StudentId,
+                RoleId = studentRolesDto.RoleId,
+                CreateDate = studentRolesDto.CreateDate
+            };
+
+            var studentRole = _mapper.Map<StudentRoles>(studentRolesDto);
+
+            _studentRoles.Add(studentRole);
+
+            await _context.SaveChangesAsync(cancellationToken);
+
+            return new ResponseDto
+            {
+                Success = true,
+                Message = "Student  Role was added successfully.",
+                Id = studentRole.Id
+            };
+
+        }
+        #endregion
     }
 }
+      
 

@@ -1,4 +1,5 @@
-﻿using Domain.Entity.Write;
+﻿using Domain.Dtos.Write;
+using Domain.Entity.Write;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
@@ -18,6 +19,7 @@ namespace Infrastructure.DataContext.Write
         }
         public virtual DbSet<Student> Students { get; set; }
         public virtual DbSet<StudentPhoto> StudentPhotos { get; set; }
+        public virtual DbSet<StudentRoles> StudentRoles { get; set; }
     }
  
 }

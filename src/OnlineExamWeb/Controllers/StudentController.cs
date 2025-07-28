@@ -15,6 +15,8 @@ using FluentValidation;
 using System;
 using Serilog;
 using Abstraction;
+using Domain.Dtos.Write;
+using Domain.Enums;
 
 namespace OnlineExamWeb.Controllers
 {
@@ -156,11 +158,11 @@ namespace OnlineExamWeb.Controllers
         {
             var encryptedPassword = EncryptionHelper.Encrypt(studentLoginDto.Password);
 
-            var isAuthenticated = await _jwtTokenService.AuthenticateAsync(studentLoginDto.Email, encryptedPassword);
-            if (isAuthenticated is null)
-            {
-                return Unauthorized("Invalid credentials.");
-            }
+            ////var isAuthenticated = await _jwtTokenService.AuthenticateAsync(studentLoginDto.Email, encryptedPassword);
+            ////if (isAuthenticated is null)
+            ////{
+            ////    return Unauthorized("Invalid credentials.");
+            ////}
 
             studentLoginDto.Password = encryptedPassword;
 
@@ -169,6 +171,15 @@ namespace OnlineExamWeb.Controllers
             {
                 return Unauthorized("Invalid email or password.");
             }
+
+            var studentRoleId = new  StudentRolesDto
+            {
+                StudentId= Convert.ToInt32(studentResponse.WriteDBId),
+                RoleId= (int)Roles.QuizParticipant,
+                CreateDate=DateTime.Now
+            };
+
+
 
             return RedirectToAction(nameof(GetStudent), new { studentId = studentResponse.WriteDBId });
         }

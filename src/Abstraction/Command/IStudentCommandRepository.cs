@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Domain.Entity;
 using Microsoft.Owin;
+using Domain.Dtos.Write;
 
 namespace Abstraction.Command
 {
@@ -19,5 +20,6 @@ namespace Abstraction.Command
         Task<StudentResponseDto> LoginStudent(StudentLoginDto studentLoginDto, CancellationToken cancellationToken);    
 
         Task<ResponseDto> AddStudentPhoto(StudentPhotoDto studentPhoto, CancellationToken cancellationToken);  
+        Task<ResponseDto>  AssignRoleToStudentAsync(StudentRolesDto studentRolesDto, CancellationToken cancellationToken);
     }
 }
