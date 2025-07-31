@@ -17,6 +17,7 @@ using Serilog;
 using Abstraction;
 using Domain.Dtos.Write;
 using Domain.Enums;
+using AutoMapper;
 
 namespace OnlineExamWeb.Controllers
 {
@@ -29,12 +30,14 @@ namespace OnlineExamWeb.Controllers
         private readonly IEmailOperations _emailOperations;
         private readonly IFileManager _fileManager;
         private readonly JwtTokenService _jwtTokenService;
+        private readonly IMapper _mapper;
 
         public StudentController(IStudentCommandRepository commandRepository,
             IStudentQueryRepository studentQueryRepository,
             IFileManager fileManager,
             IEmailOperations emailOperations, 
-            IValidator<StudentRequestDto> studentValidator,IUnitOfWork unitOfWork , JwtTokenService jwtTokenService)
+            IValidator<StudentRequestDto> studentValidator,IUnitOfWork unitOfWork , 
+            JwtTokenService jwtTokenService,  IMapper mapper)
         {
             _commandRepository = commandRepository;
             _studentQueryRepository = studentQueryRepository;
@@ -42,7 +45,8 @@ namespace OnlineExamWeb.Controllers
             _emailOperations = emailOperations;
             _studentValidator = studentValidator;
             _unitOfWork = unitOfWork;   
-            _jwtTokenService = jwtTokenService; 
+            _jwtTokenService = jwtTokenService;
+            _mapper = mapper;
         }
 
         public ActionResult Index(StudentResponseDto student)
@@ -167,20 +171,28 @@ namespace OnlineExamWeb.Controllers
             studentLoginDto.Password = encryptedPassword;
 
             var studentResponse = await _commandRepository.LoginStudent(studentLoginDto, cancellationToken);
+
             if (studentResponse == null)
             {
                 return Unauthorized("Invalid email or password.");
             }
 
-            var studentRoleId = new  StudentRolesDto
+            var studentRoleDto = new  StudentRolesDto
             {
                 StudentId= Convert.ToInt32(studentResponse.WriteDBId),
                 RoleId= (int)Roles.QuizParticipant,
                 CreateDate=DateTime.Now
             };
 
+             
+           
+            var roleResult= await _commandRepository.AssignRoleToStudentAsync(studentRoleDto, cancellationToken);
 
-
+            if (!roleResult.Success)
+            {
+                return BadRequest("Failed to assign student role.");
+            }
+                    
             return RedirectToAction(nameof(GetStudent), new { studentId = studentResponse.WriteDBId });
         }
 
@@ -194,8 +206,5 @@ namespace OnlineExamWeb.Controllers
         {
             return View();
         }
-
-     
-    
     }
 }

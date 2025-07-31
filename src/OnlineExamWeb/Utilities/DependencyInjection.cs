@@ -21,6 +21,8 @@ using Business.ValidationRules.FluentValidations.StudentValidator;
 using Domain.DTOs.Write;
 using Microsoft.EntityFrameworkCore;
 using Hazelcast;
+using Business.Mapper;
+using AutoMapper;
 
 namespace OnlineExamWeb.Utilities
 {
@@ -28,6 +30,15 @@ namespace OnlineExamWeb.Utilities
     {
         public static IServiceCollection InjectDependencies(this IServiceCollection services, IConfiguration configuration)
         {
+            #region AutoMapper
+            var mappingConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new MappingProfileDto());
+            });
+
+            services.AddSingleton(mappingConfig.CreateMapper());    // should i use it ?
+            #endregion
+
             // Register your specific DbContext
             services.AddDbContext<DbContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("WriteDbContext")));

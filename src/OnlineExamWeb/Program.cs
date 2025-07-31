@@ -15,12 +15,11 @@ using OnlineExamWeb.Middleware;
 using OnlineExamWeb.Utilities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using System.Reflection;
 using Quartz;
 using Hazelcast;
 using Autofac.Core;
 using System.Text;
-
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -88,7 +87,6 @@ builder.Services.AddAuthentication(options =>
     };
 });
 #endregion
-builder.Services.AddAutoMapper(typeof(Program));
 
 var app = builder.Build();
 

@@ -21,5 +21,8 @@ namespace Abstraction.Command
 
         Task<ResponseDto> AddStudentPhoto(StudentPhotoDto studentPhoto, CancellationToken cancellationToken);  
         Task<ResponseDto>  AssignRoleToStudentAsync(StudentRolesDto studentRolesDto, CancellationToken cancellationToken);
+
+        //Task<ResponseDto> IsRoleAlreadyAssignedAsync(int studentId, int roleId, CancellationToken cancellationToken);
+
     }
 }

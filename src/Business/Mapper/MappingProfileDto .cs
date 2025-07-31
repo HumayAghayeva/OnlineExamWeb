@@ -8,14 +8,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Business.Mapping.Write
+namespace Business.Mapper
 {
-    public class StudentPostDTOWriteMapper : Profile
+    public class MappingProfileDto : Profile
     {
-        public StudentPostDTOWriteMapper()
+        public MappingProfileDto()
         {
             CreateMap<StudentRequestDto, Student>();
-            CreateMap<StudentRolesDto, StudentRolesDto>();
+            CreateMap<StudentRolesDto, StudentRoles>();
         }
     }
 }

@@ -17,6 +17,7 @@ using Microsoft.Owin;
 using Domain.Entity.Write;
 using Domain.Dtos.Write;
 using AutoMapper;
+using Abstraction;
 
 namespace Business.Repositories.Command
 {
@@ -156,10 +157,33 @@ namespace Business.Repositories.Command
                 Message = "Student  Role was added successfully.",
                 Id = studentRole.Id
             };
-
         }
         #endregion
+
+    
+        #region IsRoleAlreadyAssignedAsync
+        //public async Task<ResponseDto> AssignRoleIfNotExistsAsync(StudentRolesDto dto, CancellationToken cancellationToken)
+        //{
+          
+        //    var isAlreadyAssigned = await _studentRoles.IsRoleAssignedAsync(dto.StudentId, dto.RoleId, cancellationToken);
+
+        //    if (isAlreadyAssigned)
+        //    {
+        //        return new ResponseDto
+        //        {
+        //            Success = false,
+        //            Message = "Student already has this role assigned. No action taken."
+        //        };
+        //    }
+
+         
+        //    return await _repository.AddStudentRoleAsync(dto, cancellationToken);
+        //}
+        #endregion
+
     }
+   
 }
+
       
 

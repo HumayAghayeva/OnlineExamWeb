@@ -20,6 +20,15 @@ namespace Infrastructure.DataContext.Write
         public virtual DbSet<Student> Students { get; set; }
         public virtual DbSet<StudentPhoto> StudentPhotos { get; set; }
         public virtual DbSet<StudentRoles> StudentRoles { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<StudentRoles>().ToTable("StudentRoles");
+        }
+
+
     }
  
 }
