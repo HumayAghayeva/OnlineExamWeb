@@ -24,7 +24,7 @@ namespace Infrastructure.DataContext.Write
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
+            modelBuilder.Ignore<StudentRoles>();
             modelBuilder.Entity<StudentRoles>().ToTable("StudentRoles");
         }
 

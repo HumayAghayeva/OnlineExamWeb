@@ -37,8 +37,6 @@ builder.Services.Configure<JWTSettings>(builder.Configuration.GetSection("JWT"))
 builder.Services.AddDbContext<OEPWriteDB>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("WriteDbContext")));
 
-builder.Services.AddDbContext<OEPReadDB>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("ReadDbContext")));
 
 // Configure Serilog
 Log.Logger = new LoggerConfiguration()

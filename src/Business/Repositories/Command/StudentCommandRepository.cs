@@ -102,9 +102,9 @@ namespace Business.Repositories.Command
                     LastName = studentReadDto.LastName,
                     DateOfBirth = studentReadDto.DateOfBirth,
                     PIN = studentReadDto.PIN,
-                    Email = studentReadDto.Email
-                    //Password = studentReadDto.Password,
-                    //ConfirmPassword = studentReadDto.ConfirmPassword
+                    Email = studentReadDto.Email,
+                    Password = studentReadDto.Password,
+                    ConfirmPassword = studentReadDto.ConfirmPassword
                 };
 
                 await _studentEntity.AddAsync(studentEntity, cancellationToken);

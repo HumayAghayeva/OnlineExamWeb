@@ -22,7 +22,7 @@ namespace Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Domain.Entity.Write.Student", b =>
+            modelBuilder.Entity("Domain.Entity.Student", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
@@ -63,6 +63,9 @@ namespace Infrastructure.Migrations
                     b.Property<string>("Password")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("PhotoUrl")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("UpdatedTime")
                         .HasColumnType("datetime2");
 
@@ -71,7 +74,7 @@ namespace Infrastructure.Migrations
                     b.ToTable("Students");
                 });
 
-            modelBuilder.Entity("Domain.Entity.Write.StudentPhoto", b =>
+            modelBuilder.Entity("Domain.Entity.StudentPhoto", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -95,9 +98,31 @@ namespace Infrastructure.Migrations
                     b.ToTable("StudentPhotos");
                 });
 
-            modelBuilder.Entity("Domain.Entity.Write.StudentPhoto", b =>
+            modelBuilder.Entity("Domain.Entity.StudentRoles", b =>
                 {
-                    b.HasOne("Domain.Entity.Write.Student", "Student")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StudentId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("StudentRoles", (string)null);
+                });
+
+            modelBuilder.Entity("Domain.Entity.StudentPhoto", b =>
+                {
+                    b.HasOne("Domain.Entity.Student", "Student")
                         .WithMany()
                         .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.Cascade)
