@@ -1,4 +1,5 @@
-﻿using Domain.Models;
+﻿using Domain.Entity;
+using Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -6,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Entity.Write
+namespace Domain.Entity
 {
     public class StudentPhoto
     {

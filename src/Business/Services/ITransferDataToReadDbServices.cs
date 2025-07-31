@@ -1,7 +1,6 @@
 ﻿using Abstraction.Interfaces;
 using Business.BackGroundServices;
 using Domain.DTOs.Read;
-using Domain.Entity.Read;
 using Domain.Enums;
 using Infrastructure.DataContext.Write;
 using Infrastructure.Persistent.Read;

@@ -14,10 +14,10 @@ using System.ComponentModel.DataAnnotations;
 using Domain.Enums;
 using System.Threading;
 using Microsoft.Owin;
-using Domain.Entity.Write;
 using Domain.Dtos.Write;
 using AutoMapper;
 using Abstraction;
+using Domain.Entity;
 
 namespace Business.Repositories.Command
 {
@@ -102,9 +102,9 @@ namespace Business.Repositories.Command
                     LastName = studentReadDto.LastName,
                     DateOfBirth = studentReadDto.DateOfBirth,
                     PIN = studentReadDto.PIN,
-                    Email = studentReadDto.Email,
-                    Password = studentReadDto.Password,
-                    ConfirmPassword = studentReadDto.ConfirmPassword
+                    Email = studentReadDto.Email
+                    //Password = studentReadDto.Password,
+                    //ConfirmPassword = studentReadDto.ConfirmPassword
                 };
 
                 await _studentEntity.AddAsync(studentEntity, cancellationToken);
@@ -138,6 +138,10 @@ namespace Business.Repositories.Command
         #region AssignRoleToStudentAsync
         public async Task<ResponseDto> AssignRoleToStudentAsync(StudentRolesDto studentRolesDto, CancellationToken cancellationToken)
         {
+            bool isAlreadyAssigned = await _context.Set<StudentRoles>()
+              .AsNoTracking()
+              .AnyAsync(r => r.StudentId == studentRolesDto.StudentId && r.RoleId == studentRolesDto.RoleId, cancellationToken);
+
             var studentRoledto = new StudentRolesDto
             {
                 StudentId = studentRolesDto.StudentId,
@@ -145,44 +149,38 @@ namespace Business.Repositories.Command
                 CreateDate = studentRolesDto.CreateDate
             };
 
-            var studentRole = _mapper.Map<StudentRoles>(studentRolesDto);
-
-            _studentRoles.Add(studentRole);
-
-            await _context.SaveChangesAsync(cancellationToken);
-
-            return new ResponseDto
+            if (isAlreadyAssigned)
             {
-                Success = true,
-                Message = "Student  Role was added successfully.",
-                Id = studentRole.Id
-            };
+
+                return new ResponseDto
+                {
+                    Success = true,
+                    Message = "Student already has this role. No changes made."
+                };
+            }
+            else
+            {
+                var studentRole = _mapper.Map<StudentRoles>(studentRolesDto);
+
+                _studentRoles.Add(studentRole);
+
+                await _context.SaveChangesAsync(cancellationToken);
+
+                return new ResponseDto
+                {
+                    Success = true,
+                    Message = "Student  Role was added successfully.",
+                    Id = studentRole.Id
+                };
+            }
+
         }
         #endregion
 
-    
-        #region IsRoleAlreadyAssignedAsync
-        //public async Task<ResponseDto> AssignRoleIfNotExistsAsync(StudentRolesDto dto, CancellationToken cancellationToken)
-        //{
-          
-        //    var isAlreadyAssigned = await _studentRoles.IsRoleAssignedAsync(dto.StudentId, dto.RoleId, cancellationToken);
 
-        //    if (isAlreadyAssigned)
-        //    {
-        //        return new ResponseDto
-        //        {
-        //            Success = false,
-        //            Message = "Student already has this role assigned. No action taken."
-        //        };
-        //    }
-
-         
-        //    return await _repository.AddStudentRoleAsync(dto, cancellationToken);
-        //}
-        #endregion
-
+       
     }
-   
+
 }
 
       

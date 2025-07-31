@@ -1,4 +1,4 @@
-﻿using Domain.Entity.Read;
+﻿
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -14,6 +14,6 @@ namespace Infrastructure.Persistent.Read
         {
 
         }
-        public virtual DbSet<Student> Students { get; set; }
+        
     }
 }

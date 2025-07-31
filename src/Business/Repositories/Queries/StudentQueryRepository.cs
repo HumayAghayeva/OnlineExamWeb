@@ -13,8 +13,8 @@ using System.Diagnostics.Metrics;
 using Domain.DTOs.Write;
 using System.Text.RegularExpressions;
 using Domain.Enums;
-using Domain.Entity.Write;
 using MongoDB.Driver;
+using Domain.Entity;
 
 namespace Business.Repositories
 {

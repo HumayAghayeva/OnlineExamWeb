@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Domain.Dtos.Write;
 using Domain.DTOs.Write;
-using Domain.Entity.Write;
+using Domain.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -16,7 +16,6 @@ using MongoDB.Driver;
 using Business.BackGroundServices;
 using FluentValidation;
 using System;
-using Domain.Entity.Read;
 using Business.ValidationRules.FluentValidations.StudentValidator;
 using Domain.DTOs.Write;
 using Microsoft.EntityFrameworkCore;

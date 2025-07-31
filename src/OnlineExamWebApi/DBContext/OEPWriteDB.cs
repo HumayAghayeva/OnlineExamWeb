@@ -1,4 +1,4 @@
-﻿using Domain.Entity.Write;
+﻿using Domain.Entity;
 using Microsoft.EntityFrameworkCore;
 
 namespace OnlineExamWebApi.DBContext

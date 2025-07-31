@@ -1,5 +1,5 @@
 ﻿using Domain.Dtos.Write;
-using Domain.Entity.Write;
+using Domain.Entity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;

@@ -1,5 +1,4 @@
 ﻿using Domain.DTOs.Write;
-using Domain.Entity.Read;
 using FluentValidation;
 using System;
 using System.Collections.Generic;
