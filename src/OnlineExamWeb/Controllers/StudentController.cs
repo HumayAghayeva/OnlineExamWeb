@@ -159,13 +159,7 @@ namespace OnlineExamWeb.Controllers
         public async Task<ActionResult> LoginStudent(StudentLoginDto studentLoginDto, CancellationToken cancellationToken)
         {
             var encryptedPassword = EncryptionHelper.Encrypt(studentLoginDto.Password);
-
-            ////var isAuthenticated = await _jwtTokenService.AuthenticateAsync(studentLoginDto.Email, encryptedPassword);
-            ////if (isAuthenticated is null)
-            ////{
-            ////    return Unauthorized("Invalid credentials.");
-            ////}
-
+          
             studentLoginDto.Password = encryptedPassword;
 
             var studentResponse = await _commandRepository.LoginStudent(studentLoginDto, cancellationToken);

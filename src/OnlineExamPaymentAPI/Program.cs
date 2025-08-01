@@ -1,3 +1,7 @@
+using Abstraction.PaymentApi.Interfaces.CardOperations;
+using OnlineExamPaymentAPI.Dtos.Request;
+using OnlineExamPaymentAPI.Endpoints;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -22,4 +26,8 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+#region Minima Api 
+// Register Minimal APIs
+app.MapCardEndpoints();
+#endregion
 app.Run();

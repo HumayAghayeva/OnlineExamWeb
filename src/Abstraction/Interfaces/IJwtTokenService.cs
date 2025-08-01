@@ -10,6 +10,5 @@ namespace Abstraction.Interfaces
     public interface IJwtTokenService
     {
         Task<string> GenerateJwtTokenAsync(string username);
-        Task<string> AuthenticateAsync(string email, string password);
     }
 }

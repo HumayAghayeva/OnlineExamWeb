@@ -1,5 +1,8 @@
 ﻿using Abstraction.Interfaces;
+using Domain.Contract;
 using Domain.DTOs.Write;
+using Domain.Entity;
+using Domain.Enums;
 using Domain.OptionDP;
 using Infrastructure.DataContext.Write;
 using Infrastructure.Persistent.Read;
@@ -32,12 +35,39 @@ namespace Business.Services
 
         public async Task<string> GenerateJwtTokenAsync(string username)
         {
-            var claims = new[]
+            var student = _oEPWriteDB.Students.FirstOrDefault(s => s.Email == username);
+
+            if (student == null)
             {
-            new Claim(JwtRegisteredClaimNames.Sub, username),
-            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-        };
+                throw new UnauthorizedAccessException("Student not found.");
+            }
+
            
+            var roleIds = _oEPWriteDB.StudentRoles
+                .Where(sr => sr.StudentId == student.ID)
+                .Select(sr => sr.RoleId)
+                .ToList();
+
+            var roleNames = roleIds
+                .Select(id => Enum.GetName(typeof(Roles), id))
+                .Where(name => !string.IsNullOrEmpty(name))
+                .ToList();
+
+            
+            var claims = new List<Claim>
+    {
+        new Claim(JwtRegisteredClaimNames.Sub, username),
+        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+        new Claim(ClaimTypes.Name, username),
+        new Claim("studentId", student.ID.ToString())
+    };
+
+         
+            foreach (var roleName in roleNames)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, roleName));
+            }
+
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSetting.SecretKey));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
@@ -48,28 +78,9 @@ namespace Business.Services
                 expires: DateTime.UtcNow.AddMinutes(_jwtSetting.TokenValidityInMinutes),
                 signingCredentials: creds
             );
+
             var jwt = new JwtSecurityTokenHandler().WriteToken(token);
-
             return await Task.FromResult(jwt);
-        }
-
-        public async Task<string> AuthenticateAsync(string email , string password)
-        {
-            if (
-                string.IsNullOrWhiteSpace(email) ||
-                string.IsNullOrWhiteSpace(password))
-            {
-                throw new ArgumentException("Email or password is missing.");
-            }
-
-            var userAccount =  _oEPWriteDB.Students.FirstOrDefault(w => w.Email == email && w.Password == password);
-
-            if (userAccount == null)
-            {
-                throw new UnauthorizedAccessException("Invalid credentials.");
-            }
-
-             return await GenerateJwtTokenAsync(userAccount.Email);
         }
     }
 }

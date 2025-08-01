@@ -63,6 +63,9 @@ builder.Services.AddSingleton<Task<IHazelcastClient>>(async provider =>
 
     return await HazelcastClientFactory.StartNewClientAsync(options);
 });
+
+builder.Services.AddHttpClient();
+
 #region jwt auth
 builder.Services.AddAuthentication(options =>
 {
