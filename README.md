@@ -24,5 +24,7 @@ The following technologies and tools were used to build this application:
      ## PaymentGateway
   - **Luhn algorithm to validate card structure**
   - **BIN prefix check for Visa and MasterCard**
- 
+    
+   ## Minimal APIs for Fast & Clean Card Validation
+ - **This project leverages ASP.NET Core Minimal APIs to provide lightweight, high-performance endpoints for validating card type, CVV, and expiry date — ideal for microservices and modern web integrations.
  
