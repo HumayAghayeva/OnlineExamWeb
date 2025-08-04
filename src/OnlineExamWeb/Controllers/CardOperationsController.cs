@@ -64,16 +64,7 @@ namespace OnlineExamWeb.Controllers
                 ModelState.AddModelError("", "Card Type validation failed.");
                 return View(plasticCardDto);
             }
-
-            //   var result = await response.Content.ReadFromJsonAsync<ValidationResultDto>(cancellationToken: cancellationToken);
-
-            //if (result?.IsValid != true)
-            //{
-            //    ModelState.AddModelError("", result?.Message ?? "Invalid card.");
-            //    return View(plasticCardDto);
-            //}
-
-            return View("Success"); // Or your next step
+            return View("Success"); 
         }
 
     }

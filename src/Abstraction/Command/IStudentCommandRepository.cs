@@ -20,6 +20,7 @@ namespace Abstraction.Command
         Task<StudentResponseDto> LoginStudent(StudentLoginDto studentLoginDto, CancellationToken cancellationToken);    
 
         Task<ResponseDto> AddStudentPhoto(StudentPhotoDto studentPhoto, CancellationToken cancellationToken);  
+
         Task<ResponseDto>  AssignRoleToStudentAsync(StudentRolesDto studentRolesDto, CancellationToken cancellationToken);
 
     }

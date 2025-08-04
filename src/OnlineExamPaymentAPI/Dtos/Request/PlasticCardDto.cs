@@ -29,6 +29,8 @@ namespace OnlineExamPaymentAPI.Dtos.Request
         [Required(ErrorMessage = "CVV is required.")]
         [RegularExpression(@"^\d{3,4}$", ErrorMessage = "CVV must be 3 or 4 digits.")]
         public string CVV { get; init; }
+
+        public string CardType { get; init; } = null;
     }
 
 }
