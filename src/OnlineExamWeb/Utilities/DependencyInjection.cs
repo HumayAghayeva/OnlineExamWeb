@@ -22,6 +22,7 @@ using Microsoft.EntityFrameworkCore;
 using Hazelcast;
 using Business.Mapper;
 using AutoMapper;
+using System.Configuration;
 
 namespace OnlineExamWeb.Utilities
 {
@@ -42,11 +43,14 @@ namespace OnlineExamWeb.Utilities
             services.AddDbContext<DbContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("WriteDbContext")));
 
-            services.AddScoped<JwtTokenService>();
+            services.AddTransient<IJwtTokenService, JwtTokenService>();
+            services.Configure<JWTSettings>(configuration.GetSection("JWTSettings"));
+
             // Use the specific DbContext in the UnitOfWork registration
+
             services.AddScoped<IUnitOfWork>(provider =>
             {
-                var context = provider.GetRequiredService<DbContext>(); // Replace with your specific DbContext
+                var context = provider.GetRequiredService<DbContext>(); 
                 return new UnitOfWork(context);
             });
 
