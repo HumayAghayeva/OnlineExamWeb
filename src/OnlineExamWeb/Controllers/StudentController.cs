@@ -158,6 +158,7 @@ namespace OnlineExamWeb.Controllers
         [HttpPost]
         public async Task<ActionResult> LoginStudent(StudentLoginDto studentLoginDto, CancellationToken cancellationToken)
         {
+            var token = _jwtTokenService.GenerateJwtTokenAsync(studentLoginDto.Email);
             var encryptedPassword = EncryptionHelper.Encrypt(studentLoginDto.Password);
           
             studentLoginDto.Password = encryptedPassword;

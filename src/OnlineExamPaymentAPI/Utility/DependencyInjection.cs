@@ -38,11 +38,9 @@ namespace OnlineExamWebAPI.Utilities
             // Business Services
             services.AddScoped<ICardValidator, CardValidatorServices>();
             services.AddScoped<IPlasticCardServices, PlasticCardServices>();
-            services.AddTransient<IJwtTokenService, JwtTokenService>();
 
-            // JWT Settings
             services.Configure<JWTSettings>(configuration.GetSection("JWTSettings"));
-
+            services.AddScoped<IJwtTokenService,JwtTokenService>();
             return services;
         }
 

@@ -1,5 +1,6 @@
 ﻿using Abstraction.Interfaces;
 using Domain.Contract;
+using Domain.Dtos.Read;
 using Domain.DTOs.Write;
 using Domain.Entity;
 using Domain.Enums;
@@ -24,16 +25,16 @@ namespace Business.Services
 
     public class JwtTokenService : IJwtTokenService
     {
-        private readonly JWTSettings _jwtSetting;
+        private readonly IOptions<JWTSettings> _jwtSettings;
         private readonly OEPWriteDB _oEPWriteDB;
 
         public JwtTokenService(IOptions<JWTSettings> jwtOptions, OEPWriteDB oEPWriteDB)
         {
-            _jwtSetting = jwtOptions.Value;
+            _jwtSettings = jwtOptions;
             _oEPWriteDB = oEPWriteDB;
         }
 
-        public async Task<string> GenerateJwtTokenAsync(string username)
+        public async Task<JWTResponseDto> GenerateJwtTokenAsync(string username)
         {
             var student = _oEPWriteDB.Students.FirstOrDefault(s => s.Email == username);
 
@@ -42,7 +43,6 @@ namespace Business.Services
                 throw new UnauthorizedAccessException("Student not found.");
             }
 
-           
             var roleIds = _oEPWriteDB.StudentRoles
                 .Where(sr => sr.StudentId == student.ID)
                 .Select(sr => sr.RoleId)
@@ -53,7 +53,6 @@ namespace Business.Services
                 .Where(name => !string.IsNullOrEmpty(name))
                 .ToList();
 
-            
             var claims = new List<Claim>
     {
         new Claim(JwtRegisteredClaimNames.Sub, username),
@@ -62,25 +61,31 @@ namespace Business.Services
         new Claim("studentId", student.ID.ToString())
     };
 
-         
             foreach (var roleName in roleNames)
             {
                 claims.Add(new Claim(ClaimTypes.Role, roleName));
             }
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSetting.SecretKey));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Value.SecretKey));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var token = new JwtSecurityToken(
-                issuer: _jwtSetting.Issuer,
-                audience: _jwtSetting.Audience,
+                issuer: _jwtSettings.Value.Issuer,
+                audience: _jwtSettings.Value.Audience,
                 claims: claims,
-                expires: DateTime.UtcNow.AddMinutes(_jwtSetting.TokenValidityInMinutes),
+                expires: DateTime.UtcNow.AddMinutes(_jwtSettings.Value.TokenValidityInMinutes),
                 signingCredentials: creds
             );
 
             var jwt = new JwtSecurityTokenHandler().WriteToken(token);
-            return await Task.FromResult(jwt);
+
+            return await Task.FromResult(new JWTResponseDto
+            {
+                UserName = username,
+                Token = jwt,
+                Roles = roleNames
+            });
         }
+
     }
 }

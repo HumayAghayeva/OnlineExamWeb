@@ -43,8 +43,9 @@ namespace OnlineExamWeb.Utilities
             services.AddDbContext<DbContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("WriteDbContext")));
 
-            services.AddTransient<IJwtTokenService, JwtTokenService>();
             services.Configure<JWTSettings>(configuration.GetSection("JWTSettings"));
+            services.AddScoped<IJwtTokenService ,JwtTokenService>();
+           
 
             // Use the specific DbContext in the UnitOfWork registration
 

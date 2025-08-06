@@ -1,4 +1,5 @@
-﻿using Domain.DTOs.Write;
+﻿using Domain.Dtos.Read;
+using Domain.DTOs.Write;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,6 @@ namespace Abstraction.Interfaces
 {
     public interface IJwtTokenService
     {
-        Task<string> GenerateJwtTokenAsync(string username);
+        Task<JWTResponseDto> GenerateJwtTokenAsync(string username);
     }
 }
