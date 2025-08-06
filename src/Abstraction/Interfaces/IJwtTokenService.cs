@@ -10,6 +10,6 @@ namespace Abstraction.Interfaces
 {
     public interface IJwtTokenService
     {
-        Task<JWTResponseDto> GenerateJwtTokenAsync(string username);
+        Task<JWTResponseDto> GenerateJwtTokenAsync(UserLoginDto userLoginDto);
     }
 }

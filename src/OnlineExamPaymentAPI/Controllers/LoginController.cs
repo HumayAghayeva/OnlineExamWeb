@@ -1,6 +1,7 @@
 ﻿using Abstraction.Interfaces;
 using Business.Services;
 using Domain.Dtos.Read;
+using Domain.DTOs.Write;
 using Microsoft.AspNetCore.Mvc;
 using OnlineExamPaymentAPI.Dtos.Request;
 
@@ -20,7 +21,7 @@ namespace OnlineExamPaymentAPI.Controllers
         [HttpPost]
         public async Task<JWTResponseDto> Login(UserLoginDto userDto)
         {
-           var result= await _jwtTokenServices.GenerateJwtTokenAsync(userDto.Email);
+           var result= await _jwtTokenServices.GenerateJwtTokenAsync(userDto);
 
             return result;
         }

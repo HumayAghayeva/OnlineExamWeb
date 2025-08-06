@@ -1,4 +1,4 @@
-﻿namespace OnlineExamPaymentAPI.Dtos.Request
+﻿namespace Domain.DTOs.Write
 {
     public record UserLoginDto
     {

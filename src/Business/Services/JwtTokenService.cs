@@ -34,9 +34,9 @@ namespace Business.Services
             _oEPWriteDB = oEPWriteDB;
         }
 
-        public async Task<JWTResponseDto> GenerateJwtTokenAsync(string username)
+        public async Task<JWTResponseDto> GenerateJwtTokenAsync(UserLoginDto userLoginDto)
         {
-            var student = _oEPWriteDB.Students.FirstOrDefault(s => s.Email == username);
+            var student = _oEPWriteDB.Students.FirstOrDefault(s => s.Email == userLoginDto.Email && s.Password == userLoginDto.Password);
 
             if (student == null)
             {
@@ -55,9 +55,9 @@ namespace Business.Services
 
             var claims = new List<Claim>
     {
-        new Claim(JwtRegisteredClaimNames.Sub, username),
+        new Claim(JwtRegisteredClaimNames.Sub, userLoginDto.Email),
         new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-        new Claim(ClaimTypes.Name, username),
+        new Claim(ClaimTypes.Name, userLoginDto.Email),
         new Claim("studentId", student.ID.ToString())
     };
 
@@ -81,7 +81,7 @@ namespace Business.Services
 
             return await Task.FromResult(new JWTResponseDto
             {
-                UserName = username,
+                UserName = userLoginDto.Email,
                 Token = jwt,
                 Roles = roleNames
             });
