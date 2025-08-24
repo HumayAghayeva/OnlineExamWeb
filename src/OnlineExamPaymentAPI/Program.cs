@@ -1,4 +1,5 @@
-using Abstraction.PaymentApi.Interfaces.CardOperations;
+﻿using Abstraction.PaymentApi.Interfaces.CardOperations;
+using Autofac.Core;
 using Microsoft.OpenApi.Models;
 using OnlineExamPaymentAPI.Dtos.Request;
 using OnlineExamPaymentAPI.Endpoints;
@@ -16,9 +17,15 @@ Log.Logger = new LoggerConfiguration()
     .CreateLogger();
 
 builder.Host.UseSerilog(); // Hoo
-
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddControllers();
-
+builder.Services.AddDistributedMemoryCache(); 
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30); 
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -54,7 +61,8 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.InjectDependencies(builder.Configuration);
 
 var app = builder.Build();
-
+// ✅ Enable session middleware
+app.UseSession();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

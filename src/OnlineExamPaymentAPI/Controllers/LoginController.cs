@@ -19,7 +19,7 @@ namespace OnlineExamPaymentAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<JWTResponseDto> Login(UserLoginDto userDto)
+        public async Task<JWTResponseDto> Login(Domain.DTOs.Write.UserLoginDto userDto)
         {
            var result= await _jwtTokenServices.GenerateJwtTokenAsync(userDto);
 

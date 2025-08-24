@@ -36,7 +36,9 @@ namespace Business.Services
 
         public async Task<JWTResponseDto> GenerateJwtTokenAsync(UserLoginDto userLoginDto)
         {
-            var student = _oEPWriteDB.Students.FirstOrDefault(s => s.Email == userLoginDto.Email && s.Password == userLoginDto.Password);
+            string hashedPassword = EncryptionHelper.Encrypt(userLoginDto.Password);
+
+            var student = _oEPWriteDB.Students.FirstOrDefault(s => s.Email == userLoginDto.Email && s.Password == hashedPassword);
 
             if (student == null)
             {

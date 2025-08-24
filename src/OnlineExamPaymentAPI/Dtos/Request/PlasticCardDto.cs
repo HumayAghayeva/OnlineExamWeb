@@ -10,6 +10,7 @@ namespace OnlineExamPaymentAPI.Dtos.Request
 
     public record PlasticCardDto
     {
+        public int ID { get; init; }
         [Required(ErrorMessage = "Card holder name is required.")]
         [StringLength(50, MinimumLength = 2, ErrorMessage = "Holder name must be between 2 and 50 characters.")]
         public string HolderName { get; init; }

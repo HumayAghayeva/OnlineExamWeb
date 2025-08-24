@@ -27,15 +27,15 @@ namespace OnlineExamWeb.Controllers
         private IValidator<StudentRequestDto> _studentValidator;
         private readonly IEmailOperations _emailOperations;
         private readonly IFileManager _fileManager;
-        private readonly JwtTokenService _jwtTokenService;
+        private readonly IJwtTokenService _jwtTokenService;
         private readonly IMapper _mapper;
 
         public StudentController(IStudentCommandRepository commandRepository,
             IStudentQueryRepository studentQueryRepository,
             IFileManager fileManager,
             IEmailOperations emailOperations, 
-            IValidator<StudentRequestDto> studentValidator,IUnitOfWork unitOfWork , 
-            JwtTokenService jwtTokenService,  IMapper mapper)
+            IValidator<StudentRequestDto> studentValidator,IUnitOfWork unitOfWork ,
+            IJwtTokenService jwtTokenService,  IMapper mapper)
         {
             _commandRepository = commandRepository;
             _studentQueryRepository = studentQueryRepository;
@@ -175,8 +175,6 @@ namespace OnlineExamWeb.Controllers
                 RoleId= (int)Roles.QuizParticipant,
                 CreateDate=DateTime.Now
             };
-
-             
            
             var roleResult= await _commandRepository.AssignRoleToStudentAsync(studentRoleDto, cancellationToken);
 
@@ -184,7 +182,9 @@ namespace OnlineExamWeb.Controllers
             {
                 return BadRequest("Failed to assign student role.");
             }
-                    
+
+            HttpContext.Session.SetInt32("StudentId", Convert.ToInt32(studentResponse.WriteDBId));
+
             return RedirectToAction(nameof(GetStudent), new { studentId = studentResponse.WriteDBId });
         }
 

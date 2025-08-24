@@ -108,9 +108,6 @@ namespace Business.Repositories.Command
                 };
 
                 await _studentEntity.AddAsync(studentEntity, cancellationToken);
-
-
-
                 await _context.SaveChangesAsync(cancellationToken);
 
                 return new ResponseDto

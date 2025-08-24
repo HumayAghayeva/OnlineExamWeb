@@ -1,10 +1,12 @@
 ﻿
+using Abstraction;
 using Abstraction.Interfaces;
 using Abstraction.PaymentApi.Interfaces.CardOperations;
 using AutoMapper;
 using Business.Services;
 using Domain.OptionDP;
 using Infrastructure.DataContext.Write;
+using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using OnlineExamPaymentAPI.DbConn;
@@ -20,13 +22,21 @@ namespace OnlineExamWebAPI.Utilities
         public static IServiceCollection InjectDependencies(this IServiceCollection services, IConfiguration configuration)
         {
             #region AutoMapper
+
             var mappingConfig = new MapperConfiguration(mc =>
             {
                 mc.AddProfile(new MappingProfileDto());
             });
 
-            services.AddSingleton(mappingConfig.CreateMapper()); 
+            IMapper varOcg = mappingConfig.CreateMapper();
+            services.AddSingleton(varOcg);
+
             #endregion
+            services.AddScoped<IUnitOfWork>(provider =>
+            {
+                var context = provider.GetRequiredService<DbContext>();
+                return new UnitOfWork(context);
+            });
 
             // Register DbContexts
             services.AddDbContext<OEPWriteDB>(options =>
@@ -34,6 +44,7 @@ namespace OnlineExamWebAPI.Utilities
 
             services.AddDbContext<OnlineExamDbContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("OnlineExamDbContext")));
+
 
             // Business Services
             services.AddScoped<ICardValidator, CardValidatorServices>();

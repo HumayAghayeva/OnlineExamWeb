@@ -23,6 +23,10 @@ using Hazelcast;
 using Business.Mapper;
 using AutoMapper;
 using System.Configuration;
+using OnlineExamPaymentAPI.Interfaces;
+using OnlineExamPaymentAPI.Services;
+using OnlineExamPaymentAPI.DbConn;
+using Infrastructure.DataContext.Write;
 
 namespace OnlineExamWeb.Utilities
 {
@@ -36,48 +40,58 @@ namespace OnlineExamWeb.Utilities
                 mc.AddProfile(new MappingProfileDto());
             });
 
-            services.AddSingleton(mappingConfig.CreateMapper());    // should i use it ?
+            services.AddSingleton(mappingConfig.CreateMapper()); // yes, keep it if you need AutoMapper globally
             #endregion
 
-            // Register your specific DbContext
-            services.AddDbContext<DbContext>(options =>
+            // Register your specific DbContexts instead of raw DbContext
+            services.AddDbContext<OEPWriteDB>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("WriteDbContext")));
 
+         
+
+            services.AddDbContext<OnlineExamDbContext>(options =>
+                options.UseSqlServer(configuration.GetConnectionString("OnlineExamDbContext")));
+
+            // JWT config
             services.Configure<JWTSettings>(configuration.GetSection("JWTSettings"));
-            services.AddScoped<IJwtTokenService ,JwtTokenService>();
-           
+            services.AddScoped<IJwtTokenService, JwtTokenService>();
 
-            // Use the specific DbContext in the UnitOfWork registration
-
+            // Unit of Work with Write DB
             services.AddScoped<IUnitOfWork>(provider =>
             {
-                var context = provider.GetRequiredService<DbContext>(); 
+                var context = provider.GetRequiredService<OEPWriteDB>();
                 return new UnitOfWork(context);
             });
 
+            // Generic repository + specific repositories
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IStudentCommandRepository, StudentCommandRepository>();
-            services.AddSingleton<MongoDBContext>(); 
+            services.AddScoped<IStudentQueryRepository, StudentQueryRepository>();
+            services.AddScoped<ITransferDataToReadDb, ITransferDataToReadDbServices>();
+            services.AddScoped<IFileManager, IConfigureImageServices>();
+            services.AddScoped<IPlasticCardServices, PlasticCardServices>();
 
+            // Mongo
+            services.AddSingleton<MongoDBContext>();
             services.AddScoped<IMongoCollection<StudentResponseDto>>(sp =>
             {
                 var mongoDbContext = sp.GetRequiredService<MongoDBContext>();
                 return mongoDbContext.GetCollection<StudentResponseDto>("Students");
             });
-            services.Configure<EmailSettings>(configuration.GetSection("SenderEmail"));
-            services.AddScoped<IEmailOperations, IEmailOperationServices>();        
-            services.AddScoped<IStudentQueryRepository, StudentQueryRepository>();
-            services.AddScoped<ITransferDataToReadDb, ITransferDataToReadDbServices>();
-            services.AddScoped<IFileManager, IConfigureImageServices>();
-   
-            //services.AddSingleton<IHostedService, TransferDataFromWriteToRead>();
 
-            //Validators
+            // Email
+            services.Configure<EmailSettings>(configuration.GetSection("SenderEmail"));
+            services.AddScoped<IEmailOperations, IEmailOperationServices>();
+
+            // Validators
             services.AddScoped<IValidator<StudentRequestDto>, StudentValidator>();
 
-           
+            // Hosted service if needed
+            // services.AddSingleton<IHostedService, TransferDataFromWriteToRead>();
+
             return services;
         }
-       
+
+
     }
 }

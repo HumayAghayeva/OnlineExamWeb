@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Serilog;
 using OnlineExamPaymentAPI.Dtos.Request;
 using OnlineExamPaymentAPI.Services;
+using OnlineExamPaymentAPI.Interfaces;
 
 namespace OnlineExamPaymentAPI.Controllers
 {
@@ -14,10 +15,10 @@ namespace OnlineExamPaymentAPI.Controllers
     //[Authorize(Policy = nameof(Roles.QuizParticipant))]
     public class CardOperationController: ControllerBase
     {
-        private readonly PlasticCardServices _plasticCard;
+        private readonly IPlasticCardServices _plasticCard;
         //private readonly Serilog _serilog;
 
-        public CardOperationController(PlasticCardServices plasticCard)
+        public CardOperationController(IPlasticCardServices plasticCard)
         {
             _plasticCard= plasticCard;
         }

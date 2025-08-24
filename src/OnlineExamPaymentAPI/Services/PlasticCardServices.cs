@@ -1,12 +1,10 @@
 ﻿using AutoMapper;
 using Domain.Contract;
-using Domain.Dtos.Write;
-using Domain.DTOs.Read;
 using Domain.Entity;
 using Domain.Enums;
-using Microsoft.EntityFrameworkCore;
 using OnlineExamPaymentAPI.DbConn;
 using OnlineExamPaymentAPI.Dtos.Request;
+using OnlineExamPaymentAPI.Dtos.Response;
 using OnlineExamPaymentAPI.Entity;
 using OnlineExamPaymentAPI.Interfaces;
 
@@ -23,19 +21,76 @@ namespace OnlineExamPaymentAPI.Services
             _mapper = mapper;
         }
 
-        public async Task<ApiResponse> CreatePlasticCardAsync(PlasticCardDto plasticCard, CancellationToken cancellationToken)
+        public async Task<ApiResponse<PlasticCardResponseDto>> CreatePlasticCardAsync(PlasticCardDto plasticCard, CancellationToken cancellationToken)
         {
-            var plasticCardEntity = _mapper.Map<PlasticCards>(plasticCard);
-
-            await _dbContext.PlasticCards.AddAsync(plasticCardEntity, cancellationToken);
-            await _dbContext.SaveChangesAsync(cancellationToken);
-
-            return new ApiResponse<int>(plasticCardEntity.ID)
+            try
             {
-                Code = ResponseCode.Success,
-                Message = "Plastic card was added successfully."
-            };
+                var plasticCardEntity = new PlasticCards
+                {
+                    ID = plasticCard.ID,
+                    HolderName = plasticCard.HolderName,
+                    CardNumber = plasticCard.CardNumber,
+                    ExpireMonth = plasticCard.ExpireMonth,
+                    ExpireYear = plasticCard.ExpireYear,
+                    CVV = plasticCard.CVV,
+                    CardType = plasticCard.CardType
+                };
+
+
+                await _dbContext.PlasticCards.AddAsync(plasticCardEntity, cancellationToken);
+                await _dbContext.SaveChangesAsync(cancellationToken);
+
+             
+                return new ApiResponse<PlasticCardResponseDto>(new PlasticCardResponseDto
+                {
+                    PlasticCardId = plasticCardEntity.ID
+                })
+                {
+                    Code = ResponseCode.Success,
+                    Message = "Plastic card was added successfully."
+                };
+            }
+            catch (Exception ex)
+            {
+             
+                return new ApiResponse<PlasticCardResponseDto>(new PlasticCardResponseDto
+                {
+                    PlasticCardId =null,
+                })
+                {
+                    Code = ResponseCode.InternalServerError,
+                    Message = "Plastic card was added successfully."
+                };
+            }
+        }
+
+
+        public async Task<ApiResponse> CreateUserPlasticCardAsync(UserPlasticCardDto userPlasticCardDto, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var userPlasticCardEntity = new UserPlasticCard
+                {
+                    UserId = userPlasticCardDto.UserID,
+                    PlasticCardID = userPlasticCardDto.PlasticCardID
+                };
+                await _dbContext.UserPlasticCards.AddAsync(userPlasticCardEntity, cancellationToken);
+                await _dbContext.SaveChangesAsync(cancellationToken);
+
+                return new ApiResponse
+                {
+                    Code = ResponseCode.Success,
+                    Message = "Plastic card was added successfully."
+                };
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse
+                {
+                    Code = ResponseCode.InternalServerError,
+                    Message = "Plastic card was added successfully."
+                };
+            }
         }
     }
-
 }
