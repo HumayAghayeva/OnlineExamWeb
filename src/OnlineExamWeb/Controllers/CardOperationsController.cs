@@ -112,9 +112,10 @@ namespace OnlineExamWeb.Controllers
                     return View(plasticCardDto);
                 }
 
+                return RedirectToAction("Index", "Quiz");
 
             }
-            return View(plasticCardDto);    // quiz baslamalidir.
+            return View(plasticCardDto);    
             #endregion
         }
     }

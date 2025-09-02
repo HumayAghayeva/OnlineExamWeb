@@ -1,0 +1,29 @@
+﻿@{
+    ViewData["Title"] = "Quiz Timer";
+}
+
+<h2>Quiz Timer</h2>
+
+<button id="startButton">Start Quiz</button>
+
+<p>Time Remaining: <span id="timer">60</span> seconds</p>
+
+<script>
+    let timerInterval;
+
+    document.getElementById("startButton").addEventListener("click", function () {
+        let timeLeft = 60;
+        document.getElementById("timer").textContent = timeLeft;
+        this.disabled = true;
+
+        timerInterval = setInterval(function () {
+            timeLeft--;
+            document.getElementById("timer").textContent = timeLeft;
+
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                alert("Time's up!");
+            }
+        }, 1000);
+    });
+</script>
