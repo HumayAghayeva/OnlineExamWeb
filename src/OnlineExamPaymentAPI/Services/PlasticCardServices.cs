@@ -2,6 +2,7 @@
 using Domain.Contract;
 using Domain.Entity;
 using Domain.Enums;
+using Microsoft.EntityFrameworkCore;
 using OnlineExamPaymentAPI.DbConn;
 using OnlineExamPaymentAPI.Dtos.Request;
 using OnlineExamPaymentAPI.Dtos.Response;
@@ -25,30 +26,50 @@ namespace OnlineExamPaymentAPI.Services
         {
             try
             {
-                var plasticCardEntity = new PlasticCards
+                bool isExistPlasticCard = await PlasticCardExistsAsync(plasticCard, cancellationToken);
+
+                if (!isExistPlasticCard)
                 {
-                    ID = plasticCard.ID,
-                    HolderName = plasticCard.HolderName,
-                    CardNumber = plasticCard.CardNumber,
-                    ExpireMonth = plasticCard.ExpireMonth,
-                    ExpireYear = plasticCard.ExpireYear,
-                    CVV = plasticCard.CVV,
-                    CardType = plasticCard.CardType
-                };
+                    var plasticCardEntity = new PlasticCards
+                    {
+                        ID = plasticCard.ID,
+                        HolderName = plasticCard.HolderName,
+                        CardNumber = plasticCard.CardNumber,
+                        ExpireMonth = plasticCard.ExpireMonth,
+                        ExpireYear = plasticCard.ExpireYear,
+                        CVV = plasticCard.CVV,
+                        CardType = plasticCard.CardType
+                    };
 
 
-                await _dbContext.PlasticCards.AddAsync(plasticCardEntity, cancellationToken);
-                await _dbContext.SaveChangesAsync(cancellationToken);
+                    await _dbContext.PlasticCards.AddAsync(plasticCardEntity, cancellationToken);
+                    await _dbContext.SaveChangesAsync(cancellationToken);
 
-             
-                return new ApiResponse<PlasticCardResponseDto>(new PlasticCardResponseDto
+
+                    return new ApiResponse<PlasticCardResponseDto>(new PlasticCardResponseDto
+                    {
+                        PlasticCardId = plasticCardEntity.ID
+                    })
+                    {
+                        Code = ResponseCode.Success,
+                        Message = "Plastic card was added successfully."
+                    };
+                }
+                else
                 {
-                    PlasticCardId = plasticCardEntity.ID
-                })
-                {
-                    Code = ResponseCode.Success,
-                    Message = "Plastic card was added successfully."
-                };
+                    PlasticCards existPlasticCard= await _dbContext.PlasticCards.Where(w => w.CVV == plasticCard.CVV 
+                    && w.CardNumber == plasticCard.CardNumber).FirstOrDefaultAsync();
+
+                    return new ApiResponse<PlasticCardResponseDto>(new PlasticCardResponseDto
+                    {
+                        PlasticCardId = existPlasticCard.ID
+                    })
+                    {
+                        Code = ResponseCode.Success,
+                        Message = "Plastic card was added successfully."
+                    };
+                }
+              
             }
             catch (Exception ex)
             {
@@ -72,7 +93,9 @@ namespace OnlineExamPaymentAPI.Services
                 var userPlasticCardEntity = new UserPlasticCard
                 {
                     UserId = userPlasticCardDto.UserID,
-                    PlasticCardID = userPlasticCardDto.PlasticCardID
+                    PlasticCardID = userPlasticCardDto.PlasticCardID,
+                    TransactionID = userPlasticCardDto.TransactionID,
+                    PaymentDate = userPlasticCardDto.PaymentDate
                 };
                 await _dbContext.UserPlasticCards.AddAsync(userPlasticCardEntity, cancellationToken);
                 await _dbContext.SaveChangesAsync(cancellationToken);
@@ -92,5 +115,15 @@ namespace OnlineExamPaymentAPI.Services
                 };
             }
         }
+
+        public async Task<bool> PlasticCardExistsAsync(PlasticCardDto plasticCardDto, CancellationToken cancellationToken = default)
+        {
+            return await _dbContext.PlasticCards
+                .AnyAsync(
+                    c => c.CardNumber == plasticCardDto.CardNumber
+                      && c.CVV == plasticCardDto.CVV,
+                    cancellationToken);
+        }
+
     }
 }

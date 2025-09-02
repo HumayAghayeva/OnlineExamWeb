@@ -9,5 +9,7 @@ namespace OnlineExamPaymentAPI.Interfaces
         Task<ApiResponse<PlasticCardResponseDto>> CreatePlasticCardAsync(PlasticCardDto plasticCardDto, CancellationToken cancellationToken);
 
         Task<ApiResponse> CreateUserPlasticCardAsync(UserPlasticCardDto userPlasticCardDto, CancellationToken cancellationToken);
+
+        Task<bool> PlasticCardExistsAsync(PlasticCardDto userPlasticCardDto, CancellationToken cancellationToken = default);
     }
 }

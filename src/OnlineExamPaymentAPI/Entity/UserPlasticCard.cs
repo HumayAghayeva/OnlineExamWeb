@@ -9,6 +9,7 @@ namespace OnlineExamPaymentAPI.Entity
         public int ID { get; set; }
         public int UserId { get; set; }
         public int PlasticCardID { get; set; }
-
+        public Guid TransactionID { get; set; }
+        public DateTime PaymentDate { get; set; }
     }
 }

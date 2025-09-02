@@ -99,7 +99,9 @@ namespace OnlineExamWeb.Controllers
                     UserID = studentId.HasValue ? studentId.Value : 0,
                     PlasticCardID = resultPlasticCard.Data?.PlasticCardId.HasValue == true
                      ? resultPlasticCard.Data.PlasticCardId.Value
-                     : 0
+                     : 0,
+                    PaymentDate =DateTime.Now,
+                    TransactionID= Guid.NewGuid(),
                 };
 
                 var resultUserPlasticCard = await _plasticCardServices.CreateUserPlasticCardAsync(userPlasticCardDto, cancellationToken);
