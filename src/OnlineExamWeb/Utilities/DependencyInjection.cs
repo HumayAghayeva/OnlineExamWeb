@@ -27,6 +27,7 @@ using OnlineExamPaymentAPI.Interfaces;
 using OnlineExamPaymentAPI.Services;
 using OnlineExamPaymentAPI.DbConn;
 using Infrastructure.DataContext.Write;
+using RabbitMQ.Client;
 
 namespace OnlineExamWeb.Utilities
 {
@@ -85,13 +86,29 @@ namespace OnlineExamWeb.Utilities
 
             // Validators
             services.AddScoped<IValidator<StudentRequestDto>, StudentValidator>();
-
+            services.AddSingleton<IConnectionFactory>(sp =>
+            {
+                var config = sp.GetRequiredService<IConfiguration>();
+                return new ConnectionFactory()
+                {
+                    HostName = config["RabbitMQ:Connection"],
+                    UserName = config["RabbitMQ:UserName"],
+                    Password = config["RabbitMQ:Password"],
+                    Port = int.Parse(config["RabbitMQ:Port"] ?? "5672"),
+                    DispatchConsumersAsync = true
+                };
+            });
+            services.AddTransient<IPublisher, Publisher>();
+            services.AddTransient<IConsumer, Consumer>();
             // Hosted service if needed
             // services.AddSingleton<IHostedService, TransferDataFromWriteToRead>();
 
             return services;
         }
 
-
+        private static void servicesAddSingleton<T>(Func<object, ConnectionFactory> value)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
