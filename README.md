@@ -13,6 +13,7 @@ The following technologies and tools were used to build this application:
   - **Serilog**
   - **Health Check**
   - **Docker**
+  - **RabbitMQ**
   - **Cross Cutting Concern**
      - [Fluent Validation](https://fluentvalidation.net/)
 
